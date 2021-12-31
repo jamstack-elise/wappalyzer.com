@@ -215,6 +215,9 @@
                         )
                       }}
                     </td>
+                    <td v-else-if="list.status === 'Failed'" class="text-right">
+                      -
+                    </td>
                     <td
                       v-else-if="list.status !== 'Calculating'"
                       class="text-right"
