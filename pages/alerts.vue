@@ -14,7 +14,8 @@
         <v-card-text class="pb-0">
           <p style="max-width: 600px">
             Add the websites you want to monitor here and we'll check them
-            daily. As soon as we notice a change we'll alert you with an email.
+            frequently. As soon as we notice a change we'll alert you with an
+            email.
           </p>
         </v-card-text>
         <v-card-text v-if="!alerts.length" class="pb-0">
@@ -94,7 +95,7 @@
             </v-alert>
 
             <p class="mb-6">
-              One alert costs 10 credits per 30 days. You currently have
+              One alert costs 5 credits per 30 days. You currently have
               {{ formatNumber(credits) }} credits.
             </p>
 
@@ -116,7 +117,7 @@
               Cancel
             </v-btn>
             <v-btn
-              :disabled="credits < 10"
+              :disabled="credits < 5"
               :loading="creating"
               color="accent"
               text
@@ -125,7 +126,7 @@
               <v-icon left>
                 {{ mdiAlphaCCircle }}
               </v-icon>
-              Spend 10 credits
+              Spend 5 credits
             </v-btn>
           </v-card-actions>
         </v-card>

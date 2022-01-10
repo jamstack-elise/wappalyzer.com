@@ -573,7 +573,7 @@ export default {
             : Object.keys(csv[0]).length === 1
             ? ['URL']
             : Object.keys(csv[0]).map(
-                (index) =>
+                (value, index) =>
                   (Math.ceil((index + 1) / 26) > 1
                     ? String.fromCharCode(
                         63 + (Math.ceil((index + 1) / 26) % 26)

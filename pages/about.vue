@@ -6,18 +6,17 @@
       </h1>
 
       <p>
-        Wappalyzer, founded by
+        <strong>Wappalyzer</strong> /wæpəlʌɪzər/ is a technology profiler and
+        lead data provider founded by
         <a
           href="https://www.linkedin.com/in/elbertalias/"
           target="_blank"
           rel="noopener noreferrer"
-          >Elbert Alias<v-icon color="accent" class="ml-1 mb-2" small>
-            {{ mdiLinkedin }}</v-icon
-          ></a
+          >Elbert Alias</a
         >
-        in 2008, is a technology profiler and lead data provider. Our products
-        provide sales and marketing teams with technographic insights and tools
-        for lead generation, market analysis and competitor research.
+        in 2008. Our products provide sales and marketing teams with
+        technographic insights and tools for lead generation, market analysis
+        and competitor research.
       </p>
 
       <p>

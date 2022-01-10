@@ -133,7 +133,7 @@
         <v-expansion-panel-content eager>
           <p>
             Website traffic is tracked using our
-            <nuxt-link to="/apps/">browser extensions</nuxt-link> with 1.5M
+            <nuxt-link to="/apps/">browser extensions</nuxt-link> with over 2M
             users. The install base provides a large enough sample set to
             determine which websites receive more traffic than others, resulting
             in a relative traffic indicator.
@@ -254,7 +254,7 @@
         <v-expansion-panel-content eager>
           <p>
             Website traffic is tracked using our
-            <nuxt-link to="/apps/">browser extensions</nuxt-link> with 1.5M
+            <nuxt-link to="/apps/">browser extensions</nuxt-link> with over 2M
             users. The install base provides a large enough sample set to
             determine which websites receive more traffic than others, resulting
             in a relative traffic indicator.
