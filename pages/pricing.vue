@@ -109,7 +109,7 @@
               <v-card-title class="subtitle-2">Calculator</v-card-title>
               <v-card-text class="pb-0">
                 <v-row class="align-center">
-                  <v-col cols="6">
+                  <v-col class="flex-grow-1 flex-shrink-0 pr-0">
                     <v-form @submit.prevent="submit">
                       <v-text-field
                         v-model="credits"
@@ -118,18 +118,26 @@
                         hide-details
                         outlined
                         dense
-                      />
+                      >
+                        <template v-slot:append>
+                          <v-chip
+                            color="primary lighten-1 primary--text"
+                            label
+                            small
+                          >
+                            Price:
+                            {{
+                              formatCurrency(
+                                creditsToCents(parseInt(credits, 10)) / 100
+                              )
+                            }}
+                          </v-chip>
+                        </template>
+                      </v-text-field>
                     </v-form>
                   </v-col>
-                  <v-col>
-                    {{
-                      formatCurrency(
-                        creditsToCents(parseInt(credits || 0, 10)) / 100
-                      )
-                    }}
-                  </v-col>
-                  <v-col class="text-right">
-                    <v-btn to="/credits/" depressed>
+                  <v-col class="flex-grow-0 flex-shrink-1">
+                    <v-btn to="/credits/" style="height: 40px" depressed>
                       <v-icon left>
                         {{ mdiAlphaCCircle }}
                       </v-icon>

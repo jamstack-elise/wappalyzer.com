@@ -7,40 +7,6 @@
 
       <v-divider />
 
-      <v-card-title>PayPal</v-card-title>
-
-      <v-card-text v-if="!user.billingEmail">
-        <v-alert color="info" class="mb-0" text>
-          You haven't provided a billing email address.
-        </v-alert>
-      </v-card-text>
-      <v-card-text v-else class="px-0">
-        <v-alert v-if="accountSuccess" type="success" class="mx-4" text>
-          {{ accountSuccess }}
-        </v-alert>
-
-        <v-simple-table>
-          <tbody>
-            <tr>
-              <th width="30%">Billing email address</th>
-              <td>{{ user.billingEmail }}</td>
-            </tr>
-          </tbody>
-        </v-simple-table>
-      </v-card-text>
-
-      <v-card-actions>
-        <v-spacer />
-        <v-btn color="accent" text @click="billingDialog = true">
-          <v-icon left>
-            {{ mdiPencil }}
-          </v-icon>
-          Edit details
-        </v-btn>
-      </v-card-actions>
-
-      <v-divider />
-
       <v-card-title>Credits</v-card-title>
 
       <v-card-text class="px-0">

@@ -27,23 +27,23 @@
 
           <ul class="mb-4">
             <li>
-              <nuxt-link to="/lookup/"> Uncover </nuxt-link> the technologies
-              that power any given website.
+              <nuxt-link to="/lookup/">Uncover</nuxt-link> the technologies that
+              power any given website.
             </li>
             <li>
-              <nuxt-link to="/lists/"> Create </nuxt-link> lists of websites and
+              <nuxt-link to="/lists/">Create</nuxt-link> lists of websites and
               contacts that use certain technologies.
             </li>
             <li>
-              <nuxt-link to="/technologies/"> Deep-dive </nuxt-link> into
+              <nuxt-link to="/technologies/">Deep-dive</nuxt-link> into
               technology trends market shares.
             </li>
             <li>
-              <nuxt-link to="/lookup/#bulk"> Enrich </nuxt-link> your own data
+              <nuxt-link to="/lookup/#bulk">Enrich</nuxt-link> your own data
               with technology information.
             </li>
             <li>
-              <nuxt-link to="/alerts/"> Monitor </nuxt-link> your competition's
+              <nuxt-link to="/alerts/">Monitor</nuxt-link> your competition's
               technology stacks.
             </li>
           </ul>
@@ -199,19 +199,6 @@
                       </v-icon>
                     </td>
                   </tr>
-                  <tr>
-                    <th>One-time payments accepted</th>
-                    <td class="text-center">
-                      <v-icon color="success">
-                        {{ mdiCheck }}
-                      </v-icon>
-                    </td>
-                    <td class="text-center">
-                      <v-icon color="error">
-                        {{ mdiClose }}
-                      </v-icon>
-                    </td>
-                  </tr>
                 </tbody>
               </v-simple-table>
             </v-card-text>
@@ -242,9 +229,9 @@
 
           <p>
             Wappalyzer's data is largely sourced from a
-            <nuxt-link to="/apps/"> browser extension </nuxt-link>, supplemented
-            by in-house crawlers. The browser extension is used by 1.5M users on
-            a daily basis (ten times more than BuiltWith), providing a large
+            <nuxt-link to="/apps/">browser extension</nuxt-link>, supplemented
+            by in-house crawlers. The browser extension is used by 2M users on a
+            daily basis (many times more than BuiltWith), providing a large
             sample size to measure website traffic and track live websites. This
             method allows scanning of pages that crawlers typically can't reach,
             such as shopping carts, checkouts and sections behind a login.
@@ -270,11 +257,9 @@
           <h2 class="text-h2 mt-8 mb-2">Wappalyzer pricing</h2>
 
           <p>
-            Wappalyzer has two pricing models: one-time payments and
-            subscriptions. You can pay for credits and technology lookups on a
-            free plan, or you can subscribe to get credits at a lower price.
-            Credits can be spent on any product, including lists and APIs,
-            giving you the most flexibility.
+            Wappalyzer uses a transparent credit-based system. Credits are
+            included in plans and can be spent on any product, including lists
+            and APIs, giving you the most flexibility.
           </p>
 
           <p class="mb-8">
@@ -294,9 +279,9 @@
 
           <p>
             Wappalyzer has been an expert in the
-            <nuxt-link to="/articles/what-is-technographics/">
-              technographics
-            </nuxt-link>
+            <nuxt-link to="/articles/what-is-technographics/"
+              >technographics</nuxt-link
+            >
             field for more than a decade. Its mission is to do one thing, and do
             it well. If you're not satisfied with the quality of the data, we'll
             either work with you to resolve it or issue a refund.
@@ -306,7 +291,7 @@
 
           <p>
             Still not convinced?
-            <nuxt-link to="/contact/"> Contact us </nuxt-link> for a demo.
+            <nuxt-link to="/contact/">Contact us</nuxt-link> for a demo.
           </p>
         </v-col>
       </v-row>

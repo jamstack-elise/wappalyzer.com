@@ -194,9 +194,17 @@
 
         <v-col cols="12" md="4" class="py-0">
           <v-card class="mb-4">
-            <v-card-title class="subtitle-1 px-6"
-              >Get the full list</v-card-title
-            >
+            <v-card-title class="subtitle-1 px-6 d-flex justify-space-between">
+              <span>Get the full list</span>
+              <v-chip
+                to="/pro/"
+                class="font-weight-regular"
+                color="primary"
+                x-small
+                outlined
+                >PRO</v-chip
+              >
+            </v-card-title>
             <v-card-text class="pb-2 px-0">
               <v-simple-table class="mb-4">
                 <tbody>

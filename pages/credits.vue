@@ -10,8 +10,6 @@
     <p class="mb-8" style="max-width: 600px">
       Credits can be spent on any product, including technology lookups, APIs
       and lead lists.
-      <nuxt-link to="/pricing/">Sign up for a plan</nuxt-link> to get monthly
-      credits at a lower price.
     </p>
 
     <template v-if="!loading">
@@ -41,18 +39,6 @@
         Spend credits
       </v-btn>
 
-      <v-btn
-        class="mr-2 mb-4 primary--text"
-        color="primary lighten-1"
-        depressed
-        @click="orderDialog = true"
-      >
-        <v-icon left>
-          {{ mdiAlphaCCircle }}
-        </v-icon>
-        Buy credits
-      </v-btn>
-
       <v-btn class="mr-2 mb-4" depressed @click="$refs.faqDialog.open()">
         <v-icon left>
           {{ mdiForum }}
@@ -67,6 +53,99 @@
         Plans &amp; pricing
       </v-btn>
 
+      <v-card class="mb-4">
+        <v-card-title class="d-flex justify-space-between">
+          <span>Buy credits</span>
+          <v-chip
+            to="/pro/"
+            class="font-weight-regular"
+            color="primary"
+            x-small
+            outlined
+            >PRO</v-chip
+          >
+        </v-card-title>
+        <v-card-text>
+          <v-card
+            v-if="!isPro"
+            color="primary lighten-1 primary--text"
+            class="mb-6"
+            flat
+          >
+            <v-card-title class="subtitle-2">
+              <v-icon color="primary" size="20" left>
+                {{ mdiLockOpenVariantOutline }}
+              </v-icon>
+              Unlock PRO features
+            </v-card-title>
+            <v-card-text class="primary--text pb-0">
+              Sign up for a
+              <v-chip to="/pro/" color="primary" x-small outlined>PRO</v-chip>
+              plan to get monthly credits. If you ever need more, you can
+              purchase additional credits here at any time.
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+
+              <v-btn to="/pricing/" color="primary" text>
+                Compare plans
+                <v-icon right>
+                  {{ mdiArrowRight }}
+                </v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+
+          <v-form
+            @submit.prevent="submit"
+            :disabled="!isPro"
+            style="max-width: 600px"
+          >
+            <v-row>
+              <v-col class="flex-grow-1 flex-shrink-0 pr-0">
+                <v-text-field
+                  v-model="credits"
+                  :rules="rules.credits"
+                  label="Credits"
+                  placeholder="1000"
+                  hide-details="auto"
+                  outlined
+                  dense
+                >
+                  <template v-slot:append>
+                    <v-chip
+                      :disabled="!isPro"
+                      color="primary lighten-1 primary--text"
+                      label
+                      small
+                    >
+                      Price:
+                      {{
+                        formatCurrency(
+                          creditsToCents(parseInt(credits, 10)) / 100
+                        )
+                      }}
+                    </v-chip>
+                  </template>
+                </v-text-field>
+              </v-col>
+              <v-col class="flex-grow-0 flex-shrink-1">
+                <v-btn
+                  :loading="submitting"
+                  :disabled="!isPro"
+                  color="primary"
+                  style="height: 40px"
+                  depressed
+                  @click="submit"
+                >
+                  Create order
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card-text>
+      </v-card>
+
       <v-card>
         <v-card-title>Bundles</v-card-title>
         <v-card-text v-if="!adds.length" class="pb-0">
@@ -75,6 +154,8 @@
           </v-alert>
         </v-card-text>
         <v-card-text v-else class="px-0">
+          <p class="px-4">These are your remaining credits.</p>
+
           <v-simple-table>
             <thead>
               <tr>
@@ -162,100 +243,6 @@
         </v-card-text>
       </v-card>
 
-      <v-dialog v-model="orderDialog" max-width="400px" eager>
-        <v-card>
-          <v-card-title> Pricing </v-card-title>
-          <v-card-text class="px-0">
-            <v-alert v-if="orderError" type="error" class="mx-6" text>
-              {{ orderError }}
-            </v-alert>
-
-            <v-simple-table class="mb-4" outlined dense>
-              <thead>
-                <tr>
-                  <th class="pl-6" width="50%">Credits</th>
-                  <th class="pr-6" width="50%">Price per credit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(tier, index) in Object.keys(creditTiers)"
-                  :key="index"
-                >
-                  <td class="pl-6 caption">
-                    {{
-                      formatNumber(
-                        index
-                          ? parseInt(Object.keys(creditTiers)[index - 1], 10) +
-                              1
-                          : 1
-                      )
-                    }}
-                    {{
-                      index === Object.keys(creditTiers).length - 1
-                        ? '+'
-                        : `- ${formatNumber(parseInt(tier, 10))}`
-                    }}
-                  </td>
-                  <td class="pr-6 caption">
-                    {{ formatCurrency(creditTiers[tier] / 100, 'USD', true) }}
-                  </td>
-                </tr>
-              </tbody>
-            </v-simple-table>
-
-            <p class="px-6 mb-0">
-              <small>
-                Prices are in United States dollars.<br />
-                Credits expire after 365 days.
-              </small>
-            </p>
-          </v-card-text>
-
-          <v-divider />
-
-          <v-card-title>Order</v-card-title>
-          <v-card-text class="pb-0">
-            <v-form @submit.prevent="submit">
-              <v-row>
-                <v-col cols="7" class="pb-0">
-                  <v-text-field
-                    v-model="credits"
-                    :rules="rules.credits"
-                    label="Credits"
-                    placeholder="1000"
-                    outlined
-                    dense
-                  />
-                </v-col>
-                <v-col class="pb-0">
-                  <v-text-field
-                    :value="
-                      formatCurrency(
-                        creditsToCents(parseInt(credits, 10)) / 100
-                      )
-                    "
-                    label="Price"
-                    disabled
-                    outlined
-                    dense
-                  />
-                </v-col>
-              </v-row>
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="error" text @click="orderDialog = false">
-              Cancel
-            </v-btn>
-            <v-btn :loading="submitting" color="accent" text @click="submit">
-              Create order
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
       <v-dialog v-model="addDialog" max-width="400px" eager>
         <v-card>
           <v-card-title>Add credits</v-card-title>
@@ -322,7 +309,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { mdiAlphaCCircle, mdiForum, mdiCalculator } from '@mdi/js'
+import {
+  mdiAlphaCCircle,
+  mdiForum,
+  mdiCalculator,
+  mdiArrowRight,
+  mdiLockOpenVariantOutline,
+} from '@mdi/js'
 import { creditTiers } from '~/assets/json/pricing.json'
 
 import Page from '~/components/Page.vue'
@@ -351,9 +344,11 @@ export default {
       mdiAlphaCCircle,
       mdiForum,
       mdiCalculator,
+      mdiArrowRight,
+      mdiLockOpenVariantOutline,
       rules: {
         credits: [
-          (v) => /^[0-9]+$/.test(v),
+          (v) => !v || /^[0-9]+$/.test(v),
           (v) =>
             parseInt(v) >= 100 || this.isAdmin ? true : 'Minimum 100 credits',
           (v) => (parseInt(v) < 10000000 ? true : 'Maximum 10,000,000 credits'),
@@ -374,6 +369,7 @@ export default {
       user: ({ user }) => user.attrs,
       isAdmin: ({ user }) =>
         user.attrs.admin || (user.impersonator && user.impersonator.admin),
+      isPro: ({ credits }) => credits.pro,
     }),
   },
   watch: {

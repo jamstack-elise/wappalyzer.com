@@ -205,8 +205,7 @@
           (order.status === 'Pending' && order.invoiceUrl) ||
           (order.status === 'Complete' &&
             order.product !== 'Subscription' &&
-            (order.paymentMethod === 'stripe' ||
-              order.paymentMethod === 'paypal'))
+            order.paymentMethod === 'stripe')
         "
         :href="order.status === 'Pending' && order.invoiceUrl"
         :to="order.status === 'Complete' && `/invoices/${order.id}`"
@@ -545,7 +544,10 @@
 
           <v-card-title v-if="!isMember">Payment</v-card-title>
 
-          <v-card-text v-if="order.product !== 'Subscription'" class="px-0">
+          <v-card-text
+            v-if="!['Credits', 'Subscription'].includes(order.product)"
+            class="px-0"
+          >
             <v-simple-table>
               <tbody>
                 <tr>
@@ -557,7 +559,6 @@
                       hide-details
                     >
                       <v-radio label="Credit card" value="stripe" />
-                      <v-radio label="PayPal" value="paypal" />
                       <v-radio
                         v-if="order.product !== 'Credits'"
                         label="Credit balance"
@@ -629,23 +630,6 @@
                 :disabled="!user.billingEmail || !order.total"
                 class="ml-4"
                 color="primary lighten-1 primary--text"
-                large
-                depressed
-                @click="invoice"
-              >
-                <v-icon left>
-                  {{ mdiEmail }}
-                </v-icon>
-                Send invoice
-              </v-btn>
-            </div>
-          </v-card-text>
-          <v-card-text v-if="paymentMethod === 'paypal'" class="pa-0">
-            <div class="d-flex justify-center mt-n4 py-8">
-              <v-btn
-                :loading="invoicing"
-                :disabled="!user.billingEmail"
-                class="primary"
                 large
                 depressed
                 @click="invoice"

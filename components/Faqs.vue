@@ -376,11 +376,9 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            Plans can only be purchased with a credit card. Credits and other
-            products can be purchased directly using a credit card or PayPal
-            account. Please
-            <nuxt-link to="/contact/">contact us</nuxt-link> if you wish to pay
-            via bank transfer or Bitcoin, or discuss options.
+            In most cases we only accept credit cards. For larger purchases or
+            longer-term commitments, please
+            <nuxt-link to="/contact/">contact us</nuxt-link> to discuss options.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
