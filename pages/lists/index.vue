@@ -1189,6 +1189,9 @@
                           class="mb-0 pt-0"
                           outlined
                           dense
+                          small-chips
+                          multiple
+                          clearable
                           @change="fileChange"
                         />
 
@@ -2015,13 +2018,21 @@ export default {
         return
       }
 
-      const lines = (await file.text()).trim().split('\n')
+      const files = Array.isArray(file) ? file : [file]
 
-      if (lines[0].startsWith('"url"')) {
-        lines.shift()
+      const lines = []
+
+      for (const _file of files) {
+        const _lines = (await _file.text()).trim().split('\n')
+
+        if (_lines[0].startsWith('"url"')) {
+          _lines.shift()
+        }
+
+        lines.push(..._lines)
       }
 
-      this.file = lines
+      this.file = [...new Set(lines)]
         .map((line, i) => {
           line = line.replace(/^"([^"]+)".+$/, '$1')
 
