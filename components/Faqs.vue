@@ -295,9 +295,14 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            We accept one-time payments for credits and technology lookups. A
-            PRO plan is required to access lead lists and company and contact
-            details in data products. Credits are cheaper on a plan.
+            A <nuxt-link to="/pro/">PRO</nuxt-link> plan is required to access
+            lead lists, purchase additional credits and access to all data
+            points in data products, including company and contact details.
+          </p>
+
+          <p>
+            Sign up for a free account to get 50 credits every to spend on
+            technology lookups, email verifications and alerts.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -389,10 +394,9 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            If you're dissatisfied with the quality of our offering we will
+            If you're not satisfied with the quality of our offering we will
             either work with you to resolve the issue, credit your account or
-            issue a pro-rata refund. Credits are generally non-refundable.
-            Please refer to the
+            issue a pro-rata refund. Please refer to the
             <nuxt-link to="/terms/">terms of use</nuxt-link>.
           </p>
         </v-expansion-panel-content>
