@@ -154,9 +154,9 @@
       <v-card style="max-width: 800px; margin: 0 auto" class="mb-14">
         <v-card-title>Take a tour</v-card-title>
 
-        <v-card-content>
+        <v-card-text>
           <Vimeo id="651847462" height="600px" />
-        </v-card-content>
+        </v-card-text>
       </v-card>
 
       <v-card style="max-width: 800px; margin: 0 auto" class="mb-14">
