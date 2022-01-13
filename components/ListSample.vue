@@ -8,7 +8,7 @@
           <th
             v-for="(key, index) in Object.keys(sample[0])"
             :key="key"
-            :class="index ? 'pl-0' : ''"
+            :class="index ? 'py-0 pl-0' : ''"
             style="white-space: nowrap"
           >
             <div class="d-flex align-center">
@@ -27,7 +27,7 @@
         <tr v-for="(row, index) in sample" :key="index">
           <td
             v-for="(column, attribute) in row"
-            :class="attribute === Object.keys(row)[0] ? '' : 'pl-0'"
+            :class="attribute === Object.keys(row)[0] ? '' : 'py-0 pl-0'"
             :key="attribute"
           >
             <div class="d-flex align-center">

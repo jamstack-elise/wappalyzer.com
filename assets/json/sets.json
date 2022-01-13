@@ -146,5 +146,14 @@
       { "key": "keywords", "description": "Relevant keywords found in website content." }
     ],
     "pro": true
+  },
+  {
+    "key": "events",
+    "name": "Events",
+    "attributes": [
+      { "key": "createdAt", "description": "The first time the website was indexed." },
+      { "key": "updatedAt", "description": "The last time the website was indexed." },
+      { "key": "crawlAttemptedAt", "description": "The last attempt to index the website." }
+    ]
   }
 ]
