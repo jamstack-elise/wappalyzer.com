@@ -212,7 +212,7 @@
                           </v-radio-group>
                         </template>
 
-                        <template v-if="selectedItems.length == 3">
+                        <template v-if="selectedItems.length > 2">
                           <v-divider class="mx-n6 mb-6" />
 
                           Create a list of websites that use...
@@ -234,6 +234,15 @@
                                 <div>
                                   <strong>All</strong> of the selected
                                   technologies
+                                </div>
+                              </template>
+                            </v-radio>
+                            <v-radio class="mt-0" value="not" hide-details>
+                              <template #label>
+                                <div>
+                                  {{ selectedItems[0].name }} and
+                                  <strong>not</strong>
+                                  any of the other selected technologies
                                 </div>
                               </template>
                             </v-radio>
@@ -1734,7 +1743,7 @@ export default {
                 ((this.selected.technologies.length === 2 ||
                   this.selected.technologies.length === 3) &&
                   this.matchAllTechnologies === 'and') ||
-                (this.selectedItems.length === 2 &&
+                (this.selectedItems.length >= 2 &&
                   this.matchAllTechnologies === 'not')
                   ? this.matchAllTechnologies
                   : 'or',
