@@ -2419,9 +2419,8 @@ export default {
         this.$refs.technologies.toggle()
       }
 
-      if (this.compliance === 'exclude') {
+      if (this.compliance === 'exclude' || this.australia) {
         this.$refs.compliance.toggle()
-        this.$refs.attributes.toggle()
       }
 
       if (this.selected.industries.length) {

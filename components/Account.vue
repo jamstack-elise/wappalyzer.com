@@ -82,22 +82,6 @@
             required
           />
 
-          <v-alert
-            v-if="
-              attrs.billingCountry &&
-              attrs.billingCountry.toUpperCase() === 'AU'
-            "
-            color="warning"
-            border="left"
-            dense
-            text
-          >
-            <small>
-              To comply with Spam Act 2003, we exclude email addresses and phone
-              numbers in data we sell to Australian customers.
-            </small>
-          </v-alert>
-
           <v-text-field
             v-model="attrs.billingAddress1"
             :rules="rules.required"

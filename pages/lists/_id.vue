@@ -276,8 +276,22 @@
                       class="mb-6 px-6"
                       text
                     >
-                      You have {{ formatNumber(credits) }} credits. Please top
-                      up your credit balance or create a smaller list.
+                      <p>
+                        You have
+                        <strong>{{ formatNumber(credits) }}</strong> credits.
+                        Please
+                        <nuxt-link class="warning--text" to="/credits/"
+                          >top up your credits</nuxt-link
+                        >
+                        or create a smaller list.
+                      </p>
+
+                      <p>
+                        <small>
+                          You can set a limit under the 'list size &amp; website
+                          traffic' tab when creating a list.
+                        </small>
+                      </p>
                     </v-alert>
 
                     <v-btn
