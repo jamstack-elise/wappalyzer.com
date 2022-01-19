@@ -137,7 +137,7 @@
                     </v-form>
                   </v-col>
                   <v-col class="flex-grow-0 flex-shrink-1">
-                    <v-btn to="/credits/" style="height: 40px" depressed>
+                    <v-btn to="/credits/" style="height: 40px" text>
                       <v-icon left>
                         {{ mdiAlphaCCircle }}
                       </v-icon>

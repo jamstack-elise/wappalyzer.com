@@ -10,6 +10,56 @@
 
       <Apps />
 
+      <v-card color="primary lighten-1 primary--text" class="mt-12" flat>
+        <v-card-title class="subtitle-1 font-weight-medium">
+          <v-chip color="primary" class="mr-2" small>NEW</v-chip> Block modals
+          and overlays
+        </v-card-title>
+        <v-card-text class="primary--text">
+          <div style="max-width: 600px">
+            <p>
+              The team at Wappalyzer created a new browser extension to
+              automatically remove modal windows that block content and
+              interrupt your reading. Block unwanted email and signup prompts,
+              paywalls, donation requests, special offers, GDPR and cookie
+              consent banners and more.
+            </p>
+
+            <p class="mb-6">
+              The project is in early development and open-source. Contributors
+              welcome!
+            </p>
+
+            <v-btn
+              href="https://chrome.google.com/webstore/detail/demodal-block-modals-and/fjhbdkfknppikobblnjibmkmogjeffcf"
+              target="_blank"
+              rel="noopener"
+              color="primary"
+              outlined
+              small
+              ><v-icon left>{{ mdi.mdiGoogleChrome }}</v-icon> Chrome</v-btn
+            ><v-btn
+              href="https://addons.mozilla.org/en-US/fairefox/addon/demodal/"
+              target="_blank"
+              rel="noopener"
+              color="primary"
+              class="mx-4"
+              outlined
+              small
+              ><v-icon left>{{ mdi.mdiFirefox }}</v-icon> Firefox</v-btn
+            ><v-btn
+              href="https://github.com/AliasIO/demodal"
+              target="_blank"
+              rel="noopener"
+              color="primary"
+              outlined
+              small
+              ><v-icon left>{{ mdi.mdiGithub }}</v-icon> GitHub</v-btn
+            >
+          </div>
+        </v-card-text>
+      </v-card>
+
       <v-divider class="mt-12 mb-10" />
 
       <h2 class="mb-2">Mobile apps</h2>
@@ -92,11 +142,9 @@
 <script>
 import {
   mdiGithub,
-  mdiMicrosoftEdge,
   mdiFirefox,
   mdiGoogleChrome,
   mdiForum,
-  mdiAppleSafari,
   mdiApple,
   mdiAndroid,
 } from '@mdi/js'
@@ -117,11 +165,9 @@ export default {
       faqDialog: false,
       mdi: {
         mdiGithub,
-        mdiMicrosoftEdge,
         mdiFirefox,
         mdiGoogleChrome,
         mdiForum,
-        mdiAppleSafari,
         mdiApple,
         mdiAndroid,
       },
