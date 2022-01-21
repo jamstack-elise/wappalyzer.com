@@ -559,11 +559,11 @@ export default {
     }),
     preview() {
       try {
-        const csv = parse(this.inputFile.split('\n').slice(0, 11).join('\n'), {
+        const csv = parse(this.inputFile, {
           columns: this.csvHeader,
           delimiter: this.csvDelimiter,
           quote: this.csvTextQualifier,
-        })
+        }).slice(0, 10)
 
         this.previewError = false
 
@@ -794,7 +794,11 @@ export default {
         this.autoSetCsvUrlColum()
       }
 
-      this.file = this.inputFile.split('\n')
+      const csv = parse(this.inputFile, {
+        columns: this.csvHeader,
+        delimiter: this.csvDelimiter,
+        quote: this.csvTextQualifier,
+      })
       this.fileErrors = []
 
       if (!this.inputFile) {
@@ -802,12 +806,6 @@ export default {
       }
 
       try {
-        const csv = parse(this.inputFile.split('\n').slice(0, 11).join('\n'), {
-          columns: this.csvHeader,
-          delimiter: this.csvDelimiter,
-          quote: this.csvTextQualifier,
-        })
-
         const urls = csv.map(
           (row) => (row && Object.values(row)[this.csvUrlColumn]) || ''
         )
@@ -825,10 +823,10 @@ export default {
             new URL(url) // eslint-disable-line no-new
           } catch (error) {
             if (this.removeInvalid) {
-              this.file.splice(index, 1)
+              csv.splice(index, 1)
             } else {
               this.fileErrors.push(
-                `Invalid URL on line ${index + 1}: ${urls[index]}`
+                `Invalid URL on line ${index + 1}: ${urls[index] || '(blank)'}`
               )
             }
           }
@@ -845,21 +843,24 @@ export default {
         this.fileErrors = [this.getErrorMessage(error)]
       }
 
-      this.fileErrors = this.fileErrors.slice(-5).reverse()
+      this.file = csv
+        .map(
+          (row) =>
+            `"${Object.values(row)
+              .map((value) =>
+                value.replace('"', '""').replace(/(\r\n|\n|\r)/g, ' ')
+              )
+              .join('","')}"`
+        )
+        .join('\n')
 
-      this.file = this.file.filter((line) => line)
+      this.fileErrors = this.fileErrors.slice(-5).reverse()
 
       if (
         !this.fileErrors.length && this.file.length <= this.csvHeader ? 1 : 0
       ) {
         this.fileErrors = ['No valid URLs found.']
       }
-
-      if (this.csvHeader) {
-        this.file.shift()
-      }
-
-      this.file = this.file.join('\n').trim()
     },
     autoSetCsvUrlColum() {
       this.csvUrlColumn =
