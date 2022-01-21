@@ -794,12 +794,21 @@ export default {
         this.autoSetCsvUrlColum()
       }
 
-      const csv = parse(this.inputFile, {
-        columns: this.csvHeader,
-        delimiter: this.csvDelimiter,
-        quote: this.csvTextQualifier,
-      })
       this.fileErrors = []
+
+      let csv = []
+
+      try {
+        csv = parse(this.inputFile, {
+          columns: this.csvHeader,
+          delimiter: this.csvDelimiter,
+          quote: this.csvTextQualifier,
+        })
+      } catch (error) {
+        this.fileErrors.push(error.message || error.toString())
+
+        return
+      }
 
       if (!this.inputFile) {
         return
