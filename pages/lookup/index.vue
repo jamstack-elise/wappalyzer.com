@@ -803,6 +803,8 @@ export default {
           columns: this.csvHeader,
           delimiter: this.csvDelimiter,
           quote: this.csvTextQualifier,
+          skip_empty_lines: true,
+          relax_column_count: true,
         })
       } catch (error) {
         this.fileErrors.push(error.message || error.toString())
@@ -857,7 +859,7 @@ export default {
           (row) =>
             `"${Object.values(row)
               .map((value) =>
-                value.replace('"', '""').replace(/(\r\n|\n|\r)/g, ' ')
+                value.replace(/"/g, '""').replace(/(\r\n|\n|\r)/g, ' ')
               )
               .join('","')}"`
         )
