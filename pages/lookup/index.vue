@@ -519,6 +519,7 @@ export default {
         { text: 'Comma', value: ',' },
         { text: 'Tab', value: '\t' },
         { text: 'Space', value: ' ' },
+        { text: 'Semicolon', value: ';' },
       ],
       csvUrlColumn: 0,
       csvTextQualifier: '"',
@@ -660,9 +661,13 @@ export default {
     },
     csvDelimiter() {
       this.fileChange()
+
+      this.autoSetCsvUrlColum()
     },
     csvTextQualifier() {
       this.fileChange()
+
+      this.autoSetCsvUrlColum()
     },
     csvUrlColumn() {
       this.fileChange()
@@ -761,8 +766,8 @@ export default {
               live: this.live,
               columns: this.csvColumns.map(({ text }) => text),
               header: this.csvHeader,
-              delimiter: this.csvDelimiter,
-              textQualifier: this.csvTextQualifier,
+              delimiter: ',',
+              textQualifier: '"',
               urlColumn: this.csvUrlColumn,
               compliance: this.compliance,
             },
@@ -874,6 +879,7 @@ export default {
       }
     },
     autoSetCsvUrlColum() {
+      console.log(this.csvHeader)
       this.csvUrlColumn =
         this.csvHeader && this.preview.length
           ? Math.max(

@@ -53,61 +53,136 @@
         Plans &amp; pricing
       </v-btn>
 
-      <v-card class="mb-4">
-        <v-card-title class="d-flex justify-space-between">
-          <span>Buy credits</span>
-          <v-chip
-            to="/pro/"
-            class="font-weight-regular"
-            color="primary"
-            x-small
-            outlined
-            >PRO</v-chip
-          >
+      <v-card
+        v-if="!isPro"
+        color="primary lighten-1 primary--text"
+        class="mb-6"
+        flat
+      >
+        <v-card-title class="subtitle-2">
+          <v-icon color="primary" size="20" left>
+            {{ mdiLockOpenVariantOutline }}
+          </v-icon>
+          Unlock PRO features
         </v-card-title>
-        <v-card-text>
-          <v-card
-            v-if="!isPro"
-            color="primary lighten-1 primary--text"
-            class="mb-6"
-            flat
-          >
-            <v-card-title class="subtitle-2">
-              <v-icon color="primary" size="20" left>
-                {{ mdiLockOpenVariantOutline }}
-              </v-icon>
-              Unlock PRO features
+        <v-card-text class="primary--text pb-0">
+          Sign up for a
+          <v-chip to="/pro/" color="primary" x-small outlined>PRO</v-chip>
+          plan to get monthly credits. If you ever need more, you can purchase
+          additional credits here at any time.
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+
+          <v-btn to="/pricing/" color="primary" text>
+            Compare plans
+            <v-icon right>
+              {{ mdiArrowRight }}
+            </v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+
+      <v-row class="mb-4">
+        <v-col cols="12" md="6">
+          <v-card height="100%">
+            <v-card-title class="d-flex justify-space-between">
+              <span>Buy credits</span>
+              <v-chip
+                to="/pro/"
+                class="font-weight-regular"
+                color="primary"
+                x-small
+                outlined
+                >PRO</v-chip
+              >
             </v-card-title>
-            <v-card-text class="primary--text pb-0">
-              Sign up for a
-              <v-chip to="/pro/" color="primary" x-small outlined>PRO</v-chip>
-              plan to get monthly credits. If you ever need more, you can
-              purchase additional credits here at any time.
+            <v-card-text>
+              <v-form @submit.prevent="submit" :disabled="!isPro">
+                <v-row>
+                  <v-col class="flex-grow-1 flex-shrink-0 pr-0">
+                    <v-text-field
+                      v-model="credits"
+                      :rules="rules.credits"
+                      label="Credits"
+                      placeholder="1000"
+                      hide-details="auto"
+                      outlined
+                      dense
+                    >
+                      <template v-slot:append>
+                        <v-chip
+                          :disabled="!isPro"
+                          color="primary lighten-1 primary--text"
+                          label
+                          small
+                        >
+                          Price:
+                          {{
+                            formatCurrency(
+                              creditsToCents(parseInt(credits, 10)) / 100
+                            )
+                          }}
+                        </v-chip>
+                      </template>
+                    </v-text-field>
+                  </v-col>
+                  <v-col class="flex-grow-0 flex-shrink-1">
+                    <v-btn
+                      :loading="submitting"
+                      :disabled="!isPro"
+                      color="primary"
+                      style="height: 40px"
+                      depressed
+                      @click="submit"
+                    >
+                      Create order
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
             </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-
-              <v-btn to="/pricing/" color="primary" text>
-                Compare plans
-                <v-icon right>
-                  {{ mdiArrowRight }}
-                </v-icon>
-              </v-btn>
-            </v-card-actions>
           </v-card>
+        </v-col>
 
-          <v-form
-            @submit.prevent="submit"
-            :disabled="!isPro"
-            style="max-width: 600px"
-          >
-            <v-row>
-              <v-col class="flex-grow-1 flex-shrink-0 pr-0">
+        <v-col cols="12" md="6">
+          <v-card height="100%">
+            <v-card-title class="d-flex justify-space-between">
+              <span>Automatic top-up</span>
+              <v-chip
+                to="/pro/"
+                class="font-weight-regular"
+                color="primary"
+                x-small
+                outlined
+                >PRO</v-chip
+              >
+            </v-card-title>
+            <v-card-text>
+              <v-form @submit.prevent="submitAuto" :disabled="!isPro">
+                <p>When my balance reaches:</p>
+
                 <v-text-field
-                  v-model="credits"
+                  v-model="creditsThreshold"
+                  :rules="
+                    (v) => (!v || /^[0-9]+$/.test(v) ? true : 'Invalid amount')
+                  "
+                  label="Credits"
+                  placeholder="1000"
+                  class="mb-4"
+                  hide-details="auto"
+                  outlined
+                  dense
+                />
+
+                <p>Then, automatically buy:</p>
+
+                <v-text-field
+                  v-model="creditsAutoTopUp"
                   :rules="rules.credits"
                   label="Credits"
                   placeholder="1000"
+                  class="mb-4"
                   hide-details="auto"
                   outlined
                   dense
@@ -122,29 +197,19 @@
                       Price:
                       {{
                         formatCurrency(
-                          creditsToCents(parseInt(credits, 10)) / 100
+                          creditsToCents(parseInt(creditsAutoTopUp, 10)) / 100
                         )
                       }}
                     </v-chip>
                   </template>
                 </v-text-field>
-              </v-col>
-              <v-col class="flex-grow-0 flex-shrink-1">
-                <v-btn
-                  :loading="submitting"
-                  :disabled="!isPro"
-                  color="primary"
-                  style="height: 40px"
-                  depressed
-                  @click="submit"
-                >
-                  Create order
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card-text>
-      </v-card>
+
+                <v-switch label="Enable automatic top-up" hide-details inset />
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
 
       <v-card>
         <v-card-title>Bundles</v-card-title>
@@ -342,6 +407,8 @@ export default {
       addError: false,
       spendError: false,
       credits: 5000,
+      creditsThreshold: 1000,
+      creditsAutoTopUp: 5000,
       creditTiers,
       addDescription: 'Complimentary credits',
       spendDescription: 'Subscription cancellation',
@@ -353,7 +420,7 @@ export default {
       mdiLockOpenVariantOutline,
       rules: {
         credits: [
-          (v) => !v || /^[0-9]+$/.test(v),
+          (v) => (!v || /^[0-9]+$/.test(v) ? true : 'Invalid amount'),
           (v) =>
             parseInt(v) >= 100 || this.isAdmin ? true : 'Minimum 100 credits',
           (v) => (parseInt(v) < 10000000 ? true : 'Maximum 10,000,000 credits'),
