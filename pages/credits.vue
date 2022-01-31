@@ -84,106 +84,26 @@
       </v-card>
 
       <v-row class="mb-4">
-        <v-col cols="12" md="6">
-          <v-card height="100%">
-            <v-card-title class="d-flex justify-space-between">
-              <span>Buy credits</span>
-              <v-chip
-                to="/pro/"
-                class="font-weight-regular"
-                color="primary"
-                x-small
-                outlined
-                >PRO</v-chip
-              >
-            </v-card-title>
-            <v-card-text>
-              <v-form @submit.prevent="submit" :disabled="!isPro">
-                <v-row>
-                  <v-col class="flex-grow-1 flex-shrink-0 pr-0">
-                    <v-text-field
-                      v-model="credits"
-                      :rules="rules.credits"
-                      label="Credits"
-                      placeholder="1000"
-                      hide-details="auto"
-                      outlined
-                      dense
-                    >
-                      <template v-slot:append>
-                        <v-chip
-                          :disabled="!isPro"
-                          color="primary lighten-1 primary--text"
-                          label
-                          small
-                        >
-                          Price:
-                          {{
-                            formatCurrency(
-                              creditsToCents(parseInt(credits, 10)) / 100
-                            )
-                          }}
-                        </v-chip>
-                      </template>
-                    </v-text-field>
-                  </v-col>
-                  <v-col class="flex-grow-0 flex-shrink-1">
-                    <v-btn
-                      :loading="submitting"
-                      :disabled="!isPro"
-                      color="primary"
-                      style="height: 40px"
-                      depressed
-                      @click="submit"
-                    >
-                      Create order
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </v-col>
-
-        <v-col cols="12" md="6">
-          <v-card height="100%">
-            <v-card-title class="d-flex justify-space-between">
-              <span>Automatic top-up</span>
-              <v-chip
-                to="/pro/"
-                class="font-weight-regular"
-                color="primary"
-                x-small
-                outlined
-                >PRO</v-chip
-              >
-            </v-card-title>
-            <v-card-text>
-              <v-form @submit.prevent="submitAuto" :disabled="!isPro">
-                <p>When my balance reaches:</p>
-
-                <v-text-field
-                  v-model="creditsThreshold"
-                  :rules="
-                    (v) => (!v || /^[0-9]+$/.test(v) ? true : 'Invalid amount')
-                  "
-                  label="Credits"
-                  placeholder="1000"
-                  class="mb-4"
-                  hide-details="auto"
+        <v-col cols="12" md="6" class="d-flex">
+          <v-card width="100%" height="100%">
+            <v-form @submit.prevent="submit" :disabled="!isPro">
+              <v-card-title class="d-flex justify-space-between">
+                <span>Buy credits</span>
+                <v-chip
+                  to="/pro/"
+                  class="font-weight-regular"
+                  color="primary"
+                  x-small
                   outlined
-                  dense
-                />
-
-                <p>Then, automatically buy:</p>
-
+                  >PRO</v-chip
+                >
+              </v-card-title>
+              <v-card-text>
                 <v-text-field
-                  v-model="creditsAutoTopUp"
+                  v-model="credits"
                   :rules="rules.credits"
                   label="Credits"
                   placeholder="1000"
-                  class="mb-4"
-                  hide-details="auto"
                   outlined
                   dense
                 >
@@ -197,16 +117,70 @@
                       Price:
                       {{
                         formatCurrency(
-                          creditsToCents(parseInt(creditsAutoTopUp, 10)) / 100
+                          creditsToCents(parseInt(credits, 10)) / 100
                         )
                       }}
                     </v-chip>
                   </template>
                 </v-text-field>
 
-                <v-switch label="Enable automatic top-up" hide-details inset />
-              </v-form>
+                <v-btn
+                  :loading="submitting"
+                  :disabled="!isPro"
+                  color="primary"
+                  depressed
+                  @click="submit"
+                >
+                  <v-icon left>{{ mdiCart }}</v-icon>
+
+                  Create order
+                </v-btn>
+              </v-card-text>
+            </v-form>
+          </v-card>
+        </v-col>
+
+        <v-col cols="12" md="6" class="d-flex">
+          <v-card width="100%" height="100%">
+            <v-card-title class="d-flex justify-space-between">
+              <span>Auto top-up</span>
+              <v-chip
+                to="/pro/"
+                class="font-weight-regular"
+                color="primary"
+                x-small
+                outlined
+                >PRO</v-chip
+              >
+            </v-card-title>
+            <v-card-text v-if="autoTopUp.enabled">
+              <p>
+                When your balance reaches
+                <strong>{{ formatNumber(autoTopUp.threshold) }}</strong>
+                credits, automatically buy
+                <strong>{{ formatNumber(autoTopUp.credits) }}</strong> credits.
+              </p>
             </v-card-text>
+            <v-card-text v-else>
+              <v-alert color="accent" class="mb-0" text>
+                Turned off. Turn on to automatically buy credits when your
+                balance is low.
+              </v-alert>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+
+              <v-btn
+                color="accent"
+                text
+                :disabled="!isPro"
+                @click="autoTopUpDialog = true"
+              >
+                <v-icon left>{{ mdiPencil }}</v-icon>
+
+                Configure
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-col>
       </v-row>
@@ -371,6 +345,125 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+      <v-dialog v-model="autoTopUpDialog" max-width="600px" eager>
+        <v-card>
+          <v-card-title>Automatic top-up</v-card-title>
+          <v-card-text>
+            <v-alert v-if="autoTopUpError" type="error" text>
+              {{ autoTopUpError }}
+            </v-alert>
+
+            <p>When your balance reaches:</p>
+
+            <v-text-field
+              v-model="autoTopUpThreshold"
+              :rules="[
+                (v) => (!v || /^[0-9]+$/.test(v) ? true : 'Invalid amount'),
+              ]"
+              label="Credits"
+              placeholder="1000"
+              outlined
+              dense
+            />
+
+            <p>Then, automatically buy:</p>
+
+            <v-text-field
+              v-model="autoTopUpCredits"
+              :rules="rules.credits"
+              label="Credits"
+              placeholder="1000"
+              outlined
+              dense
+            >
+              <template v-slot:append>
+                <v-chip
+                  :disabled="!isPro"
+                  color="primary lighten-1 primary--text"
+                  label
+                  small
+                >
+                  Price:
+                  {{
+                    formatCurrency(
+                      creditsToCents(parseInt(autoTopUpCredits, 10)) / 100
+                    )
+                  }}
+                </v-chip>
+              </template>
+            </v-text-field>
+
+            <v-switch
+              v-model="autoTopUpEnabled"
+              label="Enable automatic top-up"
+              class="mt-0"
+              hide-details
+              inset
+            />
+
+            <v-alert
+              v-if="
+                autoTopUpCredits &&
+                parseInt(autoTopUpThreshold, 10) >
+                  parseInt(autoTopUpCredits, 10)
+              "
+              color="secondary"
+              border="left"
+              class="mt-8 mb-2"
+              dense
+            >
+              <small>
+                Your balance will be topped up to meet your minimum of
+                {{ formatNumber(parseInt(autoTopUpThreshold, 10)) }}, plus
+                {{ formatNumber(parseInt(autoTopUpCredits, 10)) }} credits. The
+                maximum charge is
+                {{
+                  formatCurrency(
+                    creditsToCents(
+                      parseInt(autoTopUpThreshold, 10) +
+                        parseInt(autoTopUpCredits, 10)
+                    ) / 100
+                  )
+                }}.
+              </small>
+            </v-alert>
+          </v-card-text>
+
+          <v-divider />
+
+          <v-card-title>Payment method</v-card-title>
+
+          <v-card-text class="px-0 pb-0">
+            <div v-if="!cardsLoaded" class="d-flex justify-center pt-2 pb-6">
+              <Progress />
+            </div>
+
+            <CreditCards
+              mode-select
+              @load="cardsLoaded = true"
+              @select="(id) => (stripePaymentMethod = id)"
+            />
+          </v-card-text>
+
+          <v-divider />
+
+          <v-card-actions class="pt-4">
+            <v-spacer />
+            <v-btn color="error" text @click="autoTopUpDialog = false">
+              Cancel
+            </v-btn>
+            <v-btn
+              :loading="submittingAutoTopUp"
+              color="accent"
+              text
+              @click="submitAutoTopUp"
+            >
+              Save
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
 
     <FaqDialog ref="faqDialog" topic="pricing" />
@@ -385,30 +478,40 @@ import {
   mdiCalculator,
   mdiArrowRight,
   mdiLockOpenVariantOutline,
+  mdiCart,
+  mdiPencil,
 } from '@mdi/js'
 import { creditTiers } from '~/assets/json/pricing.json'
 
 import Page from '~/components/Page.vue'
 import FaqDialog from '~/components/FaqDialog.vue'
+import CreditCards from '~/components/CreditCards.vue'
+import Progress from '~/components/Progress.vue'
 
 export default {
   components: {
     Page,
     FaqDialog,
+    CreditCards,
+    Progress,
   },
   data() {
     return {
       title: 'Credits',
       adds: [],
       addDialog: false,
+      autoTopUpDialog: false,
+      autoTopUpEnabled: false,
+      autoTopUpThreshold: 1000,
+      autoTopUpCredits: 5000,
+      cardsLoaded: false,
       spendDialog: false,
       adding: false,
       spending: false,
       addError: false,
+      autoTopUpError: false,
       spendError: false,
       credits: 5000,
-      creditsThreshold: 1000,
-      creditsAutoTopUp: 5000,
       creditTiers,
       addDescription: 'Complimentary credits',
       spendDescription: 'Subscription cancellation',
@@ -418,6 +521,8 @@ export default {
       mdiCalculator,
       mdiArrowRight,
       mdiLockOpenVariantOutline,
+      mdiCart,
+      mdiPencil,
       rules: {
         credits: [
           (v) => (!v || /^[0-9]+$/.test(v) ? true : 'Invalid amount'),
@@ -430,7 +535,9 @@ export default {
       orderError: false,
       order: false,
       submitting: false,
+      submittingAutoTopUp: false,
       spends: [],
+      stripePaymentMethod: null,
       error: false,
       loading: true,
       success: false,
@@ -442,6 +549,7 @@ export default {
       isAdmin: ({ user }) =>
         user.attrs.admin || (user.impersonator && user.impersonator.admin),
       isPro: ({ credits }) => credits.pro,
+      autoTopUp: ({ credits }) => credits.autoTopUp,
     }),
   },
   watch: {
@@ -457,6 +565,11 @@ export default {
           this.error = this.getErrorMessage(error)
         }
       }
+    },
+    async autoTopUp() {
+      this.autoTopUpEnabled = this.autoTopUp.enabled
+      this.autoTopUpThreshold = this.autoTopUp.threshold
+      this.autoTopUpCredits = this.autoTopUp.credits
     },
   },
   async created() {
@@ -518,6 +631,8 @@ export default {
         })
 
         this.getCredits()
+
+        //
         ;({ add: this.adds, spend: this.spends } = (
           await this.$axios.get('credits/usage')
         ).data)
@@ -550,6 +665,28 @@ export default {
       }
 
       this.submitting = false
+    },
+    async submitAutoTopUp() {
+      this.autoTopUpError = ''
+      this.submittingAutoTopUp = true
+
+      try {
+        await this.$axios.put('credits/auto', {
+          stripePaymentMethod: this.stripePaymentMethod,
+          threshold: this.autoTopUpThreshold,
+          credits: this.autoTopUpCredits,
+          enabled: this.autoTopUpEnabled,
+        })
+
+        await this.getCredits()
+
+        this.success = 'Your changes have been saved.'
+        this.autoTopUpDialog = false
+      } catch (error) {
+        this.autoTopUpError = this.getErrorMessage(error)
+      }
+
+      this.submittingAutoTopUp = false
     },
   },
 }

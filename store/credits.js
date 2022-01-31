@@ -4,6 +4,11 @@ export const state = () => ({
   freeLists: { total: null, remaining: null, availableAt: null },
   plus: false,
   pro: false,
+  autoTopUp: {
+    enabled: false,
+    threshold: 0,
+    credits: 0,
+  },
 })
 
 export const mutations = {
@@ -22,6 +27,9 @@ export const mutations = {
   setLoading(state, loading) {
     state.loading = loading
   },
+  setAutoTopUp(state, autoTopUp) {
+    state.autoTopUp = autoTopUp
+  },
 }
 
 export const actions = {
@@ -29,7 +37,7 @@ export const actions = {
     try {
       commit('setLoading', true)
 
-      const { credits, freeLists, plus, pro } = (
+      const { credits, freeLists, plus, pro, autoTopUp } = (
         await this.$axios.get('credits')
       ).data
 
@@ -37,6 +45,7 @@ export const actions = {
       commit('setFreeLists', freeLists)
       commit('setPlus', plus)
       commit('setPro', pro)
+      commit('setAutoTopUp', autoTopUp)
       commit('setLoading', false)
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -46,6 +55,11 @@ export const actions = {
       commit('setFreeLists', { total: 0, remaining: 0, availableAt: null })
       commit('setPlus', false)
       commit('setPro', false)
+      commit('setAutoTopUp', {
+        enabled: false,
+        threshold: 0,
+        credits: 0,
+      })
       commit('setLoading', false)
     }
   },
@@ -54,6 +68,11 @@ export const actions = {
     commit('setFreeLists', { total: 0, remaining: 0, availableAt: null })
     commit('setPlus', false)
     commit('setPro', false)
+    commit('setAutoTopUp', {
+      enabled: false,
+      threshold: 0,
+      credits: 0,
+    })
     commit('setLoading', false)
   },
 }
