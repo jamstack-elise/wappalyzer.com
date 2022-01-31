@@ -350,84 +350,86 @@
         <v-card>
           <v-card-title>Automatic top-up</v-card-title>
           <v-card-text>
-            <v-alert v-if="autoTopUpError" type="error" text>
-              {{ autoTopUpError }}
-            </v-alert>
+            <v-form ref="autoTopUp" v-model="autoTopUpValid">
+              <v-alert v-if="autoTopUpError" type="error" text>
+                {{ autoTopUpError }}
+              </v-alert>
 
-            <p>When your balance reaches:</p>
+              <p>When your balance reaches:</p>
 
-            <v-text-field
-              v-model="autoTopUpThreshold"
-              :rules="[
-                (v) => (!v || /^[0-9]+$/.test(v) ? true : 'Invalid amount'),
-              ]"
-              label="Credits"
-              placeholder="1000"
-              outlined
-              dense
-            />
+              <v-text-field
+                v-model="autoTopUpThreshold"
+                :rules="[
+                  (v) => (!v || /^[0-9]+$/.test(v) ? true : 'Invalid amount'),
+                ]"
+                label="Credits"
+                placeholder="1000"
+                outlined
+                dense
+              />
 
-            <p>Then, automatically buy:</p>
+              <p>Then, automatically buy:</p>
 
-            <v-text-field
-              v-model="autoTopUpCredits"
-              :rules="rules.credits"
-              label="Credits"
-              placeholder="1000"
-              outlined
-              dense
-            >
-              <template v-slot:append>
-                <v-chip
-                  :disabled="!isPro"
-                  color="primary lighten-1 primary--text"
-                  label
-                  small
-                >
-                  Price:
+              <v-text-field
+                v-model="autoTopUpCredits"
+                :rules="rules.credits"
+                label="Credits"
+                placeholder="5000"
+                outlined
+                dense
+              >
+                <template v-slot:append>
+                  <v-chip
+                    :disabled="!isPro"
+                    color="primary lighten-1 primary--text"
+                    label
+                    small
+                  >
+                    Price:
+                    {{
+                      formatCurrency(
+                        creditsToCents(parseInt(autoTopUpCredits, 10)) / 100
+                      )
+                    }}
+                  </v-chip>
+                </template>
+              </v-text-field>
+
+              <v-switch
+                v-model="autoTopUpEnabled"
+                label="Enable automatic top-up"
+                class="mt-0"
+                hide-details
+                inset
+              />
+
+              <v-alert
+                v-if="
+                  autoTopUpCredits &&
+                  parseInt(autoTopUpThreshold, 10) >
+                    parseInt(autoTopUpCredits, 10)
+                "
+                color="secondary"
+                border="left"
+                class="mt-8 mb-2"
+                dense
+              >
+                <small>
+                  Your balance will be topped up to meet your minimum of
+                  {{ formatNumber(parseInt(autoTopUpThreshold, 10)) }}, plus
+                  {{ formatNumber(parseInt(autoTopUpCredits, 10)) }} credits.
+                  The maximum charge is
                   {{
                     formatCurrency(
-                      creditsToCents(parseInt(autoTopUpCredits, 10)) / 100
+                      creditsToCents(
+                        parseInt(autoTopUpThreshold, 10) +
+                          parseInt(autoTopUpCredits, 10)
+                      ) / 100
                     )
-                  }}
-                </v-chip>
-              </template>
-            </v-text-field>
-
-            <v-switch
-              v-model="autoTopUpEnabled"
-              label="Enable automatic top-up"
-              class="mt-0"
-              hide-details
-              inset
-            />
-
-            <v-alert
-              v-if="
-                autoTopUpCredits &&
-                parseInt(autoTopUpThreshold, 10) >
-                  parseInt(autoTopUpCredits, 10)
-              "
-              color="secondary"
-              border="left"
-              class="mt-8 mb-2"
-              dense
-            >
-              <small>
-                Your balance will be topped up to meet your minimum of
-                {{ formatNumber(parseInt(autoTopUpThreshold, 10)) }}, plus
-                {{ formatNumber(parseInt(autoTopUpCredits, 10)) }} credits. The
-                maximum charge is
-                {{
-                  formatCurrency(
-                    creditsToCents(
-                      parseInt(autoTopUpThreshold, 10) +
-                        parseInt(autoTopUpCredits, 10)
-                    ) / 100
-                  )
-                }}.
-              </small>
-            </v-alert>
+                  }}.
+                </small>
+              </v-alert>
+            </v-form>
           </v-card-text>
 
           <v-divider />
@@ -455,6 +457,7 @@
             </v-btn>
             <v-btn
               :loading="submittingAutoTopUp"
+              :disabled="!autoTopUpValid"
               color="accent"
               text
               @click="submitAutoTopUp"
@@ -500,10 +503,11 @@ export default {
       title: 'Credits',
       adds: [],
       addDialog: false,
+      autoTopUpValid: true,
       autoTopUpDialog: false,
       autoTopUpEnabled: false,
-      autoTopUpThreshold: 1000,
-      autoTopUpCredits: 5000,
+      autoTopUpThreshold: 0,
+      autoTopUpCredits: 100,
       cardsLoaded: false,
       spendDialog: false,
       adding: false,
@@ -569,7 +573,7 @@ export default {
     async autoTopUp() {
       this.autoTopUpEnabled = this.autoTopUp.enabled
       this.autoTopUpThreshold = this.autoTopUp.threshold
-      this.autoTopUpCredits = this.autoTopUp.credits
+      this.autoTopUpCredits = Math.max(100, this.autoTopUp.credits)
     },
   },
   async created() {
@@ -667,26 +671,28 @@ export default {
       this.submitting = false
     },
     async submitAutoTopUp() {
-      this.autoTopUpError = ''
-      this.submittingAutoTopUp = true
+      if (this.$refs.autoTopUp.validate()) {
+        this.autoTopUpError = ''
+        this.submittingAutoTopUp = true
 
-      try {
-        await this.$axios.put('credits/auto', {
-          stripePaymentMethod: this.stripePaymentMethod,
-          threshold: this.autoTopUpThreshold,
-          credits: this.autoTopUpCredits,
-          enabled: this.autoTopUpEnabled,
-        })
+        try {
+          await this.$axios.put('credits/auto', {
+            stripePaymentMethod: this.stripePaymentMethod,
+            threshold: this.autoTopUpThreshold,
+            credits: this.autoTopUpCredits,
+            enabled: this.autoTopUpEnabled,
+          })
 
-        await this.getCredits()
+          await this.getCredits()
 
-        this.success = 'Your changes have been saved.'
-        this.autoTopUpDialog = false
-      } catch (error) {
-        this.autoTopUpError = this.getErrorMessage(error)
+          this.success = 'Your changes have been saved.'
+          this.autoTopUpDialog = false
+        } catch (error) {
+          this.autoTopUpError = this.getErrorMessage(error)
+        }
+
+        this.submittingAutoTopUp = false
       }
-
-      this.submittingAutoTopUp = false
     },
   },
 }
