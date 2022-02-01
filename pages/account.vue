@@ -1,6 +1,6 @@
 <template>
   <Page :title="title" secure>
-    <v-alert v-if="success" type="success">
+    <v-alert v-if="success" type="success" text>
       {{ success }}
     </v-alert>
 

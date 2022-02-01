@@ -45,7 +45,7 @@
           :raised="item.raised"
           class="text-center"
           :style="`${
-            item.raised ? 'border: 1px solid #4608ad; margin-top: -1px' : ''
+            item.raised ? 'border: 2px solid #4608ad; margin-top: -2px' : ''
           }`"
         >
           <v-responsive
@@ -152,7 +152,15 @@
                       {{ item.attrs[name] }}
                     </template>
                     <template v-else>
-                      {{ formatNumber(item.attrs[name]) }}
+                      <span
+                        v-if="attr.type === 'credits'"
+                        class="font-weight-medium"
+                      >
+                        {{ formatNumber(item.attrs[name]) }}
+                      </span>
+                      <template v-else>
+                        {{ formatNumber(item.attrs[name]) }}
+                      </template>
                     </template>
                   </template>
                 </template>
