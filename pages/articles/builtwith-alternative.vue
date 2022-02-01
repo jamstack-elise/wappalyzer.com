@@ -263,7 +263,7 @@
           </p>
 
           <p class="mb-8">
-            Wappalyzer's $99 Starter plan is fully featured. Its mid-tier plan
+            Wappalyzer's $149 Starter plan is fully featured. Its mid-tier plan
             is cheaper than BuiltWith's entry-tier plan and includes multiple
             logins. Discounted plans are available for startups, students and
             nonprofits.
