@@ -12,31 +12,56 @@
         <v-col sm="10" lg="8">
           <h1 class="text-h1 mb-8">Where to next?</h1>
 
-          <p class="body-1">
-            You now have access to all our products, including lead lists and
-            technology lookups. Every month, we'll deposit 50 credits into your
-            account for free. You can spend these however you like.
+          <p class="body-1 mb-8">
+            You now have basic access to all our products. Every month, we'll
+            deposit 50 credits into your account for free. You can spend these
+            on <nuxt-link to="/lookup/">technology lookups</nuxt-link>,
+            <nuxt-link to="/verify/">email verifications</nuxt-link>,
+            <nuxt-link to="/alerts/">website alerts</nuxt-link> and to
+            <nuxt-link to="/api/">trial our APIs</nuxt-link>.
           </p>
 
-          <p class="body-1">
-            You can <nuxt-link to="/credits/">top up</nuxt-link> your credits at
-            any time or
-            <nuxt-link to="/pricing/">sign up for a plan</nuxt-link> to get
-            monthly credits at a lower price. Plans also unlock
-            <v-chip to="/pro/" color="primary" x-small outlined>PRO</v-chip>
-            features, such as CRM integrations and access to company and contact
-            details in any of our data products.
-          </p>
+          <v-card
+            color="primary lighten-1 primary--text"
+            class="mb-4 body-1"
+            flat
+          >
+            <v-card-title class="subtitle-2">
+              <v-icon color="primary" size="20" left>
+                {{ mdiLockOpenVariantOutline }}
+              </v-icon>
+              Unlock PRO features
+            </v-card-title>
+            <v-card-text
+              class="primary--text pb-0 body-2"
+              style="line-height: 1.5rem"
+            >
+              Sign up for a
+              <v-chip to="/pro/" color="primary" x-small outlined>PRO</v-chip>
+              plan to get more credits, access lead lists, company and contact
+              details in all our data products, CRM integrations and more.
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
 
-          <h2 class="text-h2 mt-8 mb-2">Browser extenion</h2>
+              <v-btn to="/pricing/" color="primary" text>
+                Compare plans
+                <v-icon right>
+                  {{ mdiArrowRight }}
+                </v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+
+          <h3 class="text-h3 mt-8 mb-2">Browser extenion</h3>
 
           <p>
             If you haven't already, install our
             <nuxt-link to="/apps/">free browser extension</nuxt-link> to see the
-            technologies used on websites you visit.
+            technologies, company and contact details of websites you visit.
           </p>
 
-          <h2 class="text-h2 mt-8 mb-2">Technology lookup</h2>
+          <h3 class="text-h3 mt-8 mb-2">Technology lookup</h3>
 
           <p>
             Use our <nuxt-link to="/lookup/">technology lookup</nuxt-link> tool
@@ -45,17 +70,24 @@
             <nuxt-link to="/lookup/#bulk">bulk</nuxt-link>.
           </p>
 
-          <h2 class="text-h2 mt-8 mb-2">Lead lists</h2>
+          <h3 class="text-h3 mt-8 mb-2">Lead lists</h3>
 
           <p>
             Create a list of websites that use a certain web technology with
             <nuxt-link to="/lists/">lead lists</nuxt-link>. Thousands of
             customers use our lead lists for market research and to find new
-            sales prospects. Reach out to companies that use Shopify, Magento,
-            WooCommerce or any other software.
+            sales prospects. Reach out to companies that use
+            <nuxt-link to="/technologies/ecommerce/shopify/">Shopify</nuxt-link
+            >,
+            <nuxt-link to="/technologies/ecommerce/magento/">Magento</nuxt-link
+            >,
+            <nuxt-link to="/technologies/ecommerce/woocommerce/"
+              >WooCommerce</nuxt-link
+            >
+            or <nuxt-link to="/technologies/">any other software</nuxt-link>.
           </p>
 
-          <h2 class="text-h2 mt-8 mb-2">Email verification</h2>
+          <h3 class="text-h3 mt-8 mb-2">Email verification</h3>
 
           <p>
             We can help improve the quality of your mailing list with
@@ -72,10 +104,10 @@
               ><v-chip to="/pro/" color="accent" class="mr-1" x-small outlined
                 >PRO</v-chip
               >features</nuxt-link
-            >. You get access to additional data points such as company and
-            contact details in lead lists, APIs, browser extensions and more.
-            Subscribe to an eligible plan to get started immediately or
-            <nuxt-link to="/contact/">contact us</nuxt-link> to book a demo!
+            >. Each plan includes a number of monthly credits and full access to
+            all our products including lead lists. Subscribe to get started
+            immediately or <nuxt-link to="/contact/">contact us</nuxt-link> to
+            book a demo!
           </p>
         </v-col>
       </v-row>
@@ -90,6 +122,8 @@
 </template>
 
 <script>
+import { mdiArrowRight, mdiLockOpenVariantOutline } from '@mdi/js'
+
 import Page from '~/components/Page.vue'
 import Pricing from '~/components/Pricing.vue'
 import Logos from '~/components/Logos.vue'
@@ -103,6 +137,8 @@ export default {
   data() {
     return {
       title: 'Thanks for signing up',
+      mdiArrowRight,
+      mdiLockOpenVariantOutline,
     }
   },
 }
