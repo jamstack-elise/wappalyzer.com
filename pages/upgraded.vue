@@ -87,6 +87,14 @@
           </v-card-actions>
         </v-card>
 
+        <a
+          href="https://www.g2.com/products/wappalyzer/reviews"
+          rel="noopener"
+          class="d-block mb-4"
+        >
+          <img src="/images/g2.png" height="100" width="200" />
+        </a>
+
         <div class="text-h3 mb-4">Empower yours sales and marketing teams</div>
 
         <p class="mb-8">

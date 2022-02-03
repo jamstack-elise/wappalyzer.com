@@ -258,7 +258,9 @@
                       <v-expansion-panel-content>
                         <p>
                           Target websites that use certain keywords, such as a
-                          brand, product, profession, or any noun.
+                          brand, product, profession, or any noun. Use
+                          <code>not</code> to exclude keywords, e.g. 'not
+                          health'.
                         </p>
 
                         <v-form @submit.prevent="addKeyword()">
@@ -269,6 +271,11 @@
                             placeholder="E.g. education"
                             class="pt-0"
                             hide-details="auto"
+                            :rules="[
+                              (v) =>
+                                v.match(/^(not )?[a-z0-9]*$/i) ||
+                                'Must be alphanumeric (a-z0-9) or start with \'not \', e.g. \'health\' or \'not health\'.',
+                            ]"
                             outlined
                             dense
                             @click:append="addKeyword()"
@@ -2347,7 +2354,7 @@ export default {
         keywords
           .split(',')
           .forEach((keyword) =>
-            this.addKeyword(keyword.toLowerCase().replace(/[^a-z]/g, ''))
+            this.addKeyword(keyword.toLowerCase().replace(/[^a-z ]/g, ''))
           )
       }
 

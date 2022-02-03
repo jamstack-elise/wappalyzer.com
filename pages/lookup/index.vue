@@ -794,7 +794,11 @@ export default {
         const header = this.inputFile.split('\n')[0]
 
         this.csvHeader = file.type === 'text/csv' && !/\bhttps?:/.test(header)
-        this.csvDelimiter = header.includes('\t') ? '\t' : ','
+        this.csvDelimiter = header.includes('\t')
+          ? '\t'
+          : header.includes(';')
+          ? ';'
+          : ','
 
         this.autoSetCsvUrlColum()
       }
@@ -879,7 +883,6 @@ export default {
       }
     },
     autoSetCsvUrlColum() {
-      console.log(this.csvHeader)
       this.csvUrlColumn =
         this.csvHeader && this.preview.length
           ? Math.max(

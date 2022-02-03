@@ -223,7 +223,12 @@
                         )
                       }}
                     </td>
-                    <td v-else-if="list.status === 'Failed'" class="text-right">
+                    <td
+                      v-else-if="
+                        ['Failed', 'Insufficient'].includes(list.status)
+                      "
+                      class="text-right"
+                    >
                       -
                     </td>
                     <td
