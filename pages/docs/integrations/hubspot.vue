@@ -27,9 +27,9 @@
         is longer available.
       </v-alert>
 
-      You can also permanently enrich all company records at once with a sync,
-      and automatically update new records using a webhook. This information is
-      yours to keep and can be used to create custom reports in HubSpot.
+      You can also permanently enrich all company records at once with a sync
+      and automatically update new records. This information is yours to keep
+      and can be used to create custom reports in HubSpot.
 
       <Heading id="getting-started" size="2" class="mt-8 mb-2">
         Getting started
@@ -80,7 +80,7 @@
 
       <p>
         Permanently enriched records cost 1 credit each. Records can be enriched
-        using a sync or organisation webhook. Card usage is free.
+        using a sync or by adding a new company. Card usage is free.
       </p>
 
       <p>

@@ -3,31 +3,13 @@
     "pro": { "text": "PRO features", "type": "pro", "description": ["• Create and export lead lists" , "• Access company and contact details in all data products", "• CRM integration (HubSpot, Pipedrive)", "• More" ] },
     "users": { "text": "Users", "type": "number", "description": ["Number of users who can access the account with their own login."] },
     "credits": { "text": "Credits / mo", "type": "credits", "description": ["Credits can be spent on lead lists, technology lookups and APIs. See 'credit usage' below."] },
-    "lists": { "text": "Lead lists", "type": "string" },
+    "lists": { "text": "Lead lists", "type": "small", "description": ["Free lists include:", "• Lead lists (any technology, up to 500K sites)", "• Technology lookup (up to 100K sites)", "• Email verification (up to 100K addresses)", "", "Create more lists using the included credits. See 'credit usage' below."] },
     "lookups": { "text": "Technology lookups", "type": "string" },
     "apis": { "text": "API access", "type": "string" },
     "cancellation": { "text": "Anytime cancellation", "type": "string" },
-    "support": { "text": "Email & phone support", "type": "string" }
+    "support": { "text": "Support", "type": "small" }
   },
   "plans": {
-    "credits_free_mo": {
-      "name": "Free",
-      "interval": "month",
-      "price": 0,
-      "buttonAction": "signUp",
-      "price": 0,
-      "attrs": {
-        "credits": 50,
-        "users": 1,
-        "support": "-",
-        "lookups": true,
-        "lists": "-",
-        "lookups": true,
-        "apis": true,
-        "pro": "-",
-        "cancellation": true
-      }
-    },
     "credits_starter_v5_mo": {
       "name": "Starter",
       "interval": "month",
@@ -35,12 +17,9 @@
       "attrs": {
         "credits": 5000,
         "users": 1,
-        "support": true,
+        "support": ["Email"],
         "lookups": true,
-        "lists": {
-          "value": "Use credits",
-          "tooltip": ["Create lists using the included credits. See 'credit usage' below."]
-        },
+        "lists": ["Use included credits"],
         "lookups": true,
         "apis": true,
         "pro": true,
@@ -55,50 +34,42 @@
       "attrs": {
         "credits": 50000,
         "users": 5,
-        "support": true,
+        "support": ["Email & phone"],
         "lookups": true,
-        "lists": {
-          "value": "1 Free list / mo",
-          "tooltip": ["Free lists include:", "• Lead lists (any technology, up to 500K sites)", "• Technology lookup (up to 100K sites)", "• Email verification (up to 100K addresses)", "", "Create more lists using the included credits. See 'credit usage' below."]
-        },
+        "lists": ["Use included credits", "+ 1 Free list / mo"],
         "apis": true,
         "pro": true,
         "cancellation": true
       }
     },
-    "credits_business_v4_mo": {
+    "credits_business_v5_mo": {
       "name": "Business",
       "interval": "month",
       "price": 44900,
       "attrs": {
         "credits": 200000,
         "users": 15,
-        "support": true,
+        "support": ["Priority email & phone"],
         "lookups": true,
-        "lists": {
-          "value": "3 Free lists / mo",
-          "tooltip": ["Free lists include:", "• Lead lists (any technology, up to 500K sites)", "• Technology lookup (up to 100K sites)", "• Email verification (up to 100K addresses)", "", "Create more lists using the included credits. See 'credit usage' below."]
-        },
+        "lists": ["Use included credits", "+ 2 Free lists / mo"],
         "lookups": true,
         "apis": true,
         "pro": true,
         "cancellation": true
       }
     },
-    "credits_free_yr": {
-      "name": "Free",
-      "interval": "year",
-      "price": 0,
-      "buttonAction": "signUp",
-      "price": 0,
+    "credits_enterprise_v1_mo": {
+      "name": "Enterprise",
+      "interval": "month",
+      "price": 84900,
       "attrs": {
-        "credits": 50,
-        "users": 1,
-        "support": "-",
+        "credits": 500000,
+        "users": 50,
+        "support": ["Dedicated account manager"],
         "lookups": true,
-        "lists": "-",
+        "lists": ["Use included credits", "+ 3 Free lists / mo"],
         "apis": true,
-        "pro": "-",
+        "pro": true,
         "cancellation": true
       }
     },
@@ -109,12 +80,9 @@
       "attrs": {
         "credits": 5000,
         "users": 1,
-        "support": true,
+        "support": ["Email"],
         "lookups": true,
-        "lists": {
-          "value": "Use credits",
-          "tooltip": ["Create lists using the included credits. See 'credit usage' below."]
-        },
+        "lists": ["Use included credits"],
         "lookups": true,
         "apis": true,
         "pro": true,
@@ -129,32 +97,41 @@
       "attrs": {
         "credits": 50000,
         "users": 5,
-        "support": true,
+        "support": ["Email & phone"],
         "lookups": true,
-        "lists": {
-          "value": "1 Free list / mo",
-          "tooltip": ["Free lists include:", "• Lead lists (any technology, up to 500K sites)", "• Technology lookup (up to 100K sites)", "", "Create more lists using the included credits. See 'credit usage' below."]
-        },
+        "lists": ["Use included credits", "+ 1 Free list / mo"],
         "lookups": true,
         "apis": true,
         "pro": true,
         "cancellation": true
       }
     },
-    "credits_business_v6_yr": {
+    "credits_business_v7_yr": {
       "name": "Business",
       "interval": "year",
       "price": 449000,
       "attrs": {
         "credits": 200000,
         "users": 15,
-        "support": true,
+        "support": ["Priority email & phone"],
         "lookups": true,
-        "lists": {
-          "value": "3 Free lists / mo",
-          "tooltip": ["Free lists include:", "• Lead lists (any technology, up to 500K sites each)", "• Technology lookup (up to 100K sites each)", "", "Create more lists using the included credits. See 'credit usage' below."]
-        },
+        "lists": ["Use included credits", "+ 2 Free lists / mo"],
         "lookups": true,
+        "apis": true,
+        "pro": true,
+        "cancellation": true
+      }
+    },
+    "credits_enterprise_v1_yr": {
+      "name": "Enterprise",
+      "interval": "year",
+      "price": 849000,
+      "attrs": {
+        "credits": 500000,
+        "users": 50,
+        "support": ["Dedicated account manager"],
+        "lookups": true,
+        "lists": ["Use included credits", "+ 3 Free lists / mo"],
         "apis": true,
         "pro": true,
         "cancellation": true

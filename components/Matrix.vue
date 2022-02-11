@@ -130,7 +130,10 @@
           <div v-for="(attr, name) in attrs" :key="name">
             <v-divider />
             <v-responsive height="60">
-              <v-card-text class="text-center">
+              <v-card-text
+                class="py-0 d-flex justify-center align-center"
+                style="height: 100%"
+              >
                 <template v-if="attr.type === 'currency'">
                   <template v-if="item.attrs[name] === 0">
                     <span class="font-weight-medium">Free</span>
@@ -192,8 +195,15 @@
                     {{ item.attrs[name] }}
                   </small>
                 </template>
-                <small v-else-if="attr.type === 'small'">
-                  {{ item.attrs[name] }}
+                <small
+                  v-else-if="attr.type === 'small'"
+                  style="line-height: 1rem"
+                >
+                  <div
+                    v-for="line in item.attrs[name].value || item.attrs[name]"
+                  >
+                    {{ line }}
+                  </div>
                 </small>
                 <template v-else>
                   <v-icon
@@ -206,32 +216,29 @@
                     {{ mdiCheck }}
                   </v-icon>
                   <template v-else>
-                    {{ item.attrs[name].value || item.attrs[name] }}
-                  </template>
-
-                  <v-tooltip
-                    v-if="item.attrs[name].tooltip"
-                    max-width="400"
-                    top
-                  >
-                    <template #activator="{ on }">
-                      <sup>
-                        <v-icon small v-on="on">{{
-                          mdiHelpCircleOutline
-                        }}</v-icon>
-                      </sup>
-                    </template>
-
                     <div
-                      v-for="(line, index) in item.attrs[name].tooltip"
-                      :key="index"
+                      v-for="line in item.attrs[name].value || item.attrs[name]"
                     >
-                      <br v-if="!line" />
-
                       {{ line }}
                     </div>
-                  </v-tooltip>
+                  </template>
                 </template>
+                <v-tooltip v-if="item.attrs[name].tooltip" max-width="400" top>
+                  <template #activator="{ on }">
+                    <v-icon small v-on="on" class="ml-1">{{
+                      mdiHelpCircleOutline
+                    }}</v-icon>
+                  </template>
+
+                  <div
+                    v-for="(line, index) in item.attrs[name].tooltip"
+                    :key="index"
+                  >
+                    <br v-if="!line" />
+
+                    {{ line }}
+                  </div>
+                </v-tooltip>
               </v-card-text>
             </v-responsive>
           </div>
