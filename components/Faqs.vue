@@ -291,6 +291,22 @@
     <v-expansion-panels v-if="topic === 'pricing'" flat>
       <v-expansion-panel>
         <v-expansion-panel-header>
+          Do you offer a free trial?
+        </v-expansion-panel-header>
+        <v-expansion-panel-content eager>
+          <p>
+            Sign up for a free account to get 50 credits every month to spend on
+            technology lookups, email verifications and alerts.
+          </p>
+
+          <p>
+            You'll also be able to create lead lists and get samples for free.
+          </p>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+
+      <v-expansion-panel>
+        <v-expansion-panel-header>
           Do I need to sign up for a plan?
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
@@ -301,7 +317,7 @@
           </p>
 
           <p>
-            Sign up for a free account to get 50 credits every to spend on
+            Sign up for a free account to get 50 credits every month to spend on
             technology lookups, email verifications and alerts.
           </p>
         </v-expansion-panel-content>
