@@ -1,6 +1,6 @@
 <template>
   <Page :title="title" :head="meta" no-heading>
-    <div class="mt-6 mb-6">
+    <div class="my-6">
       <v-btn to="/apps/" class="mb-2 mr-2" depressed>
         <v-icon left>
           {{ mdiLaptop }}

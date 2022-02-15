@@ -18,11 +18,21 @@
         <v-expansion-panel-header>
           {{ set.name
           }}<span class="body-2 my-n1"
-            ><code v-if="set.key" class="ml-2">{{ set.key }}</code>
-            <v-chip v-if="set.pro" color="primary" class="ml-2" x-small outlined
-              >PRO</v-chip
+            ><code
+              v-if="set.key && !set.key.startsWith('base-')"
+              class="ml-2"
+              >{{ set.key }}</code
             >
           </span>
+          <v-spacer />
+          <v-chip
+            v-if="set.pro"
+            color="primary"
+            class="mx-2 flex-grow-0"
+            x-small
+            outlined
+            >PRO</v-chip
+          >
         </v-expansion-panel-header>
 
         <v-expansion-panel-content class="no-x-padding" eager>

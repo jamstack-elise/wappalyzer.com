@@ -1,15 +1,15 @@
 <template>
   <div>
     <Page :title="title" :head="meta">
-      <div class="mb-6">
-        <v-btn class="mt-4" depressed @click="$refs.faqDialog.open()">
+      <div class="my-6">
+        <v-btn class="mb-2 mr-2" depressed @click="$refs.faqDialog.open()">
           <v-icon left>
             {{ mdiForum }}
           </v-icon>
           FAQs
         </v-btn>
 
-        <v-btn href="/lists/sample/" class="mt-4 mr-2" depressed>
+        <v-btn href="/lists/sample/" class="mb-2 mr-2" depressed>
           <v-icon left>
             {{ mdiFormatListBulleted }}
           </v-icon>

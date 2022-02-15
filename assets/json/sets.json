@@ -1,24 +1,23 @@
 [
   {
     "key": "base-list",
-    "name": "Base",
+    "name": "Base fields (lead lists)",
     "attributes": [
-      { "name": "website URLs", "key": "url" },
-      { "key": "versions" },
-      { "name": "traffic rank", "key": "trafficRank" }
-    ],
-    "disabled": true
+      { "name": "website URLs", "key": "url", "description": "The website's address." },
+      { "key": "versions", "description": "Technology version number, e.g. '1.0.0'." },
+      { "name": "traffic rank", "key": "trafficRank", "description": "Relative indicator of website traffic. Higher means more traffic." }
+    ]
   },
   {
     "key": "base-lookup",
-    "name": "Base",
+    "name": "Base fields (technology lookup)",
     "attributes": [
-      { "key": "technologies" },
-      { "key": "categories" },
-      { "key": "versions" },
-      { "name": "traffic rank", "key": "trafficRank" }
-    ],
-    "disabled": true
+      { "key": "technologies", "description": "Technology name, e.g. 'Shopify'." },
+      { "key": "categories", "description": "Category name, e.g. 'Ecommerce'." },
+      { "key": "versions", "description": "Technology version number, e.g. '1.0.0'." },
+      { "name": "traffic rank", "key": "trafficRank", "description": "Relative indicator of website traffic. Higher means more traffic." },
+      { "name": "confirmed at", "key": "confirmedAt", "description": "Timestamp of the last recorded time the technology was identified on the website." }
+    ]
   },
   {
     "key": "meta",
@@ -108,8 +107,8 @@
     "key": "locale",
     "name": "Locale",
     "attributes": [
-      { "name": "IP country", "key": "ipCountry", "description": "The website's country, based on its IP address. This is usually the where the website is hosted, which can be indicative of where a business operates from." },
-      { "name": "IP region", "key": "ipRegion", "description": "The website's region (e.g. state), based on its IP address" },
+      { "name": "IP country", "key": "ipCountry", "description": "The website's country (best guess), derived from business locations, phone numbers, top-level domain and IP address." },
+      { "name": "IP region", "key": "ipRegion", "description": "The website's region (e.g. state, best guess)." },
       { "key": "language", "description": "The website's language, determined by interpreting content on the website. Indicative only." }
     ]
   },

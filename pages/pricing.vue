@@ -7,7 +7,7 @@
 
       <small class="text--disabled">
         <nuxt-link to="/contact/">Contact us</nuxt-link> for tailored plans.
-        Discounted plans available for startups, students and nonprofits.<br />
+        Discounted plans available for startups, education and nonprofits.<br />
         Credits included in plans expire after 60 days.<br />
         Prices are in United States dollars.
       </small>

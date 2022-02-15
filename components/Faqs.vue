@@ -300,7 +300,9 @@
           </p>
 
           <p>
-            You'll also be able to create lead lists and get samples for free.
+            On a free account, you can create lead lists to get a free sample.
+            Once you find what you need you can sign up for a
+            <nuxt-link to="/pro/">PRO</nuxt-link> plan to access the full list.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -358,7 +360,9 @@
         <v-expansion-panel-content eager>
           <p>
             Yes, you can cancel your plan any time without losing access to your
-            credits or past purchases.
+            credits or past purchases. Your plan will remain active for the
+            remainder of the billing period and you'll be able to use your
+            credits during that time.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
