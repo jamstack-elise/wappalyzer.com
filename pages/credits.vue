@@ -219,11 +219,6 @@
                     {{ item.description }}
                   </nuxt-link>
                 </td>
-                <td v-else-if="item.listId">
-                  <nuxt-link :to="`/lists/${item.listId}/`">
-                    {{ item.description }}
-                  </nuxt-link>
-                </td>
                 <td v-else>
                   {{ item.description }}
                 </td>
@@ -269,6 +264,11 @@
               <tr v-for="(item, index) in spends" :key="index">
                 <td v-if="item.orderId">
                   <nuxt-link :to="`/orders/${item.orderId}/`">
+                    {{ item.description }}
+                  </nuxt-link>
+                </td>
+                <td v-else-if="item.listId">
+                  <nuxt-link :to="`/lists/${item.listId}/`">
                     {{ item.description }}
                   </nuxt-link>
                 </td>

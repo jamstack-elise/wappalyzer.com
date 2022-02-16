@@ -179,7 +179,21 @@
       v-model="deleteAccountDialog"
       max-width="400"
     >
-      <v-card>
+      <v-card v-if="isPlus">
+        <v-card-title>Delete account</v-card-title>
+        <v-card-text
+          >Please cancel any active
+          <nuxt-link to="/subscriptions/">subscriptions</nuxt-link> before
+          deleting your account.</v-card-text
+        >
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="accent" text @click="deleteAccountDialog = false">
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+      <v-card v-else>
         <v-card-title>Delete account</v-card-title>
         <v-card-text>Your account will be deleted permanently.</v-card-text>
         <v-card-actions>
@@ -259,6 +273,7 @@ export default {
   computed: {
     ...mapState({
       user: ({ user }) => user.attrs,
+      isPlus: ({ credits }) => credits.plus,
       isImpersonator: ({ user }) => user.impersonator,
       isAdmin: ({ user }) =>
         user.attrs.admin || (user.impersonator && user.impersonator.admin),

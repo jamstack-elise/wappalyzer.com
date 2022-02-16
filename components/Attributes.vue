@@ -15,7 +15,9 @@
 
           <span class="body-2 my-n2">
             <v-chip
-              v-if="['contact', 'company', 'social'].includes(setKey)"
+              v-if="
+                ['contact', 'company', 'social', 'signals'].includes(setKey)
+              "
               to="/plus/"
               color="primary"
               class="ml-2"
