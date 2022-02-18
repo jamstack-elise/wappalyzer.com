@@ -12,6 +12,12 @@
     "text": "These days you need advanced marketing tools to stand out from the competition. Wappalyzer help us do just that."
   },
   {
+    "name": "Michael Petselas",
+    "role": "Customer Growth Specialist at HubSpot",
+    "image": "/images/testimonials/michael-petselas.jpg",
+    "text": "I use Wappalyzer all the time and it's been invaluable in being relevant in my outreach."
+  },
+  {
     "name": "Roman Schweiger",
     "role": "Head of Business Development at Boomerank",
     "image": "/images/testimonials/roman-schweiger.jpg",
@@ -33,6 +39,7 @@
     "name": "Patrick Meenan",
     "role": "Engineering Fellow at Catchpoint",
     "image": "/images/testimonials/patrick-meenan.jpg",
-    "text": "Wappalyzer has been hugely valuable to slice performance data by the various detected applications at WebPageTest.org."
+    "text": "Wappalyzer has been hugely valuable to slice performance data by the various detected applications at WebPageTest.org.",
+    "disabled": true
   }
 ]

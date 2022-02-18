@@ -30,7 +30,7 @@ export default {
   },
   data() {
     return {
-      testimonials,
+      testimonials: testimonials.filter(({ disabled }) => !disabled),
     }
   },
 }
