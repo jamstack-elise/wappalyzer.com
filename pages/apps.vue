@@ -35,6 +35,7 @@
               target="_blank"
               rel="noopener"
               color="primary"
+              class="mr-4"
               outlined
               small
               ><v-icon left>{{ mdi.mdiGoogleChrome }}</v-icon> Chrome</v-btn
@@ -43,10 +44,19 @@
               target="_blank"
               rel="noopener"
               color="primary"
-              class="mx-4"
+              class="mr-4"
               outlined
               small
               ><v-icon left>{{ mdi.mdiFirefox }}</v-icon> Firefox</v-btn
+            ><v-btn
+              href="https://microsoftedge.microsoft.com/addons/detail/demodal-block-modals-an/bpdgifbpenofpmlkfmliaocdejendefh"
+              target="_blank"
+              rel="noopener"
+              color="primary"
+              class="mr-4"
+              outlined
+              small
+              ><v-icon left>{{ mdi.mdiMicrosoftEdge }}</v-icon> Edge</v-btn
             ><v-btn
               href="https://github.com/AliasIO/demodal"
               target="_blank"
@@ -144,6 +154,7 @@ import {
   mdiGithub,
   mdiFirefox,
   mdiGoogleChrome,
+  mdiMicrosoftEdge,
   mdiForum,
   mdiApple,
   mdiAndroid,
@@ -167,6 +178,7 @@ export default {
         mdiGithub,
         mdiFirefox,
         mdiGoogleChrome,
+        mdiMicrosoftEdge,
         mdiForum,
         mdiApple,
         mdiAndroid,
