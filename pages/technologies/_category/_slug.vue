@@ -2,7 +2,19 @@
   <div>
     <Page
       :title="title"
-      :seo-title="`Websites using ${title}`"
+      :seo-title="
+        technology
+          ? technology.categories.find(({ slug }) =>
+              ['payment-processors', 'buy-now-pay-later'].includes(slug)
+            )
+            ? `Stores that accept ${title}`
+            : technology.categories.find(({ slug }) => slug === 'ecommerce')
+            ? `Find ${title} stores`
+            : technology.saas
+            ? `Find ${title} customers`
+            : `Websites using ${title}`
+          : `Websites using ${title}`
+      "
       :crumbs="crumbs"
       :head="{
         meta: `Download a list of websites${
@@ -170,12 +182,15 @@
 
         <v-alert color="primary lighten-1">
           <p class="subtitle-1 font-weight-medium primary--text mb-2">
-            Reach out to {{ technology.name }} users
+            Reach out to {{ technology.name }}
+            {{ technology.saas ? `customers` : `users` }}
           </p>
 
           <p class="primary--text">
             Create a list of
-            {{ formatNumber(technology.hostnames, true) }}
+            <template v-if="technology.hostnames < 10000000">
+              {{ formatNumber(technology.hostnames, true) }}
+            </template>
             <nuxt-link
               class="primary--text"
               :to="`/lists/?technologies=${slug}`"
@@ -209,52 +224,54 @@
           </v-row>
         </h2>
 
-        <p class="mb-6">
-          These are the top websites usings {{ technology.name }} based on
-          traffic.
-        </p>
+        <template v-if="technology.hostnames < 10000000">
+          <p class="mb-6">
+            These are the top websites usings {{ technology.name }} based on
+            traffic.
+          </p>
 
-        <v-card class="mb-4">
-          <v-card-text class="px-0">
-            <v-simple-table>
-              <tbody>
-                <tr>
-                  <th>Website</th>
-                  <th>Traffic</th>
-                </tr>
-                <tr
-                  v-for="(attributes, hostname) in technology.topHostnames"
-                  :key="hostname"
-                >
-                  <td width="50%">
-                    <nuxt-link :to="`/lookup/${hostname}`">{{
-                      hostname
-                    }}</nuxt-link>
-                  </td>
-                  <td>
-                    <Bar
-                      :value="attributes.hits"
-                      :max="maxHits"
-                      :total="technology.hits"
-                      class="mt-2 mt-md-0 mr-4"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </v-simple-table>
-          </v-card-text>
-        </v-card>
+          <v-card class="mb-4">
+            <v-card-text class="px-0">
+              <v-simple-table>
+                <tbody>
+                  <tr>
+                    <th>Website</th>
+                    <th>Traffic</th>
+                  </tr>
+                  <tr
+                    v-for="(attributes, hostname) in technology.topHostnames"
+                    :key="hostname"
+                  >
+                    <td width="50%">
+                      <nuxt-link :to="`/lookup/${hostname}`">{{
+                        hostname
+                      }}</nuxt-link>
+                    </td>
+                    <td>
+                      <Bar
+                        :value="attributes.hits"
+                        :max="maxHits"
+                        :total="technology.hits"
+                        class="mt-2 mt-md-0 mr-4"
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+            </v-card-text>
+          </v-card>
 
-        <p class="mb-8">
-          <small>
-            Get the full list of
-            <nuxt-link :to="`/lists/?technologies=${slug}`"
-              >websites and companies using {{ technology.name }}</nuxt-link
-            >.
-          </small>
-        </p>
+          <p class="mb-8">
+            <small>
+              Get the full list of
+              <nuxt-link :to="`/lists/?technologies=${slug}`"
+                >websites and companies using {{ technology.name }}</nuxt-link
+              >.
+            </small>
+          </p>
 
-        <h3 class="mb-2">{{ technology.name }} reports</h3>
+          <h3 class="mb-2">{{ technology.name }} reports</h3>
+        </template>
 
         <p>
           Create relevant reports for {{ technology.name }} to find sales leads
@@ -291,32 +308,34 @@
           </small>
         </p>
 
-        <v-divider class="my-12" />
+        <template v-if="technology.hostnames < 10000000">
+          <v-divider class="my-12" />
 
-        <h2 class="mb-4">
-          <v-row class="align-center px-3">
-            <v-icon color="primary" class="mr-2">
-              {{ mdiFinance }}
-            </v-icon>
-            {{ technology.name }} usage trend
-          </v-row>
-        </h2>
+          <h2 class="mb-4">
+            <v-row class="align-center px-3">
+              <v-icon color="primary" class="mr-2">
+                {{ mdiFinance }}
+              </v-icon>
+              {{ technology.name }} usage trend
+            </v-row>
+          </h2>
 
-        <p class="mb-6">
-          This graph shows the growth of {{ technology.name }} since
-          {{ formatDate(trendStartDate, 'monthYear') }}.
-        </p>
+          <p class="mb-6">
+            This graph shows the growth of {{ technology.name }} since
+            {{ formatDate(trendStartDate, 'monthYear') }}.
+          </p>
 
-        <v-card>
-          <v-card-text>
-            <GChart
-              type="LineChart"
-              :data="trend"
-              :options="lineChartOptions"
-              width="100%"
-            />
-          </v-card-text>
-        </v-card>
+          <v-card>
+            <v-card-text>
+              <GChart
+                type="LineChart"
+                :data="trend"
+                :options="lineChartOptions"
+                width="100%"
+              />
+            </v-card-text>
+          </v-card>
+        </template>
 
         <v-divider class="my-12" />
 

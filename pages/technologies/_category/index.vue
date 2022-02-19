@@ -19,19 +19,19 @@
       }"
       :hero="false"
     >
-        <v-chip-group column>
-          <v-chip
-            v-for="{ slug, name } in category.groups"
-            :key="name"
-            :to="`/technologies/#${slug}`"
-            color="primary"
-            outlined
-            small
-            exact
-          >
-            {{ name }}
-          </v-chip>
-        </v-chip-group column>
+      <v-chip-group column>
+        <v-chip
+          v-for="{ slug, name } in category.groups"
+          :key="name"
+          :to="`/technologies/#${slug}`"
+          color="primary"
+          outlined
+          small
+          exact
+        >
+          {{ name }}
+        </v-chip>
+      </v-chip-group>
 
       <v-alert color="primary lighten-1" class="mt-6">
         <p class="subtitle-1 font-weight-medium primary--text mb-2">
@@ -44,7 +44,8 @@
           <nuxt-link
             class="primary--text"
             :to="`/lists/?categories=${categorySlug}`"
-          >websites using {{ category.name }} technology</nuxt-link>
+            >websites using {{ category.name }} technology</nuxt-link
+          >
           with company and contact details.
         </p>
 
@@ -139,7 +140,12 @@
                     {{ name }}
                   </nuxt-link>
                 </td>
-                <td v-if="hostnames >= 50">
+                <td v-if="hostnames >= 10000000">
+                  <nuxt-link :to="`/technologies/${categorySlug}/${slug}/`">
+                    10M+
+                  </nuxt-link>
+                </td>
+                <td v-else-if="hostnames >= 50">
                   <nuxt-link :to="`/technologies/${categorySlug}/${slug}/`">
                     {{ formatNumber(hostnames, true) }}
                   </nuxt-link>
