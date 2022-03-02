@@ -1716,7 +1716,7 @@ export default {
 
       try {
         const list = (
-          await this.$axios.put('lists', {
+          await this.$axios.put('lists-site', {
             query: {
               technologies: this.selected.technologies.map(
                 ({ slug, name, icon, categories, operator, version }) => ({

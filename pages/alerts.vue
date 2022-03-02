@@ -14,7 +14,7 @@
         <v-card-text class="pb-0">
           <p style="max-width: 600px">
             Add the websites you want to monitor here and we'll check them
-            frequently. As soon as we notice a change we'll alert you with an
+            regularly. As soon as we notice a change we'll alert you with an
             email.
           </p>
         </v-card-text>
@@ -29,7 +29,6 @@
               <tr>
                 <th width="1">Enabled</th>
                 <th>Website</th>
-                <th width="20%">Created</th>
                 <th width="20%">Last checked</th>
                 <th width="1" />
               </tr>
@@ -47,12 +46,10 @@
                   />
                 </td>
                 <td>
-                  <a :href="alert.url" target="_blank">{{ alert.url }}</a>
-                  <v-icon small>
-                    {{ mdiOpenInNew }}
-                  </v-icon>
+                  <a :href="alert.url" target="_blank" rel="noopener">{{
+                    alert.url
+                  }}</a>
                 </td>
-                <td>{{ formatDate(new Date(alert.createdAt * 1000)) }}</td>
                 <td>{{ formatDate(new Date(alert.updatedAt * 1000)) }}</td>
                 <td width="1">
                   <v-btn
@@ -216,6 +213,8 @@ export default {
                 return 'Enter a valid URL, e.g. https://www.example.com'
               }
             }
+
+            return true
           },
         ],
       },

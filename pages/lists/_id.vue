@@ -239,7 +239,12 @@
                     </td>
                     <td v-else class="text-right">-</td>
                   </tr>
-                  <tr v-if="!isPro">
+                  <tr
+                    v-if="
+                      !isPro &&
+                      !['Failed', 'Insufficient'].includes(list.status)
+                    "
+                  >
                     <th class="pl-6">Price</th>
                     <td
                       v-if="list.status !== 'Calculating'"
@@ -988,7 +993,7 @@ export default {
     if (isSignedIn) {
       const { id } = route.params
 
-      const list = (await $axios.get(`lists/${id}`)).data
+      const list = (await $axios.get(`lists-site/${id}`)).data
 
       const repeat = !!list.repeat
 
@@ -1149,7 +1154,7 @@ export default {
         try {
           this.getCredits()
 
-          this.list = (await this.$axios.get(`lists/${id}`)).data
+          this.list = (await this.$axios.get(`lists-site/${id}`)).data
         } catch (error) {
           this.error = this.getErrorMessage(error)
         }
@@ -1160,7 +1165,7 @@ export default {
         setTimeout(async () => {
           this.checks += 1
 
-          this.list = (await this.$axios.get(`lists/${id}`)).data
+          this.list = (await this.$axios.get(`lists-site/${id}`)).data
         }, Math.min(10000, 2000 + 100 * this.checks * this.checks))
       }
     },
@@ -1193,11 +1198,11 @@ export default {
       this.success = false
 
       try {
-        await this.$axios.patch(`lists/${this.list.id}`, {
+        await this.$axios.patch(`lists-site/${this.list.id}`, {
           paymentMethod: 'credits',
         })
 
-        this.list = (await this.$axios.get(`lists/${this.list.id}`)).data
+        this.list = (await this.$axios.get(`lists-site/${this.list.id}`)).data
       } catch (error) {
         this.error = this.getErrorMessage(error)
       }
@@ -1214,11 +1219,11 @@ export default {
       this.success = false
 
       try {
-        await this.$axios.patch(`lists/${this.list.id}`, {
+        await this.$axios.patch(`lists-site/${this.list.id}`, {
           paymentMethod: 'free',
         })
 
-        this.list = (await this.$axios.get(`lists/${this.list.id}`)).data
+        this.list = (await this.$axios.get(`lists-site/${this.list.id}`)).data
       } catch (error) {
         this.error = this.getErrorMessage(error)
       }
@@ -1258,7 +1263,7 @@ export default {
       try {
         const { id } = this.$route.params
 
-        await this.$axios.delete(`lists/${id}`)
+        await this.$axios.delete(`lists-site/${id}`)
 
         this.$router.push({ path: '/lists/all/' })
       } catch (error) {
@@ -1272,7 +1277,7 @@ export default {
       this.repeating = true
 
       try {
-        await this.$axios.patch(`lists/${this.list.id}`, {
+        await this.$axios.patch(`lists-site/${this.list.id}`, {
           repeat: this.repeat,
         })
 
@@ -1290,11 +1295,11 @@ export default {
       this.calculating = true
 
       try {
-        await this.$axios.patch(`lists/${this.list.id}`, {
+        await this.$axios.patch(`lists-site/${this.list.id}`, {
           calculate: true,
         })
 
-        this.list = (await this.$axios.get(`lists/${this.list.id}`)).data
+        this.list = (await this.$axios.get(`lists-site/${this.list.id}`)).data
       } catch (error) {
         this.error = this.getErrorMessage(error)
       }

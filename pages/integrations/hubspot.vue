@@ -157,10 +157,18 @@
 
       <v-card-title class="subtitle-2"> Technologies </v-card-title>
       <v-card-text class="px-0">
-        <p class="mx-4" style="max-width: 600px">
-          Map technology categories to custom HubSpot company properties. These
-          properties will be populated during a sync.
-        </p>
+        <div class="mx-4" style="max-width: 600px">
+          <p>
+            Map technology categories to custom HubSpot company properties.
+            These properties will be populated during a sync.
+          </p>
+
+          <p>
+            Browse <nuxt-link to="/technologies/">categories</nuxt-link> to see
+            which technologies are included or use the search function to find
+            the category a technology belongs to.
+          </p>
+        </div>
 
         <v-simple-table v-if="assignedFields.length" class="mb-4">
           <thead>
@@ -202,6 +210,8 @@
               "
               label="Technology category"
               hide-details="auto"
+              dense
+              outlined
               eager
             />
           </v-col>
@@ -213,6 +223,8 @@
               "
               label="HubSpot property"
               hide-details="auto"
+              dense
+              outlined
               eager
             />
           </v-col>
@@ -220,7 +232,7 @@
             <v-btn
               :disabled="!selectedCategory || !selectedField"
               color="primary"
-              small
+              style="height: 40px"
               depressed
               @click="addField"
             >

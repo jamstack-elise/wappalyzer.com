@@ -275,7 +275,7 @@ export default {
     async '$store.state.user.isSignedIn'(isSignedIn) {
       if (isSignedIn) {
         try {
-          this.lists = (await this.$axios.get('lists')).data
+          this.lists = (await this.$axios.get('lists-site')).data
         } catch (error) {
           this.error = this.getErrorMessage(error)
         }
@@ -285,7 +285,7 @@ export default {
   async created() {
     if (this.$store.state.user.isSignedIn) {
       try {
-        this.lists = (await this.$axios.get('lists')).data
+        this.lists = (await this.$axios.get('lists-site')).data
       } catch (error) {
         this.error = this.getErrorMessage(error)
       }
@@ -297,12 +297,12 @@ export default {
       this.editing = true
 
       try {
-        await this.$axios.patch(`lists/${this.selected.id}`, {
+        await this.$axios.patch(`lists-site/${this.selected.id}`, {
           name: this.selected.name,
         })
 
         try {
-          this.lists = (await this.$axios.get('lists')).data
+          this.lists = (await this.$axios.get('lists-site')).data
         } catch (error) {
           this.error = this.getErrorMessage(error)
         }
@@ -319,10 +319,10 @@ export default {
       this.cancelling = true
 
       try {
-        await this.$axios.delete(`lists/${this.selected.id}`)
+        await this.$axios.delete(`lists-site/${this.selected.id}`)
 
         try {
-          this.lists = (await this.$axios.get('lists')).data
+          this.lists = (await this.$axios.get('lists-site')).data
         } catch (error) {
           this.error = this.getErrorMessage(error)
         }
