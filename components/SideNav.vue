@@ -20,21 +20,36 @@
         </v-list-item>
 
         <template v-if="item.items">
-          <v-list-item
-            v-for="(subitem, j) in item.items"
-            :key="`${i}-${j}`"
-            :to="subitem.to"
-            class="mx-2"
-            color="primary"
-            nuxt
-          >
-            <v-list-item-icon />
-            <v-list-item-content>
-              <v-list-item-title class="font-weight-regular">
-                {{ subitem.title }}
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <div v-for="(subitem, j) in item.items" :key="`${i}-${j}`">
+            <v-list-item :to="subitem.to" class="mx-2" color="primary" nuxt>
+              <v-list-item-icon />
+              <v-list-item-content>
+                <v-list-item-title class="font-weight-regular">
+                  {{ subitem.title }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <template v-if="subitem.to === $route.path && subitem.items">
+              <v-list-item
+                v-for="(subsubitem, j) in subitem.items"
+                :key="`${i}-${j}`"
+                :to="subsubitem.to"
+                class="mx-2"
+                color="primary"
+                nuxt
+              >
+                <v-list-item-icon />
+                <v-list-item-content>
+                  <v-list-item-title class="font-weight-regular pl-4">
+                    {{ subsubitem.title }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-divider class="my-2" />
+            </template>
+          </div>
         </template>
       </template>
     </v-list>

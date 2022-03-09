@@ -44,7 +44,9 @@
         </v-simple-table>
       </v-card>
 
-      <Heading id="parameters" size="2" class="mt-8 mb-4">Parameters</Heading>
+      <Heading id="parameters" size="2" class="mt-8 mb-4"
+        >Query string parameters</Heading
+      >
 
       <v-card class="my-4" flat outlined>
         <v-simple-table>
@@ -70,7 +72,7 @@
         </v-simple-table>
       </v-card>
 
-      <Heading id="fields" size="2" class="mt-8 mb-4">Fields</Heading>
+      <Heading id="response" size="2" class="mt-8 mb-4">Response body</Heading>
 
       <v-card class="my-4" flat outlined>
         <v-simple-table>
@@ -172,7 +174,7 @@
         </v-simple-table>
       </v-card>
 
-      <Heading id="examples" size="2" class="mt-8 mb-4">Example</Heading>
+      <Heading id="example" size="2" class="mt-8 mb-4">Example</Heading>
 
       <h4 class="mb-2">Request</h4>
 

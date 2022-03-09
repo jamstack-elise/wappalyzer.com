@@ -6,7 +6,29 @@
     "items": [
       {
         "title": "Basics",
-        "to": "/docs/api/v2/basics/"
+        "to": "/docs/api/v2/basics/",
+        "items": [
+          {
+            "title": "Pricing",
+            "to": "/docs/api/v2/basics/#pricing"
+          },
+          {
+            "title": "Authentication",
+            "to": "/docs/api/v2/basics/#authentication"
+          },
+          {
+            "title": "Callback signatures",
+            "to": "/docs/api/v2/basics/#signatures"
+          },
+          {
+            "title": "Response codes",
+            "to": "/docs/api/v2/basics/#response-codes"
+          },
+          {
+            "title": "Credit balance",
+            "to": "/docs/api/v2/basics/#credit-balance"
+          }
+        ]
       },
       {
         "title": "Technology lookup",

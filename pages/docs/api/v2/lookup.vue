@@ -58,7 +58,9 @@
         </v-simple-table>
       </v-card>
 
-      <Heading id="parameters" size="2" class="mt-8 mb-2">Parameters</Heading>
+      <Heading id="parameters" size="2" class="mt-8 mb-2"
+        >Query string parameters</Heading
+      >
 
       <v-card class="my-4" flat outlined>
         <v-simple-table>
@@ -230,7 +232,9 @@
         </v-simple-table>
       </v-card>
 
-      <Heading id="callback" size="2" class="mt-8 mb-4">Callback</Heading>
+      <Heading id="callback" size="2" class="mt-8 mb-4"
+        >Response callback</Heading
+      >
 
       <p>
         A callback URL is a public endpoint hosted on your own server. If you

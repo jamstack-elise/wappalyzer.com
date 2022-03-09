@@ -3,13 +3,27 @@
     <Page :title="title" :side="side" :crumbs="crumbs" no-hero no-head>
       <h1 class="mb-4">{{ title }}</h1>
 
-      <p>TODO</p>
+      <p>
+        Find prospects by the technologies they use. Lead lists contain
+        websites, company and contact details, social media profiles and more.
+        Create and export custom reports for any web technology or keyword based
+        on industry, website traffic and location.
+      </p>
 
-      <Heading id="endpoint" size="2" class="mt-8 mb-2">Endpoint</Heading>
+      <Heading id="list" size="2" class="mt-8 mb-2">List all lists</Heading>
 
-      <p><code>GET</code> <code>https://api.wappalyzer.com/v2/lists/</code></p>
+      <p>Returns an array of all your lead lists.</p>
 
-      <Heading id="properties" size="2" class="mt-8 mb-2">Properties</Heading>
+      <Heading id="list-endpoint" size="3" class="mt-8 mb-2">Endpoint</Heading>
+
+      <p>
+        <code>GET</code>
+        <code>https://api.wappalyzer.com/v2/lists/</code>
+      </p>
+
+      <Heading id="list-properties" size="3" class="mt-8 mb-2"
+        >Properties</Heading
+      >
 
       <v-card class="my-4" flat outlined>
         <v-simple-table>
@@ -22,7 +36,7 @@
           <tbody>
             <tr>
               <td>Execution</td>
-              <td>Asynchronous</td>
+              <td>Synchronous</td>
             </tr>
             <tr>
               <td>Request timeout</td>
@@ -34,13 +48,171 @@
             </tr>
             <tr>
               <td>Pricing</td>
-              <td>1 credit per website</td>
+              <td>Free</td>
             </tr>
           </tbody>
         </v-simple-table>
       </v-card>
 
-      <Heading id="parameters" size="2" class="mt-8 mb-2">Request body</Heading>
+      <Heading id="list-response" size="2" class="mt-8 mb-4"
+        >Response body</Heading
+      >
+
+      <v-card class="my-4" flat outlined>
+        <v-simple-table>
+          <thead>
+            <tr>
+              <th width="30%">Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code>id</code>
+              </td>
+              <td>The list's unique identifier.</td>
+            </tr>
+            <tr>
+              <td>
+                <code>createdAt</code>
+              </td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>
+                <code>status</code>
+              </td>
+              <td>
+                List status. One of <code>Calculating</code>,
+                <code>Ready</code> or <code>Complete</code>.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <code>totalCredits</code>
+              </td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>
+                <code>technologies</code>
+              </td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>
+                <code>keywords</code>
+              </td>
+              <td>TODO</td>
+            </tr>
+            <tr>
+              <td>
+                <code>rows</code>
+              </td>
+              <td>TODO</td>
+            </tr>
+          </tbody>
+        </v-simple-table>
+      </v-card>
+
+      <Heading id="list-example" size="2" class="mt-8 mb-4">Example</Heading>
+
+      <h4 class="mb-2">Request</h4>
+
+      <pre><Code>curl -H "x-api-key: &lt;your api key&gt;" "https://api.wappalyzer.com/v2/lists/"</Code></pre>
+
+      <h4 class="mt-8 mb-2">Response</h4>
+      <pre><Code>[
+  {
+    "id": "lst_abcdef",
+    "createdAt": 1620687647,
+    "status": "Ready",
+    "totalCredits": 1000,
+    "technologies": [
+      {
+        "slug": "shopify",
+        "name": "Shopify",
+        "categories": [
+          {
+            "slug": "ecommerce",
+            "name": "Ecommerce"
+          }
+        ],
+        "operator": "=",
+        "version": null
+      },
+    ],
+    "keywords": [],
+    "rows": 1000
+  }
+]</Code></pre>
+      <v-divider class="mt-12 mb-8" />
+
+      <Heading id="fetch" size="2" class="mt-8 mb-2">Fetch a list</Heading>
+
+      <Heading id="fetch-endpoint" size="3" class="mt-8 mb-2">Endpoint</Heading>
+
+      <p>
+        <code>GET</code>
+        <code>https://api.wappalyzer.com/v2/lists/{id}</code>
+      </p>
+
+      <Heading id="fetch-properties" size="3" class="mt-8 mb-2"
+        >Properties</Heading
+      >
+
+      <v-card class="my-4" flat outlined>
+        <v-simple-table>
+          <thead>
+            <tr>
+              <th width="30%">Property</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Execution</td>
+              <td>Synchronous</td>
+            </tr>
+            <tr>
+              <td>Request timeout</td>
+              <td>30 seconds</td>
+            </tr>
+            <tr>
+              <td>Rate limit</td>
+              <td>5 requests per second</td>
+            </tr>
+            <tr>
+              <td>Pricing</td>
+              <td>Free</td>
+            </tr>
+          </tbody>
+        </v-simple-table>
+      </v-card>
+
+      <Heading id="fetch-parameters" size="3" class="mt-8 mb-2"
+        >Path parameters</Heading
+      >
+
+      <v-card class="my-4" flat outlined>
+        <v-simple-table>
+          <thead>
+            <tr>
+              <th width="30%">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td width="30%"><code>id</code></td>
+              <td>The list identfier, e.g. <code>lst_abc123</code>.</td>
+            </tr>
+          </thead>
+        </v-simple-table>
+      </v-card>
+
+      <Heading id="fetch-request" size="3" class="mt-8 mb-2"
+        >Request body</Heading
+      >
 
       <v-card class="my-4" flat outlined>
         <v-simple-table>
@@ -65,7 +237,82 @@
         </v-simple-table>
       </v-card>
 
-      <Heading id="callback" size="2" class="mt-8 mb-4">Callback</Heading>
+      <v-divider class="mt-12 mb-8" />
+
+      <Heading id="create" size="2" class="mt-8 mb-2">Create a list</Heading>
+
+      <Heading id="create-endpoint" size="3" class="mt-8 mb-2"
+        >Endpoint</Heading
+      >
+
+      <p>
+        <code>POST</code>
+        <code>https://api.wappalyzer.com/v2/lists</code>
+      </p>
+
+      <Heading id="create-properties" size="3" class="mt-8 mb-2"
+        >Properties</Heading
+      >
+
+      <v-card class="my-4" flat outlined>
+        <v-simple-table>
+          <thead>
+            <tr>
+              <th width="30%">Property</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Execution</td>
+              <td>Asynchronous</td>
+            </tr>
+            <tr>
+              <td>Request timeout</td>
+              <td>30 seconds</td>
+            </tr>
+            <tr>
+              <td>Rate limit</td>
+              <td>5 requests per second</td>
+            </tr>
+            <tr>
+              <td>Pricing</td>
+              <td>Free</td>
+            </tr>
+          </tbody>
+        </v-simple-table>
+      </v-card>
+
+      <Heading id="create-request" size="3" class="mt-8 mb-2"
+        >Request body</Heading
+      >
+
+      <v-card class="my-4" flat outlined>
+        <v-simple-table>
+          <thead>
+            <tr>
+              <th width="30%">Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <code>urls</code>&nbsp;<em class="text--disabled"
+                  >(required)</em
+                >
+              </td>
+              <td class="pt-4">
+                <p>TODO</p>
+              </td>
+            </tr>
+          </tbody>
+        </v-simple-table>
+      </v-card>
+
+      <Heading id="callback" size="2" class="mt-8 mb-4"
+        >Response callback</Heading
+      >
 
       <p>
         A callback URL is a public endpoint hosted on your own server. If you
