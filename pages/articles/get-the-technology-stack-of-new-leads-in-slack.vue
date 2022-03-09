@@ -23,8 +23,8 @@
       <ul class="mb-4">
         <li>
           <strong
-            ><a href="https://www.integromat.com" target="_blank" rel="noopener"
-              >Integromat</a
+            ><a href="https://www.make.com" target="_blank" rel="noopener"
+              >Make</a
             ></strong
           >
           to set up the workflow
@@ -59,10 +59,10 @@
         </em>
       </p>
 
-      <h2 class="text-h2 mt-8 mb-2">What is Integromat?</h2>
+      <h2 class="text-h2 mt-8 mb-2">What is Make?</h2>
 
       <p>
-        Integromat is a
+        Make is a
         <a
           href="https://www.luhhu.com/blog/a-quick-guide-to-zapier-alternatives"
           target="_blank"
@@ -70,10 +70,10 @@
           >workflow automation tool similar to</a
         >
         the more well-known Zapier and IFTTT. The important distinctive features
-        of Integromat are its competitive pricing and its advanced features.
-        Integromat is very flexible when creating automations. You don't need a
-        paid subscription to use this workflow. The generous free plan offers up
-        to 1,000 operations per month. Enough to run this automation 200 times!
+        of Make are its competitive pricing and its advanced features. Make is
+        very flexible when creating automations. You don't need a paid
+        subscription to use this workflow. The generous free plan offers up to
+        1,000 operations per month. Enough to run this automation 200 times!
       </p>
 
       <h2 class="text-h2 mt-8 mb-2">What you'll be automating</h2>
@@ -92,7 +92,7 @@
         <li>Send the extracted information to a Slack channel</li>
       </ol>
 
-      <h2 class="text-h2 mt-8 mb-2">Connect Integromat to Typeform</h2>
+      <h2 class="text-h2 mt-8 mb-2">Connect Make to Typeform</h2>
 
       <p>
         Let's imagine we're a webdev agency. We have a contact form on our
@@ -113,7 +113,7 @@
       <p>New leads are asked to fill in their website</p>
 
       <p>
-        Create a new scenario in Integromat. Select 'Typeform' and click
+        Create a new scenario in Make. Select 'Typeform' and click
         <em>Continue</em>. Select the instant version of 'Watch responses'.
       </p>
 
@@ -125,8 +125,8 @@
       </v-card>
 
       <p>
-        Connect Integromat to your Typeform account. Select the lead capture
-        form, and leave the rest of the settings as-is.
+        Connect Make to your Typeform account. Select the lead capture form, and
+        leave the rest of the settings as-is.
       </p>
 
       <v-card class="my-8" :max-width="399 * 0.75">
@@ -139,13 +139,13 @@
       <h2 class="text-h2 mt-8 mb-2">Connect Typeform to Wappalyzer</h2>
 
       <p>
-        Integromat will now automatically know which URL new leads have filled
-        into your form. Let's hand this information over to Wappalyzer and let
-        it find out all kinds of useful things about your lead's website. Before
-        you can use Wappalyzer in Integromat, you first need to create an API
-        key on your Wappalyzer account. Go to account settings in Wappalyzer,
-        select the <nuxt-link to="/apikey/"> API Key </nuxt-link> tab and click
-        on <em>Create key</em>.
+        Make will now automatically know which URL new leads have filled into
+        your form. Let's hand this information over to Wappalyzer and let it
+        find out all kinds of useful things about your lead's website. Before
+        you can use Wappalyzer in Make, you first need to create an API key on
+        your Wappalyzer account. Go to account settings in Wappalyzer, select
+        the <nuxt-link to="/apikey/"> API Key </nuxt-link> tab and click on
+        <em>Create key</em>.
       </p>
 
       <v-card class="my-8" :max-width="1798 * 0.75">
@@ -156,8 +156,8 @@
       </v-card>
 
       <p>
-        Connect a Wappalyzer module to the Typeform module in Integromat and
-        paste the API key. For 'Website URL', select 'URL' under the
+        Connect a Wappalyzer module to the Typeform module in Make and paste the
+        API key. For 'Website URL', select 'URL' under the
         <em>Answers</em>
         toggle.
       </p>
@@ -213,7 +213,7 @@
       <p>
         You've let Wappalyzer inspect your lead's website. Now it's time to send
         that information to the relevant channel in Slack. Add the Slack module
-        in Integromat, connect to your Slack account and click
+        in Make, connect to your Slack account and click
         <em>Create a Message</em>. Select the channel type and name for your
         message. We've already created a new channel in Slack and gave it the
         original and inspiring name 'New leads', and suggest you do something

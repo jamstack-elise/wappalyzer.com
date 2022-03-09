@@ -41,6 +41,18 @@
     "href": "https://marketplace.pipedrive.com/app/wappalyzer/c13f52b93ab427e3",
     "pro": true
   },
+  "semrush": {
+    "name": "Semrush",
+    "image": "semrush.svg",
+    "description": "See the technology stacks of your clients and prospects in your CRM.",
+    "href": "https://www.semrush.com/agencies/growth-kit/?utm_source=wappalyzer&utm_medium=referral&utm_campaign=agency"
+  },
+  "pabbly": {
+    "name": "Pabbly",
+    "image": "pabbly.svg",
+    "description": "Automated workflows and email marketing.",
+    "href": "https://www.pabbly.com/connect/integrations/wappalyzer/"
+  },
   "zapier": {
     "name": "Zapier",
     "image": "zapier.svg",
@@ -48,18 +60,12 @@
     "docs": "/docs/integrations/zapier/",
     "href": "https://zapier.com/developer/public-invite/9758/f2e8bd2517895d4ffb869e3281e2050f/"
   },
-  "integromat": {
-    "name": "Integromat",
-    "image": "integromat.svg",
+  "make": {
+    "name": "Make",
+    "image": "make.svg",
     "description": "Connect Wappalyzer to the apps you use, no code required.",
-    "docs": "/docs/integrations/integromat/",
-    "href": "https://www.integromat.com/en/integrations/wappalyzer"
-  },
-  "pabbly": {
-    "name": "Pabbly",
-    "image": "pabbly.svg",
-    "description": "Automated workflows and email marketing.",
-    "href": "https://www.pabbly.com/connect/integrations/wappalyzer/"
+    "docs": "/docs/integrations/make/",
+    "href": "https://www.make.com/en/integrations/wappalyzer"
   },
   "gmail": {
     "name": "Gmail",

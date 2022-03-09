@@ -1,15 +1,15 @@
 <template>
   <div>
     <Page :title="title" :side="side" :crumbs="crumbs" no-hero no-head>
-      <h1 class="mb-4">Integromat</h1>
+      <h1 class="mb-4">Make</h1>
 
       <p>
         Connect Wappalyzer to the apps and services you use with
         <a
-          href="https://www.integromat.com/en/integrations/wappalyzer"
+          href="https://www.make.com/en/integrations/wappalyzer"
           rel="noopener"
           target="_blank"
-          >Integromat</a
+          >Make</a
         >, no code required. Add technology data to contacts in your CRM,
         ticketing system or any other supported platform.
       </p>
@@ -21,18 +21,18 @@
       <p>
         To get started, head over to
         <a
-          href="https://www.integromat.com/en/integrations/wappalyzer"
+          href="https://www.make.com/en/integrations/wappalyzer"
           rel="noopener"
           target="_blank"
-          >Integromat</a
+          >Make</a
         >
         to create your scenario. Refer to the
         <a
-          href="https://support.integromat.com/hc/en-us/categories/360000515213-Getting-Started"
+          href="https://www.make.com/en/help/scenarios/creating-a-scenario"
           rel="noopener"
           target="_blank"
         >
-          Help Center
+          Help center
         </a>
         page to learn more.
       </p>
@@ -71,7 +71,7 @@ export default {
   },
   data() {
     return {
-      title: 'Integromat',
+      title: 'Make',
       side,
       crumbs: [
         { title: 'Developer documentation', to: '/docs/' },
