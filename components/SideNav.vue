@@ -30,7 +30,12 @@
               </v-list-item-content>
             </v-list-item>
 
-            <template v-if="subitem.to === $route.path && subitem.items">
+            <template
+              v-if="
+                subitem.to.replace(/\/$/, '') ===
+                  $route.path.replace(/\/$/, '') && subitem.items
+              "
+            >
               <v-list-item
                 v-for="(subsubitem, j) in subitem.items"
                 :key="`${i}-${j}`"

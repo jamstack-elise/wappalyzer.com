@@ -35,6 +35,32 @@
         "to": "/docs/api/v2/lookup/"
       },
       {
+        "title": "Lead lists",
+        "to": "/docs/api/v2/lists/",
+        "items": [
+          {
+            "title": "List all",
+            "to": "/docs/api/v2/lists/#list"
+          },
+          {
+            "title": "Fetch",
+            "to": "/docs/api/v2/lists/#fetch"
+          },
+          {
+            "title": "Create",
+            "to": "/docs/api/v2/lists/#create"
+          },
+          {
+            "title": "Finalise",
+            "to": "/docs/api/v2/lists/#finalise"
+          },
+          {
+            "title": "Delete",
+            "to": "/docs/api/v2/lists/#delete"
+          }
+        ]
+      },
+      {
         "title": "Email verification",
         "to": "/docs/api/v2/verify/"
       }

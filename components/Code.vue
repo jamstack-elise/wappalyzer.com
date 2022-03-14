@@ -1,17 +1,20 @@
 <template>
-  <div class="code">
+  <div :class="`code${wrap ? ' code--wrap' : ''}`">
     <slot />
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    wrap: {
+      type: Boolean,
+      default: false,
+    },
+  },
   mounted() {
     this.$el.innerHTML = this.$el.innerHTML
-      .replace(
-        /("|'|`)([^"]+)("|'|`)/g,
-        '$1<span class="code__value">$2</span>$3'
-      )
+      .replace(/("|'|`)([^"]+)(\1)/g, '$1<span class="code__value">$2</span>$3')
       .replace(
         /(": )([^\s"'`{[,]+)(,?)/g,
         '$1<span class="code__value">$2</span>$3'
@@ -27,6 +30,11 @@ export default {
   font-size: 0.75rem;
   max-width: 100%;
   overflow-x: auto;
+}
+
+.code--wrap {
+  white-space: normal;
+  line-height: 1.5rem;
 }
 
 .code__comment {

@@ -20,6 +20,7 @@
         <v-card>
           <v-tabs v-model="tabs">
             <v-tab><small>Technology lookup</small></v-tab>
+            <v-tab><small>Lead lists</small></v-tab>
             <v-tab><small>Email verification</small></v-tab>
           </v-tabs>
 
@@ -118,6 +119,89 @@
 }</Code></pre>
               </v-card-text>
             </v-tab-item>
+
+            <v-tab-item>
+              <v-card-text style="max-width: 600px">
+                <p class="body-2">
+                  Find prospects by the technologies they use. Lead lists
+                  contain websites, company and contact details, social media
+                  profiles and more. Create and export custom reports for any
+                  web technology or keyword based on industry, website traffic
+                  and location.
+                </p>
+
+                <v-btn to="/docs/api/v2/lists" color="primary" depressed>
+                  Get started
+                  <v-icon right>
+                    {{ mdiArrowRight }}
+                  </v-icon>
+                </v-btn>
+              </v-card-text>
+
+              <v-divider />
+
+              <v-card-title class="subtitle-2">Example request</v-card-title>
+              <v-card-text>
+                <pre><Code>curl -H "x-api-key: &lt;your api key&gt;" "https://api.wappalyzer.com/v2/lists/lst_abcdef"</Code></pre>
+              </v-card-text>
+
+              <v-divider />
+
+              <v-card-title class="subtitle-2">Example response</v-card-title>
+
+              <v-card-text>
+                <pre><Code>{
+  "id": "lst_abcdef",
+  "createdAt": 1620687647,
+  "status": "Ready",
+  "technologies": [
+    {
+      "slug": "shopify",
+      "name": "Shopify",
+      "categories": [
+        {
+          "slug": "ecommerce",
+          "name": "Ecommerce"
+        }
+      ],
+      "operator": "=",
+      "version": null
+    },
+  ],
+  "keywords": [ "FASHION" ],
+  "languages": [ "en-us" ],
+  "countries": [ "US" ],
+  "industries": [ "Fashion &amp; Apparel" ],
+  "companySizes": [ "1,001-5,000 employees" ],
+  "tlds": [ ".com" ],
+  "matchCountryLanguage": false,
+  "matchTechnologies": "or",
+  "subset": 1000,
+  "subsetSlice": 0,
+  "minAge": 0,
+  "maxAge": 3,
+  "fromDate": null,
+  "requiredSets": [ "email" ],
+  "excludeNoTraffic": false,
+  "excludeMultilingual": false,
+  "sets": [
+    "email",
+  ],
+  "callbackUrl": "https://yourdomain/wappalyzer",
+  "totalCredits": 1000,
+  "url": null,
+  "sampleUrl": "https://lists.wappalyzer.com/wappalyzer-29ddddaa-4949-4217-86a7-f6a407e5853d-lst_abcdef-5ukjhs-sample.zip",
+  "rows": {
+    "shopify": 1000
+  },
+  "setRows": {
+    "email": 1000,
+  }
+}
+</Code></pre>
+              </v-card-text>
+            </v-tab-item>
+
             <v-tab-item>
               <v-card-text style="max-width: 600px">
                 <p class="body-2">

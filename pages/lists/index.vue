@@ -15,6 +15,13 @@
           </v-icon>
           Sample list
         </v-btn>
+
+        <v-btn to="/api/" class="mb-2" depressed>
+          <v-icon left>
+            {{ mdiConsole }}
+          </v-icon>
+          API
+        </v-btn>
       </div>
 
       <template #content>
@@ -1350,6 +1357,7 @@ import {
   mdiLockOpenVariantOutline,
   mdiLockOutline,
   mdiPhone,
+  mdiConsole,
 } from '@mdi/js'
 import Page from '~/components/Page.vue'
 import Technologies from '~/components/Technologies.vue'
@@ -1417,6 +1425,7 @@ export default {
       mdiLockOpenVariantOutline,
       mdiLockOutline,
       mdiPhone,
+      mdiConsole,
       minAge: 0,
       maxAge: 3,
       meta,
