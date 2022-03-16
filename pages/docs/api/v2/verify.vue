@@ -178,7 +178,7 @@
 
       <h4 class="mb-2">Request</h4>
 
-      <pre><Code>curl -H "x-api-key: &lt;your api key&gt;" "https://api.wappalyzer.com/v2/verify/?email=info@example.com"</Code></pre>
+      <pre><Code wrap>curl -H "x-api-key: &lt;your api key&gt;" "https://api.wappalyzer.com/v2/verify/?email=info@example.com"</Code></pre>
 
       <h4 class="mt-8 mb-2">Response</h4>
       <pre><Code>{

@@ -462,21 +462,23 @@
 
     <v-dialog
       v-model="createListDialog"
-      :persistent="!createlistError"
+      :persistent="!createListError"
       max-width="400px"
     >
       <v-card>
         <v-card-title>Creating your list&hellip;</v-card-title>
         <v-card-text class="pb-0">
-          <v-alert v-if="createlistError" type="error" class="mb-0" text>
-            {{ createlistError }}
+          <v-alert v-if="createListError" type="error" class="mb-0" text>
+            {{ createListError }}
           </v-alert>
 
-          <Progress v-if="!createlistError" class="mx-auto pb-8" />
+          <Progress v-if="!createListError" class="mx-auto pb-8" />
         </v-card-text>
-        <v-card-actions v-if="createlistError">
+        <v-card-actions v-if="createListError">
           <v-spacer />
-          <v-btn v-if="error" color="accent" text @click="close">Ok</v-btn>
+          <v-btn color="accent" text @click="createListDialog = false"
+            >Ok</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -544,7 +546,7 @@ export default {
   data() {
     return {
       creatingList: false,
-      createlistError: false,
+      createListError: false,
       createListDialog: false,
       lineChartOptions: {
         chartArea: {
@@ -810,7 +812,6 @@ export default {
               query: {
                 technologies,
                 geoIps: [{ text: 'United Kingdom', value: 'GB' }],
-                tlds: ['.uk'],
               },
             },
             {
@@ -867,7 +868,7 @@ export default {
   methods: {
     async createList(list = this.creatingList) {
       this.creatingList = list
-      this.createError = false
+      this.createListError = false
 
       if (!this.isSignedIn) {
         this.signInDialog = true
@@ -879,7 +880,7 @@ export default {
 
       try {
         const { id } = (
-          await this.$axios.put('lists', {
+          await this.$axios.put('lists-site', {
             query: {
               minAge: 0,
               maxAge: 3,

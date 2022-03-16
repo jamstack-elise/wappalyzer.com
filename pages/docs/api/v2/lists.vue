@@ -659,7 +659,16 @@
                           >
                         </td>
                         <td class="pt-4">
-                          <p>Technology slug, e.g. 'hubspot-chat'</p>
+                          <p>
+                            Technology slug, e.g. <code>hubspot-chat</code>.
+                            Refer to the full
+                            <a
+                              href="https://api.wappalyzer.com/v2/technologies/"
+                              target="_blank"
+                              >list of technologies</a
+                            >
+                            (JSON).
+                          </p>
                         </td>
                       </tr>
                       <tr>
