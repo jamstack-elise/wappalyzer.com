@@ -103,12 +103,27 @@
             class="text-center mb-n6"
             style="padding: 100px 0"
           >
-            <v-progress-circular
-              size="100"
-              width="5"
-              style="opacity: 0.2"
-              indeterminate
-            />
+            <div v-if="playGame">
+              <TicTacToe class="mt-6" />
+            </div>
+            <template v-else>
+              <v-progress-circular
+                size="100"
+                width="5"
+                style="opacity: 0.3"
+                indeterminate
+              />
+
+              <div class="mt-6">
+                <small
+                  ><a
+                    class="text--disabled text-decoration-underline"
+                    @click="playGame = true"
+                    >Play a game?</a
+                  ></small
+                >
+              </div>
+            </template>
           </div>
 
           <template v-if="['Ready', 'Complete'].includes(list.status)">
@@ -970,6 +985,7 @@ import TechnologyIcon from '~/components/TechnologyIcon.vue'
 import Logos from '~/components/Logos.vue'
 import FaqDialog from '~/components/FaqDialog.vue'
 import ListSample from '~/components/ListSample.vue'
+import TicTacToe from '~/components/TicTacToe.vue'
 import sets from '~/assets/json/sets.json'
 
 export default {
@@ -980,6 +996,7 @@ export default {
     Logos,
     FaqDialog,
     ListSample,
+    TicTacToe,
   },
   async asyncData({
     route,
@@ -1030,6 +1047,7 @@ export default {
       mdiAlertOctagonOutline,
       mdiGift,
       panelIndex: 0,
+      playGame: false,
       repeat: false,
       repeatDialog: false,
       repeating: false,
