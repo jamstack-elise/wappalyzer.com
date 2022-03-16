@@ -1519,7 +1519,7 @@ export default {
   computed: {
     ...mapState({
       user: ({ user }) => user.attrs,
-      isLoading: ({ user }) => user.loading,
+      isLoading: ({ user, credits }) => user.loading || credits.loading,
       isSignedIn: ({ user }) => user.isSignedIn,
       isAdmin: ({ user }) =>
         user.attrs.admin || (user.impersonator && user.impersonator.admin),

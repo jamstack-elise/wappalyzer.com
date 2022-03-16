@@ -372,7 +372,7 @@ export default {
       user: ({ user }) => user.attrs,
       isPlus: ({ credits }) => credits.plus,
       isPro: ({ credits }) => credits.pro,
-      isLoading: ({ user }) => user.loading,
+      isLoading: ({ user, credits }) => user.loading || credits.loading,
       isSignedIn: ({ user }) => user.isSignedIn,
       isAdmin: ({ user }) =>
         user.isSignedIn &&

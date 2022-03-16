@@ -326,6 +326,7 @@ export default {
               {}
             ),
           keywords,
+          loading: !isSignedIn,
         }
       } catch (error) {
         if (error.response) {
@@ -376,8 +377,9 @@ export default {
   computed: {
     ...mapState({
       user: ({ user }) => user.attrs,
-      isLoading: ({ user }) => user.loading || user.signingIn,
+      isLoading: ({ user, credits }) => user.loading || credits.loading,
       isSignedIn: ({ user }) => user.isSignedIn,
+      isPlus: ({ credits }) => credits.plus,
     }),
     categorised() {
       return Object.values(
@@ -402,9 +404,8 @@ export default {
     async isSignedIn() {
       if (this.isSignedIn) {
         this.signInDialog = false
-        this.loading = true
 
-        if (!this.technologies.length) {
+        if (this.loading) {
           try {
             ;({
               maskedSets: this.maskedSets,
@@ -420,9 +421,9 @@ export default {
             this.error = error.response.data
           }
         }
-
-        this.loading = false
       }
+
+      this.loading = false
     },
   },
   async mounted() {

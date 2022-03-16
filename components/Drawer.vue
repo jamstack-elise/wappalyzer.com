@@ -9,7 +9,7 @@
       <template v-else>
         <v-list-item v-if="isSignedIn">
           <v-list-item-content>
-            <v-list-item-title class="mb-2"> Signed in as </v-list-item-title>
+            <v-list-item-title class="mb-2">Signed in as</v-list-item-title>
 
             <span>
               <small>{{ user.billingName || user.name || user.email }}</small>
@@ -196,7 +196,7 @@ export default {
     ...mapState({
       user: ({ user }) => user.attrs,
       isPro: ({ credits }) => credits.pro,
-      isLoading: ({ user }) => user.loading,
+      isLoading: ({ user, credits }) => user.loading || credits.loading,
       isSignedIn: ({ user }) => user.isSignedIn,
       isAdmin: ({ user }) =>
         user.isSignedIn &&
