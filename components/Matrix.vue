@@ -1,5 +1,5 @@
 <template>
-  <v-container class="matrix__container pl-0 pr-3 pt-2 pb-4">
+  <v-container class="matrix__container pl-0 pr-1 mr-n1 pt-2 pb-4">
     <v-row
       class="matrix"
       :style="`min-width: ${200 + Object.keys(items).length * 200}px`"
@@ -16,7 +16,12 @@
           <v-divider />
           <v-responsive height="60" class="align-center">
             <v-card-text class="py-0">
-              {{ attr.text }}
+              <nuxt-link v-if="attr.to" :to="attr.to">{{
+                attr.text
+              }}</nuxt-link>
+              <template v-else>
+                {{ attr.text }}
+              </template>
 
               <v-tooltip v-if="attr.description" max-width="450" right>
                 <template #activator="{ on }">

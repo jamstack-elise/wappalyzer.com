@@ -23,8 +23,7 @@
         class="mx-n6 px-6 mb-6 primary--text"
         tile
       >
-        Sign up for free to receive 50 credits every month to spend on any
-        product.
+        Sign up for free to receive 50 credits every month to spend on products.
       </v-alert>
 
       <v-alert v-if="success" type="success" text>

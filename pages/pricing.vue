@@ -5,6 +5,30 @@
 
       <Pricing :billing="annually ? 'annually' : 'monthly'" />
 
+      <v-card v-if="!isSignedIn" class="mt-4 mb-6">
+        <v-card-title class="subtitle-2 justify-center">
+          Try Wappalyzer for free
+        </v-card-title>
+        <v-card-text class="text-center">
+          <div style="max-width: 600px; margin: 0 auto">
+            <p>
+              Get 50 free credits every month to spend on technology lookups,
+              email verifications and website alerts. Free samples for any lead
+              list.
+            </p>
+          </div>
+
+          <v-btn
+            color="primary"
+            class="mt-1 mb-2"
+            large
+            depressed
+            @click="signInDialog = true"
+            >Sign up free</v-btn
+          >
+        </v-card-text>
+      </v-card>
+
       <small class="text--disabled">
         <nuxt-link to="/contact/">Contact us</nuxt-link> for tailored plans.
         Discounted plans available for startups, education and nonprofits.<br />
@@ -176,10 +200,15 @@
         <Logos />
       </template>
     </Page>
+
+    <v-dialog v-model="signInDialog" max-width="400px">
+      <SignIn mode-sign-up />
+    </v-dialog>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { mdiAlphaCCircle } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
@@ -187,6 +216,7 @@ import Pricing from '~/components/Pricing.vue'
 import Logos from '~/components/Logos.vue'
 import Faqs from '~/components/Faqs.vue'
 import Vimeo from '~/components/Vimeo.vue'
+import SignIn from '~/components/SignIn.vue'
 import { creditsPerUnit, creditTiers } from '~/assets/json/pricing.json'
 
 export default {
@@ -196,6 +226,12 @@ export default {
     Logos,
     Faqs,
     Vimeo,
+    SignIn,
+  },
+  computed: {
+    ...mapState({
+      isSignedIn: ({ user }) => user.isSignedIn,
+    }),
   },
   data() {
     return {
@@ -204,6 +240,7 @@ export default {
       creditsPerUnit,
       creditTiers,
       credits: 1000,
+      signInDialog: false,
       mdiAlphaCCircle,
     }
   },
