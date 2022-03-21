@@ -77,6 +77,8 @@
                 v-model="form.technology"
                 label="Technology name *"
                 placeholder="E.g. Shopify"
+                outlined
+                dense
               />
             </v-col>
             <v-col>
@@ -87,6 +89,8 @@
                   { value: '', text: 'Other / not sure' },
                   ...categories,
                 ]"
+                outlined
+                dense
               />
             </v-col>
           </v-row>
@@ -98,12 +102,15 @@
             hint="A short description of the technology in a neutral, factual tone (avoid adjectives)."
             counter="250"
             placeholder="E.g. Shopify is a subscription-based software that allows anyone to set up an online store and sell their products."
+            outlined
           />
 
           <v-text-field
             v-model="form.website"
             label="Website"
             placeholder="https://shopify.com"
+            outlined
+            dense
           />
         </v-card-text>
 
@@ -123,6 +130,8 @@
             accept="image/svg+xml, image/png"
             hide-details="auto"
             class="mb-4"
+            outlined
+            dense
           />
         </v-card-text>
 
@@ -322,12 +331,13 @@
             label="How can we identify this technology?"
             rows="5"
             :placeholder="'E.g. Look for the following JavaScript snippet:\n<script>\n  Example code\n</script>'"
+            outlined
           />
         </v-card-text>
 
         <v-divider />
 
-        <v-card-title class="subtitle-2"> Example websites </v-card-title>
+        <v-card-title class="subtitle-2">Example websites</v-card-title>
         <v-card-text>
           <p>
             Provide 2-3 links to websites that use the technology for our
@@ -339,12 +349,13 @@
             label="Websites"
             rows="2"
             :placeholder="`https://example.com\nhttps://www.example.org`"
+            outlined
           />
         </v-card-text>
 
         <v-divider />
 
-        <v-card-title class="subtitle-2"> Dependencies </v-card-title>
+        <v-card-title class="subtitle-2">Dependencies</v-card-title>
         <v-card-text>
           <p>
             If the technology is built on other technologies, such as a
@@ -357,12 +368,13 @@
             label="Technologies"
             rows="2"
             :placeholder="`PHP\nMySQL`"
+            outlined
           />
         </v-card-text>
 
         <v-divider />
 
-        <v-card-title class="subtitle-2"> Your contact details </v-card-title>
+        <v-card-title class="subtitle-2">Your contact details</v-card-title>
         <v-card-text>
           <p>We'll follow up when your submission has been processed.</p>
 
@@ -372,6 +384,8 @@
                 v-model="form.name"
                 label="Name"
                 placeholder="John Connor"
+                outlined
+                dense
               />
             </v-col>
             <v-col>
@@ -379,6 +393,8 @@
                 v-model="form.email"
                 label="Email address"
                 placeholder="info@example.com"
+                outlined
+                dense
               />
             </v-col>
           </v-row>
@@ -393,6 +409,7 @@
       :loading="submitting"
       :disabled="!criteria || !form.technology"
       @click="submit"
+      depressed
     >
       Submit
     </v-btn>
@@ -411,8 +428,8 @@ export default {
   },
   async asyncData({ $axios }) {
     return {
-      categories: (await $axios.get('categories')).data.map(({ name }) => ({
-        value: name,
+      categories: (await $axios.get('categories')).data.map(({ id, name }) => ({
+        value: `${id} - ${name}`,
         text: name,
       })),
     }
