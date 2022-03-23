@@ -183,7 +183,7 @@ export default {
         type: '',
         technology: '',
         description: '',
-        website: this.$route.query.url || '',
+        website: '',
       },
       form: {},
     }
@@ -201,6 +201,7 @@ export default {
   },
   mounted() {
     this.form = { ...this.formInit }
+    this.form.website = this.$route.query.url || ''
     this.form.name = this.user.name
     this.form.email = this.user.email
   },
