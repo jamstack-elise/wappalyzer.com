@@ -29,20 +29,14 @@
 
           <v-radio-group v-model="form.type" hide-details="auto">
             <v-radio
-              hide-details="auto"
               label="A technology is not being identified when it should"
               value="A technology is not being identified when it should"
             />
             <v-radio
-              hide-details="auto"
               label="A technology is incorrectly identified"
               value="A technology is incorrectly identified"
             />
-            <v-radio
-              hide-details="auto"
-              label="Something else"
-              value="Something else"
-            />
+            <v-radio label="Something else" value="Something else" />
           </v-radio-group>
         </v-card-text>
       </v-form>
@@ -164,14 +158,6 @@ export default {
   components: {
     Page,
     Technologies,
-  },
-  async asyncData({ $axios }) {
-    return {
-      categories: (await $axios.get('categories')).data.map(({ id, name }) => ({
-        value: `${id} - ${name}`,
-        text: name,
-      })),
-    }
   },
   data() {
     return {

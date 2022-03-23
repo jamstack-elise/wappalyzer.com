@@ -116,7 +116,7 @@
 
         <v-divider />
 
-        <v-card-title class="subtitle-2"> Logo </v-card-title>
+        <v-card-title class="subtitle-2">Logo</v-card-title>
         <v-card-text>
           <p>
             Upload a square icon in SVG format, suitable to be displayed at
@@ -137,7 +137,7 @@
 
         <v-divider />
 
-        <v-card-title class="subtitle-2"> Attributes </v-card-title>
+        <v-card-title class="subtitle-2">Attributes</v-card-title>
         <v-card-text>
           <p>Select all that apply.</p>
 
@@ -173,7 +173,7 @@
 
         <v-divider />
 
-        <v-card-title class="subtitle-2"> Pricing models </v-card-title>
+        <v-card-title class="subtitle-2">Pricing models</v-card-title>
         <v-card-text>
           <p>Select all that apply.</p>
 
@@ -279,7 +279,7 @@
 
         <v-divider />
 
-        <v-card-title class="subtitle-2"> Price range </v-card-title>
+        <v-card-title class="subtitle-2">Price range</v-card-title>
         <v-card-text>
           <p>
             An indication of cost, based on a typical plan or average monthly
