@@ -42,7 +42,21 @@
     </v-container>
 
     <v-container>
-      <Testimonials class="mt-4 mb-8" />
+      <Testimonials class="mt-4" />
+    </v-container>
+
+    <v-container class="text-center mb-4">
+      <a
+        href="https://www.g2.com/products/wappalyzer/reviews?utm_source=rewards-badge"
+        target="_blank"
+        rel="noopener"
+      >
+        <G2
+          alt="High performer - Spring 2022"
+          class="d-inline-block"
+          height="120px"
+        />
+      </a>
     </v-container>
   </div>
 </template>
@@ -64,6 +78,7 @@ import Salesforce from '~/assets/images/logos/Salesforce.svg?inline'
 import SAP from '~/assets/images/logos/SAP.svg?inline'
 import Shopify from '~/assets/images/logos/Shopify.svg?inline'
 import Stripe from '~/assets/images/logos/Stripe.svg?inline'
+import G2 from '~/assets/images/awards/g2-2022-spring.svg?inline'
 
 export default {
   components: {
@@ -82,6 +97,7 @@ export default {
     Microsoft,
     Salesforce,
     Adobe,
+    G2,
   },
   props: {
     apps: {

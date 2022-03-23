@@ -146,7 +146,7 @@ export default {
         try {
           if (this.itemId.startsWith('lst_')) {
             this.items = (
-              await this.$axios.get(`lists/find/${this.itemId}`)
+              await this.$axios.get(`lists-site/find/${this.itemId}`)
             ).data
           } else if (this.itemId.startsWith('ord_')) {
             this.items = (

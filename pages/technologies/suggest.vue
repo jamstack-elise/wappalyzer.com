@@ -384,6 +384,7 @@
                 v-model="form.name"
                 label="Name"
                 placeholder="John Connor"
+                hide-details="auto"
                 outlined
                 dense
               />
@@ -393,11 +394,19 @@
                 v-model="form.email"
                 label="Email address"
                 placeholder="info@example.com"
+                hide-details="auto"
                 outlined
                 dense
               />
             </v-col>
           </v-row>
+        </v-card-text>
+
+        <v-divider />
+
+        <v-card-title class="subtitle-2">Are you a robot?</v-card-title>
+        <v-card-text>
+          <recaptcha />
         </v-card-text>
       </v-form>
     </v-card>
@@ -490,7 +499,21 @@ export default {
       this.submitting = true
 
       try {
-        const data = { ...this.form, icon: await this.base64Encode(this.icon) }
+        let recaptchaToken = ''
+
+        try {
+          recaptchaToken = await this.$recaptcha.getResponse()
+
+          await this.$recaptcha.reset()
+        } catch (error) {
+          throw new Error('Are you a robot?')
+        }
+
+        const data = {
+          ...this.form,
+          icon: await this.base64Encode(this.icon),
+          recaptchaToken,
+        }
 
         const pricing = [
           this.form.price,

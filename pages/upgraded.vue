@@ -87,13 +87,24 @@
           </v-card-actions>
         </v-card>
 
-        <a
-          href="https://www.g2.com/products/wappalyzer/reviews"
-          rel="noopener"
-          class="d-block mb-4"
-        >
-          <img src="/images/g2.png" height="100" width="200" />
-        </a>
+        <div class="d-flex mb-4">
+          <a
+            href="https://www.g2.com/products/wappalyzer/reviews"
+            rel="noopener"
+          >
+            <img src="/images/g2.png" height="100" width="200" />
+          </a>
+
+          <a
+            href="https://www.g2.com/products/wappalyzer/reviews?utm_source=rewards-badge"
+            target="_blank"
+            rel="noopener"
+            class="ml-6"
+            style="margin-top: -8px"
+          >
+            <G2 alt="High performer - Spring 2022" height="116px" />
+          </a>
+        </div>
 
         <div class="text-h3 mb-4">Empower yours sales and marketing teams</div>
 
@@ -126,6 +137,7 @@ import Page from '~/components/Page.vue'
 import Progress from '~/components/Progress.vue'
 import UseCases from '~/components/UseCases.vue'
 import SignIn from '~/components/SignIn.vue'
+import G2 from '~/assets/images/awards/g2-2022-spring.svg?inline'
 
 export default {
   components: {
@@ -133,6 +145,7 @@ export default {
     Progress,
     UseCases,
     SignIn,
+    G2,
   },
   computed: {
     ...mapState({
