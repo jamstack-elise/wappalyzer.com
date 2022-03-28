@@ -13,19 +13,22 @@
       {
         "text": "Look up a website",
         "to": "/lookup/",
-        "icon": "mdiEarth"
+        "icon": "mdiEarth",
+        "event": "product-cta-lookup"
       },
       {
         "text": "Upload a list",
         "to": "/lookup/#bulk",
         "icon": "mdiFileOutline",
-        "secondary": true
+        "secondary": true,
+        "event": "product-cta-lookup-bulk"
       },
       {
         "text": "API",
         "to": "/api/",
         "icon": "mdiConsole",
-        "secondary": true
+        "secondary": true,
+        "event": "product-cta-lookup-api"
       }
     ],
     "features": ["Instant results", "50 Free monthly lookups", "Perform up to 100,000 lookups at once"],
@@ -41,7 +44,8 @@
       {
         "text": "Create a list",
         "to": "/lists/",
-        "icon": "mdiFileOutline"
+        "icon": "mdiFileOutline",
+        "event": "product-cta-list"
       }
     ],
     "features": [
@@ -61,7 +65,8 @@
       {
         "text": "Create an alert",
         "to": "/alerts/",
-        "icon": "mdiBellOutline"
+        "icon": "mdiBellOutline",
+        "event": "product-cta-alert"
       }
     ],
     "features": [
@@ -81,13 +86,15 @@
       {
         "text": "Compare APIs",
         "to": "/api/",
-        "icon": "mdiConsole"
+        "icon": "mdiConsole",
+        "event": "product-cta-api"
       },
       {
         "text": "API reference",
         "to": "/docs/api/",
         "icon": "mdiBookOpenPageVariant",
-        "secondary": true
+        "secondary": true,
+        "event": "product-cta-api-ref"
       }
     ],
     "features": ["Split second results", "Analyse websites in real-time", "Free trial"],
@@ -103,19 +110,22 @@
       {
         "text": "Verify an address",
         "to": "/verify/",
-        "icon": "mdiEmail"
+        "icon": "mdiEmail",
+        "event": "product-cta-verify"
       },
       {
         "text": "Upload a list",
         "to": "/verify/#bulk",
         "icon": "mdiFileOutline",
-        "secondary": true
+        "secondary": true,
+        "event": "product-cta-verify-bulk"
       },
       {
         "text": "API",
         "to": "/api/",
         "icon": "mdiConsole",
-        "secondary": true
+        "secondary": true,
+        "event": "product-cta-verify-api"
       }
     ],
     "features": ["Instant results", "50 Free monthly verifications", "Perform up to 100,000 verifications at once"],

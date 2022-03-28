@@ -273,6 +273,8 @@ export default {
         this.loading = true
 
         this.$router.push(item.to)
+
+        this.$gtm.push({ event: `search-${item.type}` })
       }
     },
     async onFocus() {

@@ -477,6 +477,456 @@
                     :disabled="!selection"
                     multiple
                   >
+                    <v-expansion-panel ref="ipCountries" value="ipCountries">
+                      <v-expansion-panel-header class="subtitle-2">
+                        Countries
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <p>Target websites in specific countries.</p>
+
+                        <v-select
+                          ref="country"
+                          :items="geoIps"
+                          class="mb-4 pt-0"
+                          label="Select a country"
+                          hide-details
+                          outlined
+                          dense
+                          eager
+                        >
+                          <template #prepend-item>
+                            <v-list-item
+                              ripple
+                              @click="toggleGeoIps(countriesEurope)"
+                            >
+                              <v-list-item-content>Europe</v-list-item-content>
+                            </v-list-item>
+                            <v-list-item
+                              ripple
+                              @click="toggleGeoIps(countriesEU)"
+                            >
+                              <v-list-item-content>
+                                European Union
+                              </v-list-item-content>
+                            </v-list-item>
+
+                            <v-divider class="mt-3 mb-2" />
+                          </template>
+
+                          <template #item="{ item }">
+                            <v-list-item ripple @click="toggleGeoIp(item)">
+                              <v-list-item-action>
+                                <v-icon :color="item.active ? 'primary' : ''">
+                                  {{
+                                    item.active
+                                      ? mdiCheckboxMarked
+                                      : mdiCheckboxBlankOutline
+                                  }}
+                                </v-icon>
+                              </v-list-item-action>
+
+                              <v-list-item-content>
+                                <v-row class="align-center">
+                                  <v-col class="py-0">
+                                    {{ item.text }}
+                                  </v-col>
+                                  <v-col
+                                    class="
+                                      py-0
+                                      nowrap
+                                      text-right
+                                      body-2
+                                      flex-grow-0
+                                    "
+                                  >
+                                    {{ item.value }}
+                                  </v-col>
+                                </v-row>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </template>
+                        </v-select>
+
+                        <v-chip-group
+                          v-if="selected.geoIps.length"
+                          class="mt-n1 mb-2"
+                          column
+                        >
+                          <v-tooltip
+                            v-for="(item, i) in selected.geoIps"
+                            :key="i"
+                            bottom
+                          >
+                            <template #activator="{ on }">
+                              <v-chip
+                                color="primary lighten-1 primary--text"
+                                label
+                                close
+                                v-on="on"
+                                @click:close="toggleGeoIp(item)"
+                              >
+                                {{ item.value }}
+                              </v-chip>
+                            </template>
+
+                            {{
+                              item.parent && item.parent !== item.text
+                                ? `${item.parent} (${item.text})`
+                                : item.text
+                            }}
+                          </v-tooltip>
+                        </v-chip-group>
+
+                        <v-alert
+                          color="secondary"
+                          border="left"
+                          class="mt-6 mb-2"
+                          dense
+                        >
+                          <small>
+                            When a website's country can't be determined through
+                            other means, we perform a lookup on the IP address.
+                            This may be different from the country a business
+                            operates from.
+                          </small>
+                        </v-alert>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+
+                    <v-expansion-panel ref="languages" value="languages">
+                      <v-expansion-panel-header class="subtitle-2">
+                        Languages
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <p>Target websites using specific languages.</p>
+
+                        <v-select
+                          ref="language"
+                          v-model="selectedLanguage"
+                          :items="languages"
+                          class="mb-4 pt-0"
+                          label="Select a language"
+                          hide-details
+                          outlined
+                          dense
+                          eager
+                        >
+                          <template #item="{ item }">
+                            <v-list-item ripple @click="toggleLanguage(item)">
+                              <v-list-item-action>
+                                <v-icon :color="item.active ? 'primary' : ''">
+                                  {{
+                                    typeof item.value === 'object'
+                                      ? mdiDotsHorizontal
+                                      : item.active
+                                      ? mdiCheckboxMarked
+                                      : mdiCheckboxBlankOutline
+                                  }}
+                                </v-icon>
+                              </v-list-item-action>
+
+                              <v-list-item-content>
+                                <v-row class="align-center">
+                                  <v-col class="py-0">
+                                    {{ item.text }}
+                                  </v-col>
+                                  <v-col
+                                    class="
+                                      py-0
+                                      nowrap
+                                      text-right
+                                      body-2
+                                      flex-grow-0
+                                    "
+                                  >
+                                    {{
+                                      typeof item.value === 'object'
+                                        ? item.value[Object.keys(item.value)[0]]
+                                        : item.value
+                                    }}
+                                  </v-col>
+                                </v-row>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </template>
+                        </v-select>
+
+                        <v-select
+                          v-if="variants"
+                          ref="variant"
+                          :items="variants"
+                          class="mb-4"
+                          label="Select a language country"
+                          hide-details
+                          outlined
+                          dense
+                          eager
+                        >
+                          <template #prepend-item>
+                            <v-list-item ripple @click="toggleVariants">
+                              <v-list-item-action>
+                                <v-icon
+                                  :color="
+                                    selected.languages.length > 0
+                                      ? 'primary'
+                                      : ''
+                                  "
+                                >
+                                  {{
+                                    variants.every(({ active }) => active)
+                                      ? mdiCheckboxMarked
+                                      : variants.some(({ active }) => active)
+                                      ? mdiMinusBoxOutline
+                                      : mdiCheckboxBlankOutline
+                                  }}
+                                </v-icon>
+                              </v-list-item-action>
+
+                              <v-list-item-content>
+                                <v-list-item-title>
+                                  Select All
+                                </v-list-item-title>
+                              </v-list-item-content>
+                            </v-list-item>
+
+                            <v-divider class="mt-2" />
+                          </template>
+
+                          <template #item="{ item }">
+                            <v-list-item ripple @click="toggleVariant(item)">
+                              <v-list-item-action>
+                                <v-icon :color="item.active ? 'primary' : ''">
+                                  {{
+                                    item.active
+                                      ? mdiCheckboxMarked
+                                      : mdiCheckboxBlankOutline
+                                  }}
+                                </v-icon>
+                              </v-list-item-action>
+
+                              <v-list-item-content>
+                                <v-row class="align-center">
+                                  <v-col class="py-0">
+                                    {{ item.text }}
+                                  </v-col>
+                                  <v-col
+                                    class="
+                                      py-0
+                                      nowrap
+                                      text-right
+                                      body-2
+                                      flex-grow-0
+                                    "
+                                  >
+                                    {{ item.value }}
+                                  </v-col>
+                                </v-row>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </template>
+                        </v-select>
+
+                        <v-chip-group
+                          v-if="selected.languages.length"
+                          class="mt-n1"
+                          column
+                        >
+                          <v-tooltip
+                            v-for="(item, i) in selected.languages"
+                            :key="i"
+                            bottom
+                          >
+                            <template #activator="{ on }">
+                              <v-chip
+                                color="primary lighten-1 primary--text"
+                                label
+                                close
+                                v-on="on"
+                                @click:close="toggleVariant(item)"
+                              >
+                                {{ item.value }}
+                              </v-chip>
+                            </template>
+
+                            {{
+                              item.parent && item.parent !== item.text
+                                ? `${item.parent} (${item.text})`
+                                : item.text
+                            }}
+                          </v-tooltip>
+                        </v-chip-group>
+
+                        <v-checkbox
+                          v-if="
+                            selected.geoIps.length && selected.languages.length
+                          "
+                          v-model="matchAny"
+                          class="my-2"
+                          label="Filter by country OR language (yields more results)"
+                          hide-details
+                        />
+
+                        <v-checkbox
+                          v-if="selected.languages.length"
+                          v-model="excludeMultilingual"
+                          class="my-2"
+                          label="Exclude multilingual websites"
+                          hide-details
+                        />
+
+                        <v-alert
+                          color="secondary"
+                          border="left"
+                          class="mt-8 mb-2"
+                          dense
+                        >
+                          <small>
+                            To target websites in specific countries, we
+                            recommend filtering by country and not language.
+                            Selecting both may result in a much smaller list.
+                          </small>
+                        </v-alert>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+
+                    <v-expansion-panel ref="tlds" value="tlds">
+                      <v-expansion-panel-header class="subtitle-2">
+                        Top-level domains
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <p>Target countries by top-level domain.</p>
+
+                        <v-row>
+                          <v-col>
+                            <v-select
+                              ref="country"
+                              v-model="selectedCountry"
+                              :items="countries"
+                              class="mb-4 pt-0"
+                              label="Select a country"
+                              hide-details
+                              outlined
+                              dense
+                              eager
+                            />
+                          </v-col>
+                          <v-col>
+                            <v-form ref="form" @submit.prevent="addTld">
+                              <v-text-field
+                                v-model="tld"
+                                :error-messages="tldErrors"
+                                :append-icon="mdiPlus"
+                                placeholder=".com"
+                                class="pt-0"
+                                hide-details="auto"
+                                outlined
+                                dense
+                                @click:append="addTld"
+                              />
+                            </v-form>
+                          </v-col>
+                        </v-row>
+
+                        <v-select
+                          v-if="selectedCountry"
+                          ref="tld"
+                          :items="tlds"
+                          class="mb-8"
+                          label="Select a top-level-domain"
+                          hide-details
+                          outlined
+                          dense
+                          eager
+                        >
+                          <template #prepend-item>
+                            <v-list-item ripple @click="toggleTlds">
+                              <v-list-item-action>
+                                <v-icon
+                                  :color="
+                                    selected.tlds.length > 0 ? 'primary' : ''
+                                  "
+                                >
+                                  {{
+                                    tlds.every(({ active }) => active)
+                                      ? mdiCheckboxMarked
+                                      : tlds.some(({ active }) => active)
+                                      ? mdiMinusBoxOutline
+                                      : mdiCheckboxBlankOutline
+                                  }}
+                                </v-icon>
+                              </v-list-item-action>
+
+                              <v-list-item-content>
+                                <v-list-item-title>
+                                  Select All
+                                </v-list-item-title>
+                              </v-list-item-content>
+                            </v-list-item>
+
+                            <v-divider class="mt-2" />
+                          </template>
+
+                          <template #item="{ item }">
+                            <v-list-item ripple @click="toggleTld(item)">
+                              <v-list-item-action>
+                                <v-icon :color="item.active ? 'primary' : ''">
+                                  {{
+                                    item.active
+                                      ? mdiCheckboxMarked
+                                      : mdiCheckboxBlankOutline
+                                  }}
+                                </v-icon>
+                              </v-list-item-action>
+
+                              <v-list-item-content>
+                                {{ item.text }}
+                              </v-list-item-content>
+                            </v-list-item>
+                          </template>
+                        </v-select>
+
+                        <v-chip-group
+                          v-if="selected.tlds.length"
+                          class="mt-n1 mb-4"
+                          column
+                        >
+                          <v-tooltip
+                            v-for="(item, i) in selected.tlds"
+                            :key="i"
+                            bottom
+                          >
+                            <template #activator="{ on }">
+                              <v-chip
+                                color="primary lighten-1 primary--text"
+                                label
+                                close
+                                v-on="item.parent ? on : undefined"
+                                @click:close="toggleTld(item)"
+                              >
+                                {{ item.value }}
+                              </v-chip>
+                            </template>
+
+                            {{ item.parent }}
+                          </v-tooltip>
+                        </v-chip-group>
+
+                        <v-alert
+                          color="secondary"
+                          border="left"
+                          class="mt-4 mb-2"
+                          dense
+                        >
+                          <small>
+                            The top-level domain is the last part of a domain
+                            name (e.g. '.com'). This can be used to target
+                            websites in specific countries (e.g. '.com.au' for
+                            Australia).
+                          </small>
+                        </v-alert>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+
                     <v-expansion-panel ref="industries" value="industries">
                       <v-expansion-panel-header class="subtitle-2">
                         Industry
@@ -678,442 +1128,6 @@
                             technology.
                           </small>
                         </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel ref="tlds" value="tlds">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Top-level domains
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>Target countries by top-level domain.</p>
-
-                        <v-row>
-                          <v-col>
-                            <v-select
-                              ref="country"
-                              v-model="selectedCountry"
-                              :items="countries"
-                              class="mb-4 pt-0"
-                              label="Select a country"
-                              hide-details
-                              outlined
-                              dense
-                              eager
-                            />
-                          </v-col>
-                          <v-col>
-                            <v-form ref="form" @submit.prevent="addTld">
-                              <v-text-field
-                                v-model="tld"
-                                :error-messages="tldErrors"
-                                :append-icon="mdiPlus"
-                                placeholder=".com"
-                                class="pt-0"
-                                hide-details="auto"
-                                outlined
-                                dense
-                                @click:append="addTld"
-                              />
-                            </v-form>
-                          </v-col>
-                        </v-row>
-
-                        <v-select
-                          v-if="selectedCountry"
-                          ref="tld"
-                          :items="tlds"
-                          class="mb-8"
-                          label="Select a top-level-domain"
-                          hide-details
-                          outlined
-                          dense
-                          eager
-                        >
-                          <template #prepend-item>
-                            <v-list-item ripple @click="toggleTlds">
-                              <v-list-item-action>
-                                <v-icon
-                                  :color="
-                                    selected.tlds.length > 0 ? 'primary' : ''
-                                  "
-                                >
-                                  {{
-                                    tlds.every(({ active }) => active)
-                                      ? mdiCheckboxMarked
-                                      : tlds.some(({ active }) => active)
-                                      ? mdiMinusBoxOutline
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-list-item-title>
-                                  Select All
-                                </v-list-item-title>
-                              </v-list-item-content>
-                            </v-list-item>
-
-                            <v-divider class="mt-2" />
-                          </template>
-
-                          <template #item="{ item }">
-                            <v-list-item ripple @click="toggleTld(item)">
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                {{ item.text }}
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-chip-group
-                          v-if="selected.tlds.length"
-                          class="mt-n1 mb-4"
-                          column
-                        >
-                          <v-tooltip
-                            v-for="(item, i) in selected.tlds"
-                            :key="i"
-                            bottom
-                          >
-                            <template #activator="{ on }">
-                              <v-chip
-                                color="primary lighten-1 primary--text"
-                                label
-                                close
-                                v-on="item.parent ? on : undefined"
-                                @click:close="toggleTld(item)"
-                              >
-                                {{ item.value }}
-                              </v-chip>
-                            </template>
-
-                            {{ item.parent }}
-                          </v-tooltip>
-                        </v-chip-group>
-
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-4 mb-2"
-                          dense
-                        >
-                          <small>
-                            The top-level domain is the last part of a domain
-                            name (e.g. '.com'). This can be used to target
-                            websites in specific countries (e.g. '.com.au' for
-                            Australia).
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel ref="ipCountries" value="ipCountries">
-                      <v-expansion-panel-header class="subtitle-2">
-                        IP countries
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>Target countries by website IP address.</p>
-
-                        <v-select
-                          ref="country"
-                          :items="geoIps"
-                          class="mb-4 pt-0"
-                          label="Select a country"
-                          hide-details
-                          outlined
-                          dense
-                          eager
-                        >
-                          <template #prepend-item>
-                            <v-list-item
-                              ripple
-                              @click="toggleGeoIps(countriesEurope)"
-                            >
-                              <v-list-item-content>Europe</v-list-item-content>
-                            </v-list-item>
-                            <v-list-item
-                              ripple
-                              @click="toggleGeoIps(countriesEU)"
-                            >
-                              <v-list-item-content>
-                                European Union
-                              </v-list-item-content>
-                            </v-list-item>
-
-                            <v-divider class="mt-3 mb-2" />
-                          </template>
-
-                          <template #item="{ item }">
-                            <v-list-item ripple @click="toggleGeoIp(item)">
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-row class="align-center">
-                                  <v-col class="py-0">
-                                    {{ item.text }}
-                                  </v-col>
-                                  <v-col
-                                    class="
-                                      py-0
-                                      nowrap
-                                      text-right
-                                      body-2
-                                      flex-grow-0
-                                    "
-                                  >
-                                    {{ item.value }}
-                                  </v-col>
-                                </v-row>
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-chip-group
-                          v-if="selected.geoIps.length"
-                          class="mt-n1 mb-2"
-                          column
-                        >
-                          <v-tooltip
-                            v-for="(item, i) in selected.geoIps"
-                            :key="i"
-                            bottom
-                          >
-                            <template #activator="{ on }">
-                              <v-chip
-                                color="primary lighten-1 primary--text"
-                                label
-                                close
-                                v-on="on"
-                                @click:close="toggleGeoIp(item)"
-                              >
-                                {{ item.value }}
-                              </v-chip>
-                            </template>
-
-                            {{
-                              item.parent && item.parent !== item.text
-                                ? `${item.parent} (${item.text})`
-                                : item.text
-                            }}
-                          </v-tooltip>
-                        </v-chip-group>
-
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-6 mb-2"
-                          dense
-                        >
-                          <small>
-                            We perform a lookup on a website's IP address to
-                            determine the country it's hosted in. This may be
-                            different from the country a business operates from.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel ref="languages" value="languages">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Languages
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>Target websites using specific languages.</p>
-
-                        <v-select
-                          ref="language"
-                          v-model="selectedLanguage"
-                          :items="languages"
-                          class="mb-4 pt-0"
-                          label="Select a language"
-                          hide-details
-                          outlined
-                          dense
-                          eager
-                        >
-                          <template #item="{ item }">
-                            <v-list-item ripple @click="toggleLanguage(item)">
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    typeof item.value === 'object'
-                                      ? mdiDotsHorizontal
-                                      : item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-row class="align-center">
-                                  <v-col class="py-0">
-                                    {{ item.text }}
-                                  </v-col>
-                                  <v-col
-                                    class="
-                                      py-0
-                                      nowrap
-                                      text-right
-                                      body-2
-                                      flex-grow-0
-                                    "
-                                  >
-                                    {{
-                                      typeof item.value === 'object'
-                                        ? item.value[Object.keys(item.value)[0]]
-                                        : item.value
-                                    }}
-                                  </v-col>
-                                </v-row>
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-select
-                          v-if="variants"
-                          ref="variant"
-                          :items="variants"
-                          class="mb-4"
-                          label="Select a language country"
-                          hide-details
-                          outlined
-                          dense
-                          eager
-                        >
-                          <template #prepend-item>
-                            <v-list-item ripple @click="toggleVariants">
-                              <v-list-item-action>
-                                <v-icon
-                                  :color="
-                                    selected.languages.length > 0
-                                      ? 'primary'
-                                      : ''
-                                  "
-                                >
-                                  {{
-                                    variants.every(({ active }) => active)
-                                      ? mdiCheckboxMarked
-                                      : variants.some(({ active }) => active)
-                                      ? mdiMinusBoxOutline
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-list-item-title>
-                                  Select All
-                                </v-list-item-title>
-                              </v-list-item-content>
-                            </v-list-item>
-
-                            <v-divider class="mt-2" />
-                          </template>
-
-                          <template #item="{ item }">
-                            <v-list-item ripple @click="toggleVariant(item)">
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-row class="align-center">
-                                  <v-col class="py-0">
-                                    {{ item.text }}
-                                  </v-col>
-                                  <v-col
-                                    class="
-                                      py-0
-                                      nowrap
-                                      text-right
-                                      body-2
-                                      flex-grow-0
-                                    "
-                                  >
-                                    {{ item.value }}
-                                  </v-col>
-                                </v-row>
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-chip-group
-                          v-if="selected.languages.length"
-                          class="mt-n1"
-                          column
-                        >
-                          <v-tooltip
-                            v-for="(item, i) in selected.languages"
-                            :key="i"
-                            bottom
-                          >
-                            <template #activator="{ on }">
-                              <v-chip
-                                color="primary lighten-1 primary--text"
-                                label
-                                close
-                                v-on="on"
-                                @click:close="toggleVariant(item)"
-                              >
-                                {{ item.value }}
-                              </v-chip>
-                            </template>
-
-                            {{
-                              item.parent && item.parent !== item.text
-                                ? `${item.parent} (${item.text})`
-                                : item.text
-                            }}
-                          </v-tooltip>
-                        </v-chip-group>
-
-                        <v-checkbox
-                          v-if="selected.languages.length"
-                          v-model="excludeMultilingual"
-                          class="my-2"
-                          label="Exclude multilingual websites"
-                          hide-details
-                        />
-
-                        <v-checkbox
-                          v-if="
-                            selected.geoIps.length && selected.languages.length
-                          "
-                          v-model="matchAll"
-                          class="my-2"
-                          label="Match IP country AND language (yields fewer results)"
-                          hide-details
-                        />
                       </v-expansion-panel-content>
                     </v-expansion-panel>
 
@@ -1405,7 +1419,7 @@ export default {
       inputFile: null,
       keyword: '',
       keywordErrors: [],
-      matchAll: false,
+      matchAny: false,
       matchAllTechnologies: 'or',
       mdiCalculator,
       mdiFormatListBulleted,
@@ -1498,7 +1512,6 @@ export default {
           text: '<strong>Low traffic</strong> websites using WooCommerce <strong>in Australia</strong>',
           query: {
             technologies: 'woocommerce',
-            tlds: '.au',
             countries: 'au',
             subset: '5000',
             traffic: '4',
@@ -1659,7 +1672,7 @@ export default {
     maxAge() {
       this.updateQuery()
     },
-    matchAll() {
+    matchAny() {
       this.updateQuery()
     },
     matchAllTechnologies() {
@@ -1754,7 +1767,7 @@ export default {
                 text,
               })),
               tlds: this.selected.tlds.map(({ value }) => value),
-              matchAll: this.matchAll,
+              matchAll: !this.matchAny,
               matchAllTechnologies:
                 ((this.selected.technologies.length === 2 ||
                   this.selected.technologies.length === 3) &&
@@ -2122,7 +2135,7 @@ export default {
           multilingual: this.excludeMultilingual ? 'exclude' : undefined,
           min: this.minAge !== 0 ? this.minAge.toString() : undefined,
           max: this.maxAge !== 3 ? this.maxAge.toString() : undefined,
-          filters: this.matchAll ? 'and' : undefined,
+          filters: this.matchAny ? 'or' : undefined,
           selection:
             this.matchAllTechnologies === 'and' ||
             this.matchAllTechnologies === 'not'
@@ -2218,7 +2231,7 @@ export default {
 
       this.multilingual = multilingual === 'exclude'
 
-      this.matchAll = filters === 'and'
+      this.matchAny = filters === 'or'
 
       this.compliance = ['exclude', 'excludeEu'].includes(contacts)
         ? contacts

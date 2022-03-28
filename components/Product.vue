@@ -86,6 +86,7 @@
         :class="`mb-2 mr-4${button.secondary ? ' primary--text' : ''}`"
         large
         depressed
+        @click="$gtm.push({ event: button.event })"
       >
         {{ button.text }}
         <v-icon right>
