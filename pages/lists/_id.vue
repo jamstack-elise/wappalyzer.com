@@ -401,36 +401,79 @@
             </v-card-text>
           </v-card>
 
-          <v-switch
+          <v-card
+            class="mb-4"
             v-if="
               !list.repeatListId && ['Ready', 'Complete'].includes(list.status)
             "
-            v-model="repeat"
-            :loading="repeating"
-            :disabled="!isPro"
-            class="my-6 pt-0"
-            inset
-            hide-details
           >
-            <template #label>
-              Recreate weekly with new websites
-              <v-tooltip max-width="300" left>
-                <template #activator="{ on }">
-                  <sup>
-                    <v-icon class="ml-1" small v-on="on">{{
-                      mdiHelpCircleOutline
-                    }}</v-icon>
-                  </sup>
+            <v-card-text class="px-6">
+              <v-switch
+                v-model="repeat"
+                :loading="repeating"
+                :disabled="!isPro || pauseToggleRepeat"
+                class="my-0 pt-0"
+                inset
+                hide-details
+              >
+                <template #label>
+                  Recreate weekly with new websites
+                  <v-tooltip max-width="300" left>
+                    <template #activator="{ on }">
+                      <v-icon class="ml-1" small v-on="on">{{
+                        mdiHelpCircleOutline
+                      }}</v-icon>
+                    </template>
+
+                    Automatically recreate this list every week, with only newly
+                    discovered websites.<br /><br />
+
+                    Costs 1 credit per website. Subscribe to a plan to get
+                    monthly credits.
+                  </v-tooltip>
                 </template>
+              </v-switch>
+            </v-card-text>
 
-                Automatically recreate this list every week, with only newly
-                discovered websites.<br /><br />
+            <template v-if="repeat && !repeating">
+              <v-divider />
 
-                Costs 1 credit per website. Subscribe to a plan to get monthly
-                credits.
-              </v-tooltip>
+              <v-card-text>
+                <p>
+                  <small>
+                    Optionally add a
+                    <nuxt-link to="/docs/api/v2/lists/#create-callback"
+                      >callback URL</nuxt-link
+                    >
+                    to notify your endpoint about new lists (replaces email
+                    notifications).
+                  </small>
+                </p>
+
+                <v-row class="px-3 my-1">
+                  <v-text-field
+                    v-model="list.callbackUrl"
+                    label="Callback URL"
+                    placeholder="https://yourdomain.com/wappalyzer"
+                    hide-details="auto"
+                    :rules="callbackUrlRules"
+                    outlined
+                    dense
+                  />
+
+                  <v-btn
+                    color="primary lighten-1 primary--text"
+                    class="ml-2"
+                    style="height: 40px"
+                    depressed
+                    @click="saveCallbackUrl"
+                    :loading="savingCallbackUrl"
+                    >Save</v-btn
+                  >
+                </v-row>
+              </v-card-text>
             </template>
-          </v-switch>
+          </v-card>
 
           <v-expansion-panels v-model="sidePanelIndex" class="mb-4">
             <v-expansion-panel v-if="technologies.length">
@@ -935,20 +978,23 @@
         <v-card-text>
           <p>
             This list will be recreated with newly discovered domains every
-            week.
+            week. We'll send you an email when a new list is available.
           </p>
 
-          <p class="mb-0">
-            The lists will be paid for automatically using your credit balance.
-            If you have insufficient credits, this feature is turned off
-            automatically.
-            <nuxt-link to="/pricing/"> Subscribe to a plan </nuxt-link> to get
-            monthly credits.
-          </p>
+          <v-alert
+            :icon="mdiLightbulbOnOutline"
+            type="info"
+            class="mt-6 mb-0"
+            text
+          >
+            You can optionally add a callback URL and purchase new lists
+            automatically using the
+            <nuxt-link to="/docs/api/v2/lists/">lead list API</nuxt-link>.
+          </v-alert>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="accent" text @click="repeatDialog = false"> Ok </v-btn>
+          <v-btn color="accent" text @click="repeatDialog = false">Ok</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -977,6 +1023,7 @@ import {
   mdiAlertOctagonOutline,
   mdiTimerSandEmpty,
   mdiGift,
+  mdiLightbulbOnOutline,
 } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
@@ -1012,15 +1059,26 @@ export default {
 
       const list = (await $axios.get(`lists-site/${id}`)).data
 
-      const repeat = !!list.repeat
-
-      return { list, repeat }
+      return { list }
     }
   },
   data() {
     return {
       title: 'Lead list',
       checks: 0,
+      callbackUrlRules: [
+        (v) => {
+          if (v) {
+            try {
+              new URL(v)
+            } catch (error) {
+              return 'Invalid URL'
+            }
+          }
+
+          return true
+        },
+      ],
       datasetsBaseUrl: this.$config.DATASETS_BASE_URL,
       cancelDialog: false,
       cancelError: false,
@@ -1046,13 +1104,16 @@ export default {
       mdiTimerSandEmpty,
       mdiAlertOctagonOutline,
       mdiGift,
+      mdiLightbulbOnOutline,
       panelIndex: 0,
       playGame: false,
-      repeat: false,
       repeatDialog: false,
       repeating: false,
+      savingCallbackUrl: false,
       sidePanelIndex: 0,
       paying: false,
+      pauseToggleRepeat: false,
+      repeat: false,
       claiming: false,
       list: null,
       sets,
@@ -1178,7 +1239,7 @@ export default {
         }
       }
     },
-    list({ id, status }) {
+    list({ id, status, repeat }) {
       if (status === 'Calculating') {
         setTimeout(async () => {
           this.checks += 1
@@ -1186,9 +1247,19 @@ export default {
           this.list = (await this.$axios.get(`lists-site/${id}`)).data
         }, Math.min(10000, 2000 + 100 * this.checks * this.checks))
       }
+
+      if (this.repeat !== repeat) {
+        this.pauseToggleRepeat = true
+
+        this.repeat = repeat
+      }
     },
     repeat() {
-      this.toggleRepeat()
+      if (this.pauseToggleRepeat) {
+        this.pauseToggleRepeat = false
+      } else {
+        this.toggleRepeat()
+      }
     },
   },
   mounted() {
@@ -1307,6 +1378,22 @@ export default {
       }
 
       this.repeating = false
+    },
+    async saveCallbackUrl() {
+      this.error = false
+      this.savingCallbackUrl = true
+
+      console.log(this.list.callbackUrl)
+
+      try {
+        await this.$axios.patch(`lists-site/${this.list.id}`, {
+          callbackUrl: this.list.callbackUrl,
+        })
+      } catch (error) {
+        this.error = this.getErrorMessage(error)
+      }
+
+      this.savingCallbackUrl = false
     },
     async calculate() {
       this.error = false
