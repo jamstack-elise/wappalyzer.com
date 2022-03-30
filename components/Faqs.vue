@@ -450,21 +450,10 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            The browser extension is open-source. If you are a developer or have
-            access to one, please refer to our
-            <a
-              href="https://github.com/AliasIO/wappalyzer/blob/master/CONTRIBUTING.md"
-              rel="noopener"
-              target="_blank"
-              >contributing guide</a
-            >. Otherwise, please
-            <a
-              href="https://github.com/AliasIO/wappalyzer/issues/new/choose"
-              rel="noopener"
-              target="_blank"
-              >create an issue</a
-            >
-            on GitHub.
+            You can
+            <nuxt-link to="/technologies/suggest/"
+              >suggest a new technology</nuxt-link
+            >. We only accept web technologies with an established user base.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
