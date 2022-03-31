@@ -6,7 +6,7 @@
     outlined
   >
     <v-btn to="/plus/" color="primary" depressed :small="small">
-      Get plus for $5/mo
+      Sign up to reveal
     </v-btn>
   </v-sheet>
 </template>

@@ -70,41 +70,17 @@
           class="mb-8"
           flat
         >
-          <v-card-title class="subtitle-2">Get plus for $5/mo</v-card-title>
-          <v-card-text class="primary--text pb-0">
-            With Plus, the browser extension shows company and contact
-            information of websites you visit.
+          <v-card-title class="subtitle-2">Get plus for $9/mo</v-card-title>
+          <v-card-text class="primary--text">
+            <p>
+              With <v-chip color="primary" x-small outlined>PLUS</v-chip>, the
+              browser extension shows company and contact information of
+              websites you visit.
+            </p>
+
+            <v-btn to="/plus/" color="primary" large depressed> Sign up </v-btn>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-
-            <v-btn to="/plus/" color="primary" text>
-              Learn more
-              <v-icon right>
-                {{ mdiArrowRight }}
-              </v-icon>
-            </v-btn>
-          </v-card-actions>
         </v-card>
-
-        <div class="d-flex mb-4">
-          <a
-            href="https://www.g2.com/products/wappalyzer/reviews"
-            rel="noopener"
-          >
-            <img src="/images/g2.png" height="100" width="200" />
-          </a>
-
-          <a
-            href="https://www.g2.com/products/wappalyzer/reviews?utm_source=rewards-badge"
-            target="_blank"
-            rel="noopener"
-            class="ml-6"
-            style="margin-top: -8px"
-          >
-            <G2 alt="High performer - Spring 2022" height="116px" />
-          </a>
-        </div>
 
         <div class="text-h3 mb-4">Empower yours sales and marketing teams</div>
 
@@ -131,7 +107,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { mdiPlusBox, mdiAutoFix, mdiStar, mdiArrowRight } from '@mdi/js'
+import { mdiPlusBox, mdiAutoFix, mdiStar } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
 import Progress from '~/components/Progress.vue'
@@ -160,7 +136,6 @@ export default {
       mdiPlusBox,
       mdiAutoFix,
       mdiStar,
-      mdiArrowRight,
       release: null,
       error: false,
       signUpDialog: false,

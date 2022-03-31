@@ -13,21 +13,9 @@
       mode-sign-up
       mode-continue
     />
-    <v-row v-else>
-      <v-col cols="12" md="7">
-        <h1 class="mb-4 mt-n3">
-          {{ title }}
-          <a :href="fullUrl" target="_blank" rel="nofollow noopener"
-            ><v-icon color="accent">{{ mdiOpenInNew }}</v-icon></a
-          >
-        </h1>
-
-        <p class="subtitle-2 mt-n4 mb-0">Website technology lookup</p>
-      </v-col>
-      <v-col class="text-right">
-        <Search outlined dense />
-      </v-col>
-    </v-row>
+    <h1 v-else class="mb-4 mt-n3">
+      {{ title }}
+    </h1>
 
     <v-alert v-if="error" type="info" class="mt-12" prominent text>
       {{ error }}
@@ -37,12 +25,7 @@
       <template v-if="!error && (!signInDialog || isLoading)">
         <v-row>
           <v-col cols="12" sm="6">
-            <h3 class="d-flex align-center mb-4">
-              <v-icon color="primary" left>
-                {{ mdiLayersOutline }}
-              </v-icon>
-              Technology stack
-            </h3>
+            <h3 class="mb-4">Technology stack</h3>
 
             <template v-if="isLoading || (!signInDialog && loading)">
               <v-card
@@ -144,12 +127,33 @@
           </v-col>
 
           <v-col cols="12" sm="6">
-            <h3 class="d-flex align-center mb-4">
-              <v-icon color="primary" left>
-                {{ mdiMagnify }}
-              </v-icon>
-              Website profile
-            </h3>
+            <h3 class="d-flex align-center mb-4">About</h3>
+
+            <v-card
+              v-if="!isLoading && !isPlus"
+              color="primary lighten-1 primary--text"
+              class="mb-4 pb-2"
+              flat
+              tile
+            >
+              <v-card-title class="subtitle-2">Get plus for $9/mo</v-card-title>
+              <v-card-text class="primary--text">
+                <p>
+                  Get <v-chip color="primary" x-small outlined>PLUS</v-chip> to
+                  include company and contact details in technology lookups.
+                </p>
+
+                <v-btn
+                  to="/plus/"
+                  color="primary"
+                  class="mb-n2"
+                  large
+                  depressed
+                >
+                  Sign up
+                </v-btn>
+              </v-card-text>
+            </v-card>
 
             <v-card
               v-if="isLoading || (!signInDialog && loading)"
@@ -206,18 +210,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import {
-  mdiLayersOutline,
-  mdiMagnify,
-  mdiOpenInNew,
-  mdiArrowLeft,
-} from '@mdi/js'
 
 import Page from '~/components/Page.vue'
 import TechnologyIcon from '~/components/TechnologyIcon.vue'
 import Attributes from '~/components/Attributes.vue'
 import SignIn from '~/components/SignIn.vue'
-import Search from '~/components/Search.vue'
 import Logos from '~/components/Logos.vue'
 import { lookup as meta } from '~/assets/json/meta.json'
 import sets from '~/assets/json/sets.json'
@@ -262,7 +259,6 @@ export default {
     TechnologyIcon,
     Attributes,
     SignIn,
-    Search,
     Logos,
   },
   async asyncData({
@@ -284,7 +280,7 @@ export default {
 
       hostname = hostname.replace(/^www\./, '')
 
-      const title = hostname.charAt(0).toUpperCase() + hostname.slice(1)
+      const title = hostname
       const seoTitle = `Technologies used on ${hostname}`
 
       const response = {
@@ -347,7 +343,7 @@ export default {
         errorHandler(error)
       }
     } else if (url) {
-      const title = url.charAt(0).toUpperCase() + url.slice(1)
+      const title = url
 
       return {
         hostname: url,
@@ -368,10 +364,6 @@ export default {
       url: '',
       signInDialog: false,
       technologies: [],
-      mdiLayersOutline,
-      mdiMagnify,
-      mdiOpenInNew,
-      mdiArrowLeft,
     }
   },
   computed: {

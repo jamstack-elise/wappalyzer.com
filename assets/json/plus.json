@@ -6,11 +6,11 @@
     "support": { "text": "Email support", "type": "boolean" }
   },
   "plans": {
-    "credits_plus_v1_mo": {
+    "credits_plus_v2_mo": {
       "name": "Plus",
       "interval": "month",
       "raised": true,
-      "price": 500,
+      "price": 900,
       "attrs": {
         "credits": 200,
         "users": 1,
@@ -18,11 +18,11 @@
         "cancellation": true
       }
     },
-    "credits_plus_v1_yr": {
+    "credits_plus_v2_yr": {
       "name": "Plus",
       "interval": "year",
       "raised": true,
-      "price": 5000,
+      "price": 9000,
       "attrs": {
         "credits": 200,
         "users": 1,
