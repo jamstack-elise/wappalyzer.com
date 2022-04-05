@@ -182,8 +182,7 @@
       <v-card v-if="isPlus">
         <v-card-title>Delete account</v-card-title>
         <v-card-text
-          >Please cancel any active
-          <nuxt-link to="/subscriptions/">subscriptions</nuxt-link> before
+          >Please cancel your <nuxt-link to="/plan/">plan</nuxt-link> before
           deleting your account.</v-card-text
         >
         <v-card-actions>

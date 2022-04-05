@@ -16,7 +16,7 @@ Disallow: /orders/
 Disallow: /paymentmethods/
 Disallow: /reviews/
 Disallow: /signout/
-Disallow: /subscriptions/
+Disallow: /plan/
 Disallow: /technologies/deprecated/
 Disallow: /unsubscribe/
 Disallow: /upgraded/

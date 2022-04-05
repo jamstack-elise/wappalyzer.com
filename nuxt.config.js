@@ -130,7 +130,7 @@ export default {
       '/paymentmethods',
       '/reviews',
       '/signout',
-      '/subscriptions',
+      '/plan',
       '/technologies/deprecated',
       '/unsubscribe',
       '/upgraded',

@@ -12,6 +12,12 @@
     "roles": ["admin"]
   },
   {
+    "title": "Pricing plan",
+    "icon": "mdiTagOutline",
+    "to": "/plan/",
+    "roles": ["admin"]
+  },
+  {
     "title": "Credits",
     "icon": "mdiAlphaCCircle",
     "to": "/credits/",
@@ -22,12 +28,6 @@
     "icon": "mdiFilterVariant",
     "to": "/lists/all/",
     "roles": ["buyer", "developer", "admin"]
-  },
-  {
-    "title": "Subscriptions",
-    "icon": "mdiCalendarSync",
-    "to": "/subscriptions/",
-    "roles": ["admin"]
   },
   {
     "title": "Orders",

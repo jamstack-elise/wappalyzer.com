@@ -210,7 +210,7 @@
                 <td
                   v-if="item.subscriptionId && item.subscriptionId !== 'free'"
                 >
-                  <nuxt-link :to="`/subscriptions/${item.subscriptionId}/`">
+                  <nuxt-link to="/plan/">
                     {{ item.description }}
                   </nuxt-link>
                 </td>

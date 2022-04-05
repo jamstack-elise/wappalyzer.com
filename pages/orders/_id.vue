@@ -36,16 +36,23 @@
         contact us.
       </v-alert>
 
-      <v-alert
-        v-if="order.status === 'Open'"
-        type="info"
-        border="left"
-        text
-        prominent
-      >
-        Your order has been created. Please make payment below to complete the
-        purchase.
-      </v-alert>
+      <template v-if="order.status === 'Open'">
+        <v-alert type="info" border="left" text prominent>
+          Your order has been created. Please make payment below to complete the
+          purchase.
+        </v-alert>
+
+        <v-alert
+          v-if="order.product === 'Subscription' && isPlus"
+          type="warning"
+          border="left"
+          text
+          prominent
+        >
+          You current plan will be cancelled immediately but you'll keep your
+          remaining credits.
+        </v-alert>
+      </template>
 
       <template v-if="order.status === 'Pending'">
         <v-alert
@@ -173,12 +180,13 @@
 
       <template v-if="order.stripeSubscription">
         <v-btn
-          :to="`/subscriptions/${order.stripeSubscription}/`"
+          to="/plan/"
           color="primary lighten-1"
           class="mr-2 mb-4 primary--text"
           depressed
         >
-          <v-icon left> {{ mdiCalendarSync }} </v-icon>Subscription
+          <v-icon left>{{ mdiTagOutline }}</v-icon
+          >Manage plan
         </v-btn>
       </template>
 
@@ -271,18 +279,6 @@
             </tbody>
           </v-simple-table>
         </v-card-text>
-
-        <v-card-actions
-          v-if="!['Complete', 'Processing'].includes(order.status)"
-        >
-          <v-spacer />
-          <v-btn color="error" text @click="cancelDialog = true">
-            <v-icon left>
-              {{ mdiCartRemove }}
-            </v-icon>
-            Cancel order
-          </v-btn>
-        </v-card-actions>
 
         <v-divider />
 
@@ -744,6 +740,22 @@
 
       <small class="text--disabled">Prices are in United States dollars.</small>
 
+      <div
+        v-if="!['Complete', 'Processing'].includes(order.status)"
+        class="mt-4"
+      >
+        <v-btn
+          color="error lighten-5 error--text"
+          depressed
+          @click="cancelDialog = true"
+        >
+          <v-icon left>
+            {{ mdiCartRemove }}
+          </v-icon>
+          Cancel order
+        </v-btn>
+      </div>
+
       <v-dialog v-model="billingDialog" width="80%" max-width="700">
         <v-card>
           <Account class="mx-2" @save="billingUpdated" />
@@ -885,7 +897,7 @@ import {
   mdiPencil,
   mdiReload,
   mdiFileDocumentOutline,
-  mdiCalendarSync,
+  mdiTagOutline,
   mdiDownload,
   mdiCartRemove,
   mdiCreditCard,
@@ -943,7 +955,7 @@ export default {
       mdiPencil,
       mdiReload,
       mdiFileDocumentOutline,
-      mdiCalendarSync,
+      mdiTagOutline,
       mdiDownload,
       mdiCartRemove,
       mdiCreditCard,
@@ -981,6 +993,7 @@ export default {
   computed: {
     ...mapState({
       user: ({ user }) => user.attrs,
+      isPlus: ({ credits }) => credits.plus,
       isPro: ({ credits }) => credits.pro,
       isAdmin: ({ user }) =>
         user.attrs.admin || (user.impersonator && user.impersonator.admin),

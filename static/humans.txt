@@ -1,3 +1,1 @@
-Wappalyzer was founded by Elbert Alias in 2008. The open-source core has been contributed to by hundreds of developers.
-
-https://github.com/AliasIO/wappalyzer/graphs/contributors
+Wappalyzer was founded by Elbert Alias in 2008.
