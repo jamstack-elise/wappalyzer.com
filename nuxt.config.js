@@ -31,7 +31,6 @@ const publicRuntimeConfig = {
 export default {
   target: 'static',
   generate: {
-    fallback: '200.html',
     concurrency: 200,
     exclude: [/^\/compare\/.+/],
     async routes() {
@@ -82,7 +81,11 @@ export default {
     '~/plugins/axios.js',
     '~/plugins/mixins.js',
   ],
-  buildModules: ['@nuxtjs/svg', '@nuxtjs/vuetify'],
+  buildModules: [
+    '@nuxtjs/svg',
+    '@nuxtjs/vuetify',
+    ...(process.env.ENVIRONMENT === 'beta' ? ['@nuxtjs/html-validator'] : []),
+  ],
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/sitemap',
@@ -136,6 +139,31 @@ export default {
       '/upgraded',
     ],
     trailingSlash: true,
+  },
+  htmlValidator: {
+    usePrettier: true,
+    options: {
+      extends: ['html-validate:recommended'],
+      rules: {
+        'element-permitted-content': 'off',
+        'prefer-native-element': 'off',
+        'wcag/h30': 'off',
+        'wcag/h32': 'off',
+        'wcag/h37': 'off',
+        'input-missing-label': 'off',
+        'text-content': 'off',
+        'element-required-attributes': 'off',
+        'no-redundant-role': 'off',
+        'no-missing-references': 'off',
+        'heading-level': 'off',
+        'long-title': 'off',
+        'no-deprecated-attr': 'off',
+        'no-raw-characters': 'off',
+        'no-dup-class': 'off',
+        'attribute-empty-style': 'off',
+        'input-attributes': 'off',
+      },
+    },
   },
   vuetify: {
     customVariables: ['~/assets/scss/variables.scss'],

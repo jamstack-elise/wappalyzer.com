@@ -53,7 +53,7 @@
         multiple users to use the same plan.
       </v-alert>
 
-      <Heading id="getting-started" size="2" class="mt-8 mb-2">
+      <Heading id="field-mappings" size="2" class="mt-8 mb-2">
         Field mappings
       </Heading>
 

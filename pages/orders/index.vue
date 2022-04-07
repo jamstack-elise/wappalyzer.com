@@ -96,7 +96,9 @@
                       Credits
                     </td>
                     <td style="white-space: nowrap" v-else>
-                      {{ formatCurrency(order.total / 100, order.currency) }}
+                      {{
+                        formatCurrency(order.total / 100, order.currency, true)
+                      }}
                     </td>
                     <td style="white-space: nowrap">
                       <div :style="hover ? '' : 'visibility: hidden'">

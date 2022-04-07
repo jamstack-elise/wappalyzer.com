@@ -316,35 +316,37 @@
       <v-card class="my-8">
         <v-card-text>
           <table>
-            <tr>
-              <td style="padding-right: 1rem">
-                <img
-                  src="https://www.wappalyzer.com/images/signature/logo.png"
-                  width="50"
-                  height="43"
-                />
-              </td>
-              <td style="border-left: 1px solid #eee; padding-left: 1rem">
-                <strong>Elbert Alias</strong><br />
+            <tbody>
+              <tr>
+                <td style="padding-right: 1rem">
+                  <img
+                    src="https://www.wappalyzer.com/images/signature/logo.png"
+                    width="50"
+                    height="43"
+                  />
+                </td>
+                <td style="border-left: 1px solid #eee; padding-left: 1rem">
+                  <strong>Elbert Alias</strong><br />
 
-                Founder of Wappalyzer<br />
+                  Founder of Wappalyzer<br />
 
-                <a
-                  href="https://www.linkedin.com/in/elbertalias/"
-                  target="_blank"
-                  rel="noopener"
-                >
-                  <v-img
-                    src="/images/signature/linkedin.png"
-                    width="14"
-                    height="14"
-                    alt="LinkedIn icon"
-                    class="my-2"
-                /></a>
+                  <a
+                    href="https://www.linkedin.com/in/elbertalias/"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <v-img
+                      src="/images/signature/linkedin.png"
+                      width="14"
+                      height="14"
+                      alt="LinkedIn icon"
+                      class="my-2"
+                  /></a>
 
-                <nuxt-link to="/">www.wappalyzer.com</nuxt-link>
-              </td>
-            </tr>
+                  <nuxt-link to="/">www.wappalyzer.com</nuxt-link>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </v-card-text>
       </v-card>

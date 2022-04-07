@@ -68,7 +68,7 @@
           <v-row>
             <v-col>{{ item.name }}</v-col>
             <v-col class="text-right">
-              <small>Category</small>
+              <small>{{ item.technologiesCount }} technologies</small>
             </v-col>
           </v-row>
         </template>
@@ -203,8 +203,17 @@ export default {
         this.categories = this.technologies.reduce(
           (_categories, { categories }) => {
             categories.forEach((category) => {
-              if (!_categories.find(({ slug }) => slug === category.slug)) {
-                _categories.push(category)
+              const _category = _categories.find(
+                ({ slug }) => slug === category.slug
+              )
+
+              if (!_category) {
+                _categories.push({
+                  ...category,
+                  technologiesCount: 1,
+                })
+              } else {
+                _category.technologiesCount++
               }
             })
 

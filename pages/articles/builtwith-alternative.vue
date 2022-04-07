@@ -5,8 +5,6 @@
         <v-col sm="10" lg="8">
           <h1 class="text-h1 mb-8">Wappalyzer vs. BuiltWith</h1>
 
-          <h2 class="text-h2 mt-8 mb-2" />
-
           <v-card color="primary lighten-1" class="mb-8" flat>
             <v-card-text class="primary--text">
               Looking for a BuiltWith alternative? Wappalyzer is cheaper and

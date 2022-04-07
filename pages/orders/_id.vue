@@ -134,9 +134,9 @@
       <v-btn
         v-if="isAdmin"
         :disabled="order.status === 'Complete'"
-        color="success"
+        color="success lighten-5 success--text"
         class="mr-2 mb-4"
-        outlined
+        depressed
         @click="editDialog = true"
       >
         <v-icon left>
@@ -151,9 +151,9 @@
           ['Technology lookup', 'Email verification'].includes(order.product)
         "
         :loading="processing"
-        color="success"
+        color="success lighten-5 success--text"
         class="mr-2 mb-4"
-        outlined
+        depressed
         @click="process"
       >
         <v-icon left>
@@ -388,7 +388,7 @@
             <v-simple-table
               v-else-if="
                 (order.paymentMethod || paymentMethod) === 'credits' ||
-                !order.total
+                (!order.total && order.totalCredits)
               "
             >
               <tbody>

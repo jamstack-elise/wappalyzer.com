@@ -170,6 +170,8 @@ export default {
         technology: '',
         description: '',
         website: '',
+        name: '',
+        email: '',
       },
       form: {},
     }

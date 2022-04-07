@@ -131,7 +131,11 @@
                                       {{ item.name }}
                                     </v-col>
                                     <v-col class="pr-0 text-right">
-                                      <small>(all)</small>
+                                      <small
+                                        >(x{{
+                                          Math.min(100, item.technologiesCount)
+                                        }})</small
+                                      >
                                     </v-col>
                                   </v-row>
                                 </td>
@@ -1306,6 +1310,37 @@
         </v-card>
       </v-dialog>
 
+      <v-dialog v-model="maxTechnologiesDialog" max-width="500px">
+        <v-card>
+          <v-card-title>Selection limit reached</v-card-title>
+          <v-card-text class="pb-0">
+            Please select no more than 100 technologies.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="accent" text @click="maxTechnologiesDialog = false">
+              Ok
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="categoryTruncatedDialog" max-width="500px">
+        <v-card>
+          <v-card-title>Selection limit reached</v-card-title>
+          <v-card-text class="pb-0">
+            The selected category is too large will be limited to the top 100
+            technologies.
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="accent" text @click="categoryTruncatedDialog = false">
+              Ok
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
       <v-dialog v-model="signInDialog" max-width="400px">
         <SignIn mode-continue mode-sign-up />
       </v-dialog>
@@ -1443,6 +1478,8 @@ export default {
       minAge: 0,
       maxAge: 3,
       meta,
+      maxTechnologiesDialog: false,
+      categoryTruncatedDialog: false,
       panelsMain: [],
       panelsSelection: [],
       panelsFilters: [],
@@ -1815,10 +1852,29 @@ export default {
         active: true,
       }
 
+      const totalTechnologies =
+        this.selected.technologies.length +
+        this.selected.categories.reduce(
+          (total, { technologiesCount }) => total + technologiesCount,
+          0
+        )
+
       if (item.type === 'technology') {
-        this.selected.technologies.push(item)
+        if (totalTechnologies + 1 > 100) {
+          this.maxTechnologiesDialog = true
+        } else {
+          this.selected.technologies.push(item)
+        }
       } else {
-        this.selected.categories.push(item)
+        if (totalTechnologies + Math.min(100, item.technologiesCount) > 100) {
+          this.maxTechnologiesDialog = true
+        } else {
+          if (item.technologiesCount > 100) {
+            this.categoryTruncatedDialog = true
+          }
+
+          this.selected.categories.push(item)
+        }
       }
 
       this.categories = this.selected.categories.filter(

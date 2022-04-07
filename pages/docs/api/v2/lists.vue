@@ -1115,7 +1115,7 @@
 
       <v-alert :icon="mdiLightbulbOnOutline" type="info" class="my-8" text>
         To ensure you always have enough credits to purchase a list, enable
-        <nuxt-link to="credits">auto top-up</nuxt-link>.
+        <nuxt-link to="/credits/">auto top-up</nuxt-link>.
       </v-alert>
 
       <Heading id="finalise-endpoint" size="3" class="mt-8 mb-2"
@@ -1243,7 +1243,7 @@
         <code>https://api.wappalyzer.com/v2/lists/{id}</code>
       </p>
 
-      <Heading id="finalise-properties" size="3" class="mt-8 mb-2"
+      <Heading id="delete-properties" size="3" class="mt-8 mb-2"
         >Properties</Heading
       >
 

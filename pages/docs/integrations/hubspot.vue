@@ -46,7 +46,7 @@
         <li>Click 'Connect' and follow the prompts.</li>
       </ul>
 
-      <Heading id="getting-started" size="2" class="mt-8 mb-2">
+      <Heading id="field-mappings" size="2" class="mt-8 mb-2">
         Field mappings
       </Heading>
 
