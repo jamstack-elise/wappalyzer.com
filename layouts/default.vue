@@ -76,11 +76,13 @@ export default {
 
         this.$gtm.push({ event: 'signIn', userId: this.user.sub })
 
-        this.$refiner('identifyUser', {
-          id: this.user.sub,
-          email: this.user.email,
-          name: this.user.name,
-        })
+        if (this.$refiner) {
+          this.$refiner('identifyUser', {
+            id: this.user.sub,
+            email: this.user.email,
+            name: this.user.name,
+          })
+        }
 
         this.$cookies.set('userId', this.user.sub, {
           path: '/',
@@ -109,11 +111,13 @@ export default {
     if (this.isSignedIn) {
       this.$gtm.push({ event: 'signIn', userId: this.user.sub })
 
-      this.$refiner('identifyUser', {
-        id: this.user.sub,
-        email: this.user.email,
-        name: this.user.name,
-      })
+      if (this.$refiner) {
+        this.$refiner('identifyUser', {
+          id: this.user.sub,
+          email: this.user.email,
+          name: this.user.name,
+        })
+      }
     }
 
     this.updateUserAttrs()
@@ -189,6 +193,10 @@ export default {
       }
     },
     async checkSurvey() {
+      if (!this.$refiner) {
+        return
+      }
+
       if (
         ['/lists/'].some((path) =>
           `${this.$route.path}${this.$route.hash}`.startsWith(path)
@@ -202,7 +210,9 @@ export default {
       }
     },
     initSurvey() {
-      this.$refiner('setProject', '8694e9b0-b6cc-11ec-9fd8-bfb5f88dcb10')
+      if (this.$refiner) {
+        this.$refiner('setProject', '8694e9b0-b6cc-11ec-9fd8-bfb5f88dcb10')
+      }
     },
   },
 }

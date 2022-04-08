@@ -12,12 +12,11 @@
       return-object
       outlined
       dense
-      eager
       @change="submit"
       @focus="focus"
     >
       <template #prepend-item>
-        <v-form ref="form" class="search" @submit.prevent="search">
+        <v-form class="search" @submit.prevent="search">
           <v-text-field
             ref="search"
             v-model="query"
