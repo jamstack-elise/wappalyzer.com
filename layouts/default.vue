@@ -76,6 +76,12 @@ export default {
 
         this.$gtm.push({ event: 'signIn', userId: this.user.sub })
 
+        this.$refiner('identifyUser', {
+          id: this.user.sub,
+          email: this.user.email,
+          name: this.user.name,
+        })
+
         this.$cookies.set('userId', this.user.sub, {
           path: '/',
           maxAge: 60 * 60 * 24 * 30,
@@ -91,10 +97,24 @@ export default {
     },
     $route() {
       this.checkChat()
+
+      this.checkSurvey()
     },
   },
   mounted() {
     this.initChat()
+
+    this.initSurvey()
+
+    if (this.isSignedIn) {
+      this.$gtm.push({ event: 'signIn', userId: this.user.sub })
+
+      this.$refiner('identifyUser', {
+        id: this.user.sub,
+        email: this.user.email,
+        name: this.user.name,
+      })
+    }
 
     this.updateUserAttrs()
   },
@@ -167,6 +187,22 @@ export default {
       } else if ($crisp.is('chat:visible') && !$crisp.is('chat:opened')) {
         $crisp.do('chat:hide')
       }
+    },
+    async checkSurvey() {
+      if (
+        ['/lists/'].some((path) =>
+          `${this.$route.path}${this.$route.hash}`.startsWith(path)
+        )
+      ) {
+        setTimeout(() => {
+          this.$refiner('showForm', '86a0f240-b6cc-11ec-aee4-dfa3c2d311cf')
+        }, 20000)
+      } else {
+        this.$refiner('closeForm', '86a0f240-b6cc-11ec-aee4-dfa3c2d311cf')
+      }
+    },
+    initSurvey() {
+      this.$refiner('setProject', '8694e9b0-b6cc-11ec-9fd8-bfb5f88dcb10')
     },
   },
 }

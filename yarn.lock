@@ -7542,6 +7542,11 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
+refiner-js@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/refiner-js/-/refiner-js-1.0.2.tgz#b770fef4a87b976f0c982a87b58ed2c47046175f"
+  integrity sha512-/RLNXtd0fITVl68hqJNhb+R7KsK+A9/vZaXfVAs12j9bz6b7kO/1VadT4veTi79wJ9h/b/sSXjb3ceCy/Qb98A==
+
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/regenerate-unicode-properties/-/regenerate-unicode-properties-8.2.0.tgz#e5de7111d655e7ba60c057dbe9ff37c87e65cdec"
