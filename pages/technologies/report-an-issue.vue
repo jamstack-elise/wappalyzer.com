@@ -43,7 +43,7 @@
 
       <v-divider />
 
-      <v-form :disabled="!form.type">
+      <v-form v-model="valid" :disabled="!form.type">
         <v-card-title class="subtitle-2">Basic information</v-card-title>
 
         <v-card-text>
@@ -89,6 +89,7 @@
             v-model="form.website"
             label="Website"
             placeholder="https://example.com"
+            :rules="websiteRules"
             hide-details="auto"
             outlined
             dense
@@ -139,7 +140,7 @@
       class="mt-4 mb-4"
       large
       :loading="submitting"
-      :disabled="!form.type || !form.description"
+      :disabled="!form.type || !form.description || !valid"
       @click="submit"
       depressed
     >
@@ -174,6 +175,33 @@ export default {
         email: '',
       },
       form: {},
+      websiteRules: [
+        (v) => {
+          console.log({ v })
+
+          if (!v) {
+            return true
+          }
+
+          try {
+            const { hostname } = new URL(v)
+
+            if (
+              ['localhost', '127.', '172.16.', '192.168.', '.local'].some(
+                (match) => hostname.includes(match)
+              )
+            ) {
+              throw new Error(
+                "Provide a link to a live website so that we can verify the issue. Please don't link to a local development environment."
+              )
+            }
+
+            return true
+          } catch (error) {
+            return error.message || error.toString()
+          }
+        },
+      ],
     }
   },
   computed: {
