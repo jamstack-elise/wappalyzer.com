@@ -195,13 +195,15 @@ Vue.mixin({
               maxAge: 60 * 60 * 24 * 7,
             })
 
-            const navItem = userNav.find(
-              ({ to }) =>
-                to.replace(/\/$/, '') === this.$route.path.replace(/\/$/, '')
-            )
+            if (!this.$store.state.user.impersonator.admin) {
+              const navItem = userNav.find(
+                ({ to }) =>
+                  to.replace(/\/$/, '') === this.$route.path.replace(/\/$/, '')
+              )
 
-            if (navItem && !navItem.member) {
-              this.$router.push('/orders/')
+              if (navItem && !navItem.member) {
+                this.$router.push('/orders/')
+              }
             }
           } catch (error) {
             this.$store.commit('user/setImpersonating', '')

@@ -70,6 +70,16 @@
                 />
               </v-col>
             </v-row>
+
+            <v-row>
+              <v-col class="py-0" cols="12" sm="6">
+                <v-text-field
+                  v-model="proExpiresAt"
+                  label="Enable Pro (days)"
+                  placeholder="7"
+                />
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-form>
 
@@ -258,6 +268,7 @@ export default {
       enabling: false,
       removing: false,
       stripeCustomer: '',
+      proExpiresAt: null,
       rules: {
         email: [(v) => /@/.test(v) || 'Enter a valid email address'],
         required: [(v) => !!v || 'This field is required'],
@@ -280,10 +291,12 @@ export default {
   },
   watch: {
     user() {
+      console.log(this.user)
       this.fill()
     },
   },
   beforeMount() {
+    console.log(this.user)
     this.fill()
   },
   methods: {
@@ -319,6 +332,9 @@ export default {
           await this.saveUser({
             email: this.email,
             stripeCustomer: this.stripeCustomer,
+            proExpiresAt: Math.round(
+              Date.now() / 1000 + this.proExpiresAt * 60 * 60 * 24
+            ),
           })
 
           this.success = 'Your details have been saved'
@@ -390,6 +406,13 @@ export default {
     fill() {
       this.email = this.user.email
       this.stripeCustomer = this.user.stripeCustomer
+      this.proExpiresAt =
+        Math.max(
+          0,
+          Math.ceil(
+            ((this.user.proExpiresAt || 0) - Date.now() / 1000) / 60 / 60 / 24
+          )
+        ) || null
       this.userId = this.user.sub
     },
   },
