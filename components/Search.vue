@@ -3,13 +3,13 @@
     ref="results"
     v-model="selection"
     :items="results"
-    background-color="white"
     placeholder="Website URL, technology, keyword or email address"
     :append-icon="mdiMagnify"
     :loading="loading ? (outlined ? 'primary' : 'white') : false"
     hide-details="auto"
     return-object
     solo
+    light
     :dense="dense"
     :flat="dense || outlined"
     :outlined="outlined"

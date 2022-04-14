@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-6" outlined>
+  <v-card class="mb-6" :outlined="!$vuetify.theme.dark">
     <v-card-text>
       <v-row>
         <v-col cols="12" sm="3">

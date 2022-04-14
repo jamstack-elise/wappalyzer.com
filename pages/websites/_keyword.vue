@@ -12,7 +12,6 @@
           <v-text-field
             v-model="input"
             label="Keyword"
-            background-color="white"
             :append-icon="mdiMagnify"
             :error-messages="keywordError ? [keywordError] : []"
             required

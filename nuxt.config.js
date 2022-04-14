@@ -173,6 +173,9 @@ export default {
     options: {
       customProperties: true,
     },
+    icons: {
+      iconfont: 'mdiSvg',
+    },
     theme: {
       dark: false,
       themes: {
@@ -180,7 +183,6 @@ export default {
           primary: {
             base: '#4608ad',
             lighten1: '#f0ebf9',
-            // lighten2: '#f4f1fa',
             darken1: '#32067c',
             darken2: '#150233',
           },
@@ -189,6 +191,20 @@ export default {
             lighten1: '#e4f2fe',
           },
           secondary: '#fafafa',
+          anchor: '#2196f3',
+        },
+        dark: {
+          primary: {
+            base: '#4608ad',
+            lighten1: '#150233',
+            darken1: '#f0ebf9',
+            darken2: '#f0ebf9',
+          },
+          accent: {
+            base: '#2196f3',
+            lighten1: '#e4f2fe',
+          },
+          secondary: '#222222',
           anchor: '#2196f3',
         },
       },

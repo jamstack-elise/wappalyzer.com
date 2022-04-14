@@ -1,5 +1,5 @@
 <template>
-  <v-card flat tile class="header" color="secondary">
+  <v-sheet class="header" color="secondary">
     <v-container class="body-2">
       <v-breadcrumbs :items="items" class="pa-0">
         <template #divider>
@@ -17,8 +17,9 @@
         </template>
       </v-breadcrumbs>
     </v-container>
-    <v-divider />
-  </v-card>
+
+    <v-divider v-if="!$vuetify.theme.dark" />
+  </v-sheet>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="155" viewBox="0 0 480 155">
-  <g fill="#231F20" transform="translate(46)">
+<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="480" height="155" viewBox="0 0 480 155">
+  <g fill="currentColor" transform="translate(46)">
     <polygon points="0 0 75.18 0 75.18 10.75 0 10.75"/>
     <polygon points="0 20.51 75.18 20.51 75.18 31.26 0 31.26"/>
     <polygon points="21.47 40.99 53.72 40.99 53.72 51.77 21.47 51.77"/>

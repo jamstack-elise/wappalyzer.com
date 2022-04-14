@@ -11,8 +11,9 @@
       >
         <v-card
           class="d-flex flex-column justify-space-between"
+          :color="!$vuetify.theme.dark && feature ? 'transparent' : ''"
           style="height: 100%"
-          :outlined="!feature"
+          :outlined="!$vuetify.theme.dark && !feature"
           flat
         >
           <v-card-text

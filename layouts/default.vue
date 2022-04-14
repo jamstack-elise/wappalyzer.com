@@ -1,5 +1,5 @@
 <template>
-  <v-app light>
+  <v-app>
     <v-main>
       <Header
         :main-nav="headerNav"

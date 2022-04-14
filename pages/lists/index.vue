@@ -24,1263 +24,1195 @@
         </v-btn>
       </div>
 
+      <div class="body-2 pb-8" style="max-width: 600px">
+        <p>
+          Get started by selecting one or more technologies or keywords.
+          Optionally add filters to get exactly what you need. Within minutes,
+          you get a free sample to review. Sign up for a
+          <v-chip to="/pro/" color="primary" x-small outlined>PRO</v-chip>
+          plan to download the full list.
+        </p>
+
+        <p>
+          Not sure what to do?
+          <a @click="suggestionsDialog = true">Start with these ideas</a>.
+        </p>
+      </div>
+
       <template #content>
         <v-form ref="form">
-          <v-card class="my-4">
-            <v-card-text v-if="error" class="pb-0">
-              <v-alert type="error" text>
-                {{ error }}
-              </v-alert>
-            </v-card-text>
+          <v-alert v-if="error" type="error" text>
+            {{ error }}
+          </v-alert>
 
-            <v-card-title>
-              <v-icon color="primary" left>
-                {{ mdiFilterVariant }}
-              </v-icon>
-              Create your list
-            </v-card-title>
+          <v-row class="mb-4">
+            <v-col class="py-0" cols="12" sm="6">
+              <v-expansion-panels
+                v-model="panelsMain"
+                class="mb-4 body-2"
+                :disabled="loading"
+                multiple
+              >
+                <v-expansion-panel ref="technologies" value="technologies">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Technologies
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>
+                      Choose one or more technologies (e.g. 'Shopify') or
+                      categories (e.g. 'Ecommerce').
+                    </p>
 
-            <v-card-text>
-              <div style="max-width: 600px">
-                <p>
-                  Get started by selecting one or more technologies or keywords.
-                  Optionally add filters to get exactly what you need. Within
-                  minutes, you get a free sample to review. Sign up for a
-                  <v-chip to="/pro/" color="primary" x-small outlined
-                    >PRO</v-chip
-                  >
-                  plan to download the full list.
-                </p>
+                    <Technologies ref="selector" @select="selectItem" />
 
-                <p class="mb-2">
-                  Not sure what to do?
-                  <a @click="suggestionsDialog = true">Start with these ideas</a
-                  >.
-                </p>
-              </div>
-            </v-card-text>
+                    <template v-if="selectedItems.length">
+                      <v-simple-table
+                        class="mx-n6 pt-0"
+                        style="max-width: none"
+                      >
+                        <tbody>
+                          <tr>
+                            <th class="pl-6">Technology</th>
+                            <th width="30%">
+                              Version
 
-            <v-divider class="mb-4" />
+                              <v-tooltip max-width="300" top>
+                                <template #activator="{ on }">
+                                  <sup>
+                                    <v-icon small v-on="on">{{
+                                      mdiHelpCircleOutline
+                                    }}</v-icon>
+                                  </sup>
+                                </template>
 
-            <v-row>
-              <v-col class="py-0 pr-sm-0" cols="12" sm="6">
-                <v-card-text class="pb-0">
-                  <v-expansion-panels
-                    v-model="panelsMain"
-                    :disabled="loading"
-                    multiple
-                  >
-                    <v-expansion-panel ref="technologies" value="technologies">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Technologies
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>
-                          Choose one or more technologies (e.g. 'Shopify') or
-                          categories (e.g. 'Ecommerce').
-                        </p>
-
-                        <Technologies ref="selector" @select="selectItem" />
-
-                        <template v-if="selectedItems.length">
-                          <v-simple-table
-                            class="mx-n6 pt-0"
-                            style="max-width: none"
-                          >
-                            <tbody>
-                              <tr>
-                                <th class="pl-6">Technology</th>
-                                <th width="30%">
-                                  Version
-
-                                  <v-tooltip max-width="300" top>
-                                    <template #activator="{ on }">
-                                      <sup>
-                                        <v-icon small v-on="on">{{
-                                          mdiHelpCircleOutline
-                                        }}</v-icon>
-                                      </sup>
-                                    </template>
-
-                                    Optionaly specify a technology version in
-                                    SemVer notation, e.g. '2' or '2.0.0'.<br /><br />
-                                    <code>&gt;=</code> Equal to or greater
-                                    than<br />
-                                    <code>=&nbsp;</code> Exact match<br />
-                                    <code>&lt;=</code> Equal to or lower than<br /><br />
-                                    Leave blank to include all versions.<br /><br />
-                                    Not available on all technologies.
-                                  </v-tooltip>
-                                </th>
-                                <th width="1" />
-                              </tr>
-                              <tr
-                                v-for="item in selectedItems"
-                                :key="item.slug"
+                                Optionaly specify a technology version in SemVer
+                                notation, e.g. '2' or '2.0.0'.<br /><br />
+                                <code>&gt;=</code> Equal to or greater than<br />
+                                <code>=&nbsp;</code> Exact match<br />
+                                <code>&lt;=</code> Equal to or lower than<br /><br />
+                                Leave blank to include all versions.<br /><br />
+                                Not available on all technologies.
+                              </v-tooltip>
+                            </th>
+                            <th width="1" />
+                          </tr>
+                          <tr v-for="item in selectedItems" :key="item.slug">
+                            <td class="pl-6">
+                              <div
+                                v-if="item.type === 'technology'"
+                                class="d-flex align-center py-2"
                               >
-                                <td class="pl-6">
-                                  <div
-                                    v-if="item.type === 'technology'"
-                                    class="d-flex align-center py-2"
+                                <TechnologyIcon :icon="item.icon" />
+                                <span>{{ item.name }}</span>
+                              </div>
+                              <v-row v-else>
+                                <v-col>
+                                  {{ item.name }}
+                                </v-col>
+                                <v-col class="pr-0 text-right">
+                                  <small
+                                    >(x{{
+                                      Math.min(100, item.technologiesCount)
+                                    }})</small
                                   >
-                                    <TechnologyIcon :icon="item.icon" />
-                                    <span>{{ item.name }}</span>
-                                  </div>
-                                  <v-row v-else>
-                                    <v-col>
-                                      {{ item.name }}
-                                    </v-col>
-                                    <v-col class="pr-0 text-right">
-                                      <small
-                                        >(x{{
-                                          Math.min(100, item.technologiesCount)
-                                        }})</small
-                                      >
-                                    </v-col>
-                                  </v-row>
-                                </td>
-                                <td>
-                                  <v-row v-if="item.type === 'technology'">
-                                    <v-col class="py-0 pr-2">
-                                      <v-select
-                                        v-model="item.operator"
-                                        :items="[
-                                          { text: '>=', value: '>=' },
-                                          { text: '=', value: '=' },
-                                          { text: '<=', value: '<=' },
-                                        ]"
-                                        class="my-0"
-                                        hide-details="auto"
-                                        dense
-                                      />
-                                    </v-col>
-                                    <v-col class="pa-0">
-                                      <v-text-field
-                                        v-model="item.version"
-                                        placeholder="Any"
-                                        class="ma-0"
-                                        hide-details="auto"
-                                        :rules="[
-                                          (v) => !v || /^(\d.?){1,3}$/.test(v),
-                                        ]"
-                                        dense
-                                      />
-                                    </v-col>
-                                  </v-row>
-                                  <span v-else class="text--disabled">-</span>
-                                </td>
-                                <td class="pl-0 pr-6">
-                                  <v-btn icon @click="removeItem(item)">
-                                    <v-icon>{{ mdiCloseCircleOutline }}</v-icon>
-                                  </v-btn>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </v-simple-table>
-                        </template>
+                                </v-col>
+                              </v-row>
+                            </td>
+                            <td>
+                              <v-row v-if="item.type === 'technology'">
+                                <v-col class="py-0 pr-2">
+                                  <v-select
+                                    v-model="item.operator"
+                                    :items="[
+                                      { text: '>=', value: '>=' },
+                                      { text: '=', value: '=' },
+                                      { text: '<=', value: '<=' },
+                                    ]"
+                                    class="my-0"
+                                    hide-details="auto"
+                                    dense
+                                  />
+                                </v-col>
+                                <v-col class="pa-0">
+                                  <v-text-field
+                                    v-model="item.version"
+                                    placeholder="Any"
+                                    class="ma-0"
+                                    hide-details="auto"
+                                    :rules="[
+                                      (v) => !v || /^(\d.?){1,3}$/.test(v),
+                                    ]"
+                                    dense
+                                  />
+                                </v-col>
+                              </v-row>
+                              <span v-else class="text--disabled">-</span>
+                            </td>
+                            <td class="pl-0 pr-6">
+                              <v-btn icon @click="removeItem(item)">
+                                <v-icon>{{ mdiCloseCircleOutline }}</v-icon>
+                              </v-btn>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </v-simple-table>
+                    </template>
 
-                        <template v-if="selectedItems.length == 2">
-                          <v-divider class="mx-n6 mb-6" />
+                    <template v-if="selectedItems.length == 2">
+                      <v-divider class="mx-n6 mb-6" />
 
-                          Create a list of websites that use...
-                          <v-radio-group
-                            v-model="matchAllTechnologies"
-                            class="mb-2"
-                            hide-details
-                          >
-                            <v-radio class="mt-0" value="or" hide-details>
-                              <template #label>
-                                <div>
-                                  {{ selectedItems[0].name }}
-                                  <strong>or</strong>
-                                  {{ selectedItems[1].name }}
-                                </div>
-                              </template>
-                            </v-radio>
-                            <v-radio
-                              v-if="!selected.categories.length"
-                              class="mt-0"
-                              value="and"
-                              hide-details
-                            >
-                              <template #label>
-                                <div>
-                                  {{ selectedItems[0].name }}
-                                  <strong>and</strong>
-                                  {{ selectedItems[1].name }}
-                                </div>
-                              </template>
-                            </v-radio>
-                            <v-radio class="mt-0" value="not" hide-details>
-                              <template #label>
-                                <div>
-                                  {{ selectedItems[0].name }} and
-                                  <strong>not</strong>
-                                  {{ selectedItems[1].name }}
-                                </div>
-                              </template>
-                            </v-radio>
-                          </v-radio-group>
-                        </template>
-
-                        <template v-if="selectedItems.length > 2">
-                          <v-divider class="mx-n6 mb-6" />
-
-                          Create a list of websites that use...
-                          <v-radio-group
-                            v-model="matchAllTechnologies"
-                            class="mb-2"
-                            hide-details
-                          >
-                            <v-radio class="mt-0" value="or" hide-details>
-                              <template #label>
-                                <div>
-                                  <strong>Any</strong> of the selected
-                                  technologies
-                                </div>
-                              </template>
-                            </v-radio>
-                            <v-radio class="mt-0" value="and" hide-details>
-                              <template #label>
-                                <div>
-                                  <strong>All</strong> of the selected
-                                  technologies
-                                </div>
-                              </template>
-                            </v-radio>
-                            <v-radio class="mt-0" value="not" hide-details>
-                              <template #label>
-                                <div>
-                                  {{ selectedItems[0].name }} and
-                                  <strong>not</strong>
-                                  any of the other selected technologies
-                                </div>
-                              </template>
-                            </v-radio>
-                          </v-radio-group>
-                        </template>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel ref="keywords" value="keywords">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Keywords
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>
-                          Target websites that use certain keywords, such as a
-                          brand, product, profession, or any noun. Use
-                          <code>not</code> to exclude keywords, e.g. 'not
-                          health'.
-                        </p>
-
-                        <v-form @submit.prevent="addKeyword()">
-                          <v-text-field
-                            v-model="keyword"
-                            :error-messages="keywordErrors"
-                            :append-icon="mdiPlus"
-                            placeholder="E.g. education"
-                            class="pt-0"
-                            hide-details="auto"
-                            :rules="[
-                              (v) =>
-                                v.match(/^(not )?[a-z0-9]*$/i) ||
-                                'Must be alphanumeric (a-z0-9) or start with \'not \', e.g. \'health\' or \'not health\'.',
-                            ]"
-                            outlined
-                            dense
-                            @click:append="addKeyword()"
-                          />
-                        </v-form>
-
-                        <v-chip-group
-                          v-if="selected.keywords.length"
-                          class="mb-n4 mt-4"
-                          column
+                      Create a list of websites that use...
+                      <v-radio-group
+                        v-model="matchAllTechnologies"
+                        class="mb-2"
+                        hide-details
+                      >
+                        <v-radio class="mt-0" value="or" hide-details>
+                          <template #label>
+                            <div>
+                              {{ selectedItems[0].name }}
+                              <strong>or</strong>
+                              {{ selectedItems[1].name }}
+                            </div>
+                          </template>
+                        </v-radio>
+                        <v-radio
+                          v-if="!selected.categories.length"
+                          class="mt-0"
+                          value="and"
+                          hide-details
                         >
+                          <template #label>
+                            <div>
+                              {{ selectedItems[0].name }}
+                              <strong>and</strong>
+                              {{ selectedItems[1].name }}
+                            </div>
+                          </template>
+                        </v-radio>
+                        <v-radio class="mt-0" value="not" hide-details>
+                          <template #label>
+                            <div>
+                              {{ selectedItems[0].name }} and
+                              <strong>not</strong>
+                              {{ selectedItems[1].name }}
+                            </div>
+                          </template>
+                        </v-radio>
+                      </v-radio-group>
+                    </template>
+
+                    <template v-if="selectedItems.length > 2">
+                      <v-divider class="mx-n6 mb-6" />
+
+                      Create a list of websites that use...
+                      <v-radio-group
+                        v-model="matchAllTechnologies"
+                        class="mb-2"
+                        hide-details
+                      >
+                        <v-radio class="mt-0" value="or" hide-details>
+                          <template #label>
+                            <div>
+                              <strong>Any</strong> of the selected technologies
+                            </div>
+                          </template>
+                        </v-radio>
+                        <v-radio class="mt-0" value="and" hide-details>
+                          <template #label>
+                            <div>
+                              <strong>All</strong> of the selected technologies
+                            </div>
+                          </template>
+                        </v-radio>
+                        <v-radio class="mt-0" value="not" hide-details>
+                          <template #label>
+                            <div>
+                              {{ selectedItems[0].name }} and
+                              <strong>not</strong>
+                              any of the other selected technologies
+                            </div>
+                          </template>
+                        </v-radio>
+                      </v-radio-group>
+                    </template>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel ref="keywords" value="keywords">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Keywords
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>
+                      Target websites that use certain keywords, such as a
+                      brand, product, profession, or any noun. Use
+                      <code>not</code> to exclude keywords, e.g. 'not health'.
+                    </p>
+
+                    <v-form @submit.prevent="addKeyword()">
+                      <v-text-field
+                        v-model="keyword"
+                        :error-messages="keywordErrors"
+                        :append-icon="mdiPlus"
+                        placeholder="E.g. education"
+                        class="pt-0"
+                        hide-details="auto"
+                        :rules="[
+                          (v) =>
+                            v.match(/^(not )?[a-z0-9]*$/i) ||
+                            'Must be alphanumeric (a-z0-9) or start with \'not \', e.g. \'health\' or \'not health\'.',
+                        ]"
+                        outlined
+                        dense
+                        @click:append="addKeyword()"
+                      />
+                    </v-form>
+
+                    <v-chip-group
+                      v-if="selected.keywords.length"
+                      class="mb-n4 mt-4"
+                      column
+                    >
+                      <v-chip
+                        v-for="_keyword in selected.keywords"
+                        :key="_keyword"
+                        color="primary lighten-1 primary--text"
+                        label
+                        close
+                        @click:close="removeKeyword(_keyword)"
+                      >
+                        {{ _keyword }}
+                      </v-chip>
+                    </v-chip-group>
+
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mt-8 mb-2"
+                      dense
+                    >
+                      <small>
+                        For best results, include multiple variations (e.g.
+                        shop, shops and shopping).<br />
+                        Use the
+                        <nuxt-link to="/websites/">keyword search</nuxt-link>
+                        function to see how many websites we have on record for
+                        a given keyword.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+
+              <v-expansion-panels
+                v-model="panelsSelection"
+                class="body-2"
+                :disabled="!selection"
+                multiple
+              >
+                <v-expansion-panel ref="attributes" value="attributes">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Fields
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content class="no-x-padding">
+                    <v-simple-table>
+                      <tbody>
+                        <tr>
+                          <th />
+                          <th width="20%">Exclude</th>
+                          <th width="20%">Include</th>
+                          <th width="20%">Required (one of)</th>
+                        </tr>
+                        <tr v-for="(key, name) in setOptions" :key="key">
+                          <td>{{ name }}</td>
+                          <td class="text-center">
+                            <v-radio-group
+                              v-model="selected.sets[key]"
+                              class="ma-0"
+                              hide-details
+                              :disabled="
+                                ['phone', 'email'].includes(key) &&
+                                compliance === 'exclude'
+                              "
+                            >
+                              <v-radio value="exclude" class="ma-0" />
+                            </v-radio-group>
+                          </td>
+                          <td class="text-center">
+                            <v-radio-group
+                              v-model="selected.sets[key]"
+                              class="ma-0"
+                              hide-details
+                              :disabled="
+                                ['phone', 'email'].includes(key) &&
+                                compliance === 'exclude'
+                              "
+                            >
+                              <v-radio value="include" class="ma-0" />
+                            </v-radio-group>
+                          </td>
+                          <td class="text-center">
+                            <v-radio-group
+                              v-model="selected.sets[key]"
+                              class="ma-0"
+                              hide-details
+                              :disabled="
+                                ['phone', 'email'].includes(key) &&
+                                compliance === 'exclude'
+                              "
+                            >
+                              <v-radio value="required" class="ma-0" />
+                            </v-radio-group>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </v-simple-table>
+
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mx-6 mt-4 mb-2"
+                      dense
+                    >
+                      <small>
+                        Contact details are obtained from websites' contact
+                        pages. When selecting required fields, we only include
+                        websites for which we have ANY of the fields available.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel ref="compliance" value="compliance">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Compliance
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <v-radio-group v-model="compliance" class="my-0" mandatory>
+                      <v-radio
+                        value="include"
+                        class="mt-0"
+                        hide-details
+                        :disabled="australia"
+                      >
+                        <template #label>
+                          Include personal and contact details
+                        </template>
+                      </v-radio>
+                      <v-radio
+                        value="excludeEU"
+                        class="mt-0"
+                        hide-details
+                        :disabled="australia"
+                      >
+                        <template #label>
+                          Exclude personal and contact details of EU websites
+                        </template>
+                      </v-radio>
+                      <v-radio value="exclude" class="mt-0" hide-details>
+                        <template #label>
+                          Exclude all personal and contact details
+                        </template>
+                      </v-radio>
+                    </v-radio-group>
+
+                    <v-checkbox
+                      v-model="australia"
+                      label="I'm in or do business in Australia"
+                      class="mt-0"
+                      hide-details
+                    />
+
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mt-8 mb-2"
+                      dense
+                    >
+                      <small>
+                        We're unable to supply names, email addresses and phone
+                        numbers if you're in Australia or carry on business or
+                        activities in Australia.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-col>
+            <v-col class="py-0" cols="12" sm="6">
+              <v-expansion-panels
+                v-model="panelsFilters"
+                class="body-2"
+                :disabled="!selection"
+                multiple
+              >
+                <v-expansion-panel ref="ipCountries" value="ipCountries">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Countries
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>Target websites in specific countries.</p>
+
+                    <v-select
+                      ref="country"
+                      :items="geoIps"
+                      class="mb-4 pt-0"
+                      label="Select a country"
+                      hide-details
+                      outlined
+                      dense
+                      eager
+                    >
+                      <template #prepend-item>
+                        <v-list-item
+                          ripple
+                          @click="toggleGeoIps(countriesEurope)"
+                        >
+                          <v-list-item-content>Europe</v-list-item-content>
+                        </v-list-item>
+                        <v-list-item ripple @click="toggleGeoIps(countriesEU)">
+                          <v-list-item-content>
+                            European Union
+                          </v-list-item-content>
+                        </v-list-item>
+
+                        <v-divider class="mt-3 mb-2" />
+                      </template>
+
+                      <template #item="{ item }">
+                        <v-list-item ripple @click="toggleGeoIp(item)">
+                          <v-list-item-action>
+                            <v-icon :color="item.active ? 'primary' : ''">
+                              {{
+                                item.active
+                                  ? mdiCheckboxMarked
+                                  : mdiCheckboxBlankOutline
+                              }}
+                            </v-icon>
+                          </v-list-item-action>
+
+                          <v-list-item-content>
+                            <v-row class="align-center">
+                              <v-col class="py-0">
+                                {{ item.text }}
+                              </v-col>
+                              <v-col
+                                class="
+                                  py-0
+                                  nowrap
+                                  text-right
+                                  body-2
+                                  flex-grow-0
+                                "
+                              >
+                                {{ item.value }}
+                              </v-col>
+                            </v-row>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-select>
+
+                    <v-chip-group
+                      v-if="selected.geoIps.length"
+                      class="mt-n1 mb-2"
+                      column
+                    >
+                      <v-tooltip
+                        v-for="(item, i) in selected.geoIps"
+                        :key="i"
+                        bottom
+                      >
+                        <template #activator="{ on }">
                           <v-chip
-                            v-for="_keyword in selected.keywords"
-                            :key="_keyword"
                             color="primary lighten-1 primary--text"
                             label
                             close
-                            @click:close="removeKeyword(_keyword)"
+                            v-on="on"
+                            @click:close="toggleGeoIp(item)"
                           >
-                            {{ _keyword }}
+                            {{ item.value }}
                           </v-chip>
-                        </v-chip-group>
+                        </template>
 
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-8 mb-2"
-                          dense
-                        >
-                          <small>
-                            For best results, include multiple variations (e.g.
-                            shop, shops and shopping).<br />
-                            Use the
-                            <nuxt-link to="/websites/"
-                              >keyword search</nuxt-link
+                        {{
+                          item.parent && item.parent !== item.text
+                            ? `${item.parent} (${item.text})`
+                            : item.text
+                        }}
+                      </v-tooltip>
+                    </v-chip-group>
+
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mt-6 mb-2"
+                      dense
+                    >
+                      <small>
+                        When a website's country can't be determined through
+                        other means, we perform a lookup on the IP address. This
+                        may be different from the country a business operates
+                        from.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel ref="languages" value="languages">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Languages
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>Target websites using specific languages.</p>
+
+                    <v-select
+                      ref="language"
+                      v-model="selectedLanguage"
+                      :items="languages"
+                      class="mb-4 pt-0"
+                      label="Select a language"
+                      hide-details
+                      outlined
+                      dense
+                      eager
+                    >
+                      <template #item="{ item }">
+                        <v-list-item ripple @click="toggleLanguage(item)">
+                          <v-list-item-action>
+                            <v-icon :color="item.active ? 'primary' : ''">
+                              {{
+                                typeof item.value === 'object'
+                                  ? mdiDotsHorizontal
+                                  : item.active
+                                  ? mdiCheckboxMarked
+                                  : mdiCheckboxBlankOutline
+                              }}
+                            </v-icon>
+                          </v-list-item-action>
+
+                          <v-list-item-content>
+                            <v-row class="align-center">
+                              <v-col class="py-0">
+                                {{ item.text }}
+                              </v-col>
+                              <v-col
+                                class="
+                                  py-0
+                                  nowrap
+                                  text-right
+                                  body-2
+                                  flex-grow-0
+                                "
+                              >
+                                {{
+                                  typeof item.value === 'object'
+                                    ? item.value[Object.keys(item.value)[0]]
+                                    : item.value
+                                }}
+                              </v-col>
+                            </v-row>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-select>
+
+                    <v-select
+                      v-if="variants"
+                      ref="variant"
+                      :items="variants"
+                      class="mb-4"
+                      label="Select a language country"
+                      hide-details
+                      outlined
+                      dense
+                      eager
+                    >
+                      <template #prepend-item>
+                        <v-list-item ripple @click="toggleVariants">
+                          <v-list-item-action>
+                            <v-icon
+                              :color="
+                                selected.languages.length > 0 ? 'primary' : ''
+                              "
                             >
-                            function to see how many websites we have on record
-                            for a given keyword.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-                  </v-expansion-panels>
-                </v-card-text>
+                              {{
+                                variants.every(({ active }) => active)
+                                  ? mdiCheckboxMarked
+                                  : variants.some(({ active }) => active)
+                                  ? mdiMinusBoxOutline
+                                  : mdiCheckboxBlankOutline
+                              }}
+                            </v-icon>
+                          </v-list-item-action>
 
-                <v-card-text>
-                  <v-expansion-panels
-                    v-model="panelsSelection"
-                    :disabled="!selection"
-                    multiple
-                  >
-                    <v-expansion-panel ref="attributes" value="attributes">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Fields
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content class="no-x-padding">
-                        <v-simple-table>
-                          <tbody>
-                            <tr>
-                              <th />
-                              <th width="20%">Exclude</th>
-                              <th width="20%">Include</th>
-                              <th width="20%">Required (one of)</th>
-                            </tr>
-                            <tr v-for="(key, name) in setOptions" :key="key">
-                              <td>{{ name }}</td>
-                              <td class="text-center">
-                                <v-radio-group
-                                  v-model="selected.sets[key]"
-                                  class="ma-0"
-                                  hide-details
-                                  :disabled="
-                                    ['phone', 'email'].includes(key) &&
-                                    compliance === 'exclude'
-                                  "
-                                >
-                                  <v-radio value="exclude" class="ma-0" />
-                                </v-radio-group>
-                              </td>
-                              <td class="text-center">
-                                <v-radio-group
-                                  v-model="selected.sets[key]"
-                                  class="ma-0"
-                                  hide-details
-                                  :disabled="
-                                    ['phone', 'email'].includes(key) &&
-                                    compliance === 'exclude'
-                                  "
-                                >
-                                  <v-radio value="include" class="ma-0" />
-                                </v-radio-group>
-                              </td>
-                              <td class="text-center">
-                                <v-radio-group
-                                  v-model="selected.sets[key]"
-                                  class="ma-0"
-                                  hide-details
-                                  :disabled="
-                                    ['phone', 'email'].includes(key) &&
-                                    compliance === 'exclude'
-                                  "
-                                >
-                                  <v-radio value="required" class="ma-0" />
-                                </v-radio-group>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </v-simple-table>
+                          <v-list-item-content>
+                            <v-list-item-title> Select All </v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
 
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mx-6 mt-4 mb-2"
-                          dense
-                        >
-                          <small>
-                            Contact details are obtained from websites' contact
-                            pages. When selecting required fields, we only
-                            include websites for which we have ANY of the fields
-                            available.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
+                        <v-divider class="mt-2" />
+                      </template>
 
-                    <v-expansion-panel ref="compliance" value="compliance">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Compliance
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <v-radio-group
-                          v-model="compliance"
-                          class="my-0"
-                          mandatory
-                        >
-                          <v-radio
-                            value="include"
-                            class="mt-0"
-                            hide-details
-                            :disabled="australia"
+                      <template #item="{ item }">
+                        <v-list-item ripple @click="toggleVariant(item)">
+                          <v-list-item-action>
+                            <v-icon :color="item.active ? 'primary' : ''">
+                              {{
+                                item.active
+                                  ? mdiCheckboxMarked
+                                  : mdiCheckboxBlankOutline
+                              }}
+                            </v-icon>
+                          </v-list-item-action>
+
+                          <v-list-item-content>
+                            <v-row class="align-center">
+                              <v-col class="py-0">
+                                {{ item.text }}
+                              </v-col>
+                              <v-col
+                                class="
+                                  py-0
+                                  nowrap
+                                  text-right
+                                  body-2
+                                  flex-grow-0
+                                "
+                              >
+                                {{ item.value }}
+                              </v-col>
+                            </v-row>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-select>
+
+                    <v-chip-group
+                      v-if="selected.languages.length"
+                      class="mt-n1"
+                      column
+                    >
+                      <v-tooltip
+                        v-for="(item, i) in selected.languages"
+                        :key="i"
+                        bottom
+                      >
+                        <template #activator="{ on }">
+                          <v-chip
+                            color="primary lighten-1 primary--text"
+                            label
+                            close
+                            v-on="on"
+                            @click:close="toggleVariant(item)"
                           >
-                            <template #label>
-                              Include personal and contact details
-                            </template>
-                          </v-radio>
-                          <v-radio
-                            value="excludeEU"
-                            class="mt-0"
-                            hide-details
-                            :disabled="australia"
-                          >
-                            <template #label>
-                              Exclude personal and contact details of EU
-                              websites
-                            </template>
-                          </v-radio>
-                          <v-radio value="exclude" class="mt-0" hide-details>
-                            <template #label>
-                              Exclude all personal and contact details
-                            </template>
-                          </v-radio>
-                        </v-radio-group>
+                            {{ item.value }}
+                          </v-chip>
+                        </template>
 
-                        <v-checkbox
-                          v-model="australia"
-                          label="I'm in or do business in Australia"
-                          class="mt-0"
-                          hide-details
-                        />
+                        {{
+                          item.parent && item.parent !== item.text
+                            ? `${item.parent} (${item.text})`
+                            : item.text
+                        }}
+                      </v-tooltip>
+                    </v-chip-group>
 
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-8 mb-2"
-                          dense
-                        >
-                          <small>
-                            We're unable to supply names, email addresses and
-                            phone numbers if you're in Australia or carry on
-                            business or activities in Australia.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-                  </v-expansion-panels>
-                </v-card-text>
-              </v-col>
-              <v-col class="py-0 pl-sm-0" cols="12" sm="6">
-                <v-card-text>
-                  <v-expansion-panels
-                    v-model="panelsFilters"
-                    :disabled="!selection"
-                    multiple
-                  >
-                    <v-expansion-panel ref="ipCountries" value="ipCountries">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Countries
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>Target websites in specific countries.</p>
+                    <v-checkbox
+                      v-if="selected.geoIps.length && selected.languages.length"
+                      v-model="matchAny"
+                      class="my-2"
+                      label="Filter by country OR language (yields more results)"
+                      hide-details
+                    />
 
+                    <v-checkbox
+                      v-if="selected.languages.length"
+                      v-model="excludeMultilingual"
+                      class="my-2"
+                      label="Exclude multilingual websites"
+                      hide-details
+                    />
+
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mt-8 mb-2"
+                      dense
+                    >
+                      <small>
+                        To target websites in specific countries, we recommend
+                        filtering by country and not language. Selecting both
+                        may result in a much smaller list.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel ref="tlds" value="tlds">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Top-level domains
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>Target countries by top-level domain.</p>
+
+                    <v-row>
+                      <v-col>
                         <v-select
                           ref="country"
-                          :items="geoIps"
+                          v-model="selectedCountry"
+                          :items="countries"
                           class="mb-4 pt-0"
                           label="Select a country"
                           hide-details
                           outlined
                           dense
                           eager
-                        >
-                          <template #prepend-item>
-                            <v-list-item
-                              ripple
-                              @click="toggleGeoIps(countriesEurope)"
-                            >
-                              <v-list-item-content>Europe</v-list-item-content>
-                            </v-list-item>
-                            <v-list-item
-                              ripple
-                              @click="toggleGeoIps(countriesEU)"
-                            >
-                              <v-list-item-content>
-                                European Union
-                              </v-list-item-content>
-                            </v-list-item>
-
-                            <v-divider class="mt-3 mb-2" />
-                          </template>
-
-                          <template #item="{ item }">
-                            <v-list-item ripple @click="toggleGeoIp(item)">
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-row class="align-center">
-                                  <v-col class="py-0">
-                                    {{ item.text }}
-                                  </v-col>
-                                  <v-col
-                                    class="
-                                      py-0
-                                      nowrap
-                                      text-right
-                                      body-2
-                                      flex-grow-0
-                                    "
-                                  >
-                                    {{ item.value }}
-                                  </v-col>
-                                </v-row>
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-chip-group
-                          v-if="selected.geoIps.length"
-                          class="mt-n1 mb-2"
-                          column
-                        >
-                          <v-tooltip
-                            v-for="(item, i) in selected.geoIps"
-                            :key="i"
-                            bottom
-                          >
-                            <template #activator="{ on }">
-                              <v-chip
-                                color="primary lighten-1 primary--text"
-                                label
-                                close
-                                v-on="on"
-                                @click:close="toggleGeoIp(item)"
-                              >
-                                {{ item.value }}
-                              </v-chip>
-                            </template>
-
-                            {{
-                              item.parent && item.parent !== item.text
-                                ? `${item.parent} (${item.text})`
-                                : item.text
-                            }}
-                          </v-tooltip>
-                        </v-chip-group>
-
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-6 mb-2"
-                          dense
-                        >
-                          <small>
-                            When a website's country can't be determined through
-                            other means, we perform a lookup on the IP address.
-                            This may be different from the country a business
-                            operates from.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel ref="languages" value="languages">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Languages
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>Target websites using specific languages.</p>
-
-                        <v-select
-                          ref="language"
-                          v-model="selectedLanguage"
-                          :items="languages"
-                          class="mb-4 pt-0"
-                          label="Select a language"
-                          hide-details
-                          outlined
-                          dense
-                          eager
-                        >
-                          <template #item="{ item }">
-                            <v-list-item ripple @click="toggleLanguage(item)">
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    typeof item.value === 'object'
-                                      ? mdiDotsHorizontal
-                                      : item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-row class="align-center">
-                                  <v-col class="py-0">
-                                    {{ item.text }}
-                                  </v-col>
-                                  <v-col
-                                    class="
-                                      py-0
-                                      nowrap
-                                      text-right
-                                      body-2
-                                      flex-grow-0
-                                    "
-                                  >
-                                    {{
-                                      typeof item.value === 'object'
-                                        ? item.value[Object.keys(item.value)[0]]
-                                        : item.value
-                                    }}
-                                  </v-col>
-                                </v-row>
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-select
-                          v-if="variants"
-                          ref="variant"
-                          :items="variants"
-                          class="mb-4"
-                          label="Select a language country"
-                          hide-details
-                          outlined
-                          dense
-                          eager
-                        >
-                          <template #prepend-item>
-                            <v-list-item ripple @click="toggleVariants">
-                              <v-list-item-action>
-                                <v-icon
-                                  :color="
-                                    selected.languages.length > 0
-                                      ? 'primary'
-                                      : ''
-                                  "
-                                >
-                                  {{
-                                    variants.every(({ active }) => active)
-                                      ? mdiCheckboxMarked
-                                      : variants.some(({ active }) => active)
-                                      ? mdiMinusBoxOutline
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-list-item-title>
-                                  Select All
-                                </v-list-item-title>
-                              </v-list-item-content>
-                            </v-list-item>
-
-                            <v-divider class="mt-2" />
-                          </template>
-
-                          <template #item="{ item }">
-                            <v-list-item ripple @click="toggleVariant(item)">
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-row class="align-center">
-                                  <v-col class="py-0">
-                                    {{ item.text }}
-                                  </v-col>
-                                  <v-col
-                                    class="
-                                      py-0
-                                      nowrap
-                                      text-right
-                                      body-2
-                                      flex-grow-0
-                                    "
-                                  >
-                                    {{ item.value }}
-                                  </v-col>
-                                </v-row>
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-chip-group
-                          v-if="selected.languages.length"
-                          class="mt-n1"
-                          column
-                        >
-                          <v-tooltip
-                            v-for="(item, i) in selected.languages"
-                            :key="i"
-                            bottom
-                          >
-                            <template #activator="{ on }">
-                              <v-chip
-                                color="primary lighten-1 primary--text"
-                                label
-                                close
-                                v-on="on"
-                                @click:close="toggleVariant(item)"
-                              >
-                                {{ item.value }}
-                              </v-chip>
-                            </template>
-
-                            {{
-                              item.parent && item.parent !== item.text
-                                ? `${item.parent} (${item.text})`
-                                : item.text
-                            }}
-                          </v-tooltip>
-                        </v-chip-group>
-
-                        <v-checkbox
-                          v-if="
-                            selected.geoIps.length && selected.languages.length
-                          "
-                          v-model="matchAny"
-                          class="my-2"
-                          label="Filter by country OR language (yields more results)"
-                          hide-details
                         />
+                      </v-col>
+                      <v-col>
+                        <v-form ref="form" @submit.prevent="addTld">
+                          <v-text-field
+                            v-model="tld"
+                            :error-messages="tldErrors"
+                            :append-icon="mdiPlus"
+                            placeholder=".com"
+                            class="pt-0"
+                            hide-details="auto"
+                            outlined
+                            dense
+                            @click:append="addTld"
+                          />
+                        </v-form>
+                      </v-col>
+                    </v-row>
 
-                        <v-checkbox
-                          v-if="selected.languages.length"
-                          v-model="excludeMultilingual"
-                          class="my-2"
-                          label="Exclude multilingual websites"
-                          hide-details
-                        />
-
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-8 mb-2"
-                          dense
-                        >
-                          <small>
-                            To target websites in specific countries, we
-                            recommend filtering by country and not language.
-                            Selecting both may result in a much smaller list.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel ref="tlds" value="tlds">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Top-level domains
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>Target countries by top-level domain.</p>
-
-                        <v-row>
-                          <v-col>
-                            <v-select
-                              ref="country"
-                              v-model="selectedCountry"
-                              :items="countries"
-                              class="mb-4 pt-0"
-                              label="Select a country"
-                              hide-details
-                              outlined
-                              dense
-                              eager
-                            />
-                          </v-col>
-                          <v-col>
-                            <v-form ref="form" @submit.prevent="addTld">
-                              <v-text-field
-                                v-model="tld"
-                                :error-messages="tldErrors"
-                                :append-icon="mdiPlus"
-                                placeholder=".com"
-                                class="pt-0"
-                                hide-details="auto"
-                                outlined
-                                dense
-                                @click:append="addTld"
-                              />
-                            </v-form>
-                          </v-col>
-                        </v-row>
-
-                        <v-select
-                          v-if="selectedCountry"
-                          ref="tld"
-                          :items="tlds"
-                          class="mb-8"
-                          label="Select a top-level-domain"
-                          hide-details
-                          outlined
-                          dense
-                          eager
-                        >
-                          <template #prepend-item>
-                            <v-list-item ripple @click="toggleTlds">
-                              <v-list-item-action>
-                                <v-icon
-                                  :color="
-                                    selected.tlds.length > 0 ? 'primary' : ''
-                                  "
-                                >
-                                  {{
-                                    tlds.every(({ active }) => active)
-                                      ? mdiCheckboxMarked
-                                      : tlds.some(({ active }) => active)
-                                      ? mdiMinusBoxOutline
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                <v-list-item-title>
-                                  Select All
-                                </v-list-item-title>
-                              </v-list-item-content>
-                            </v-list-item>
-
-                            <v-divider class="mt-2" />
-                          </template>
-
-                          <template #item="{ item }">
-                            <v-list-item ripple @click="toggleTld(item)">
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-
-                              <v-list-item-content>
-                                {{ item.text }}
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-chip-group
-                          v-if="selected.tlds.length"
-                          class="mt-n1 mb-4"
-                          column
-                        >
-                          <v-tooltip
-                            v-for="(item, i) in selected.tlds"
-                            :key="i"
-                            bottom
-                          >
-                            <template #activator="{ on }">
-                              <v-chip
-                                color="primary lighten-1 primary--text"
-                                label
-                                close
-                                v-on="item.parent ? on : undefined"
-                                @click:close="toggleTld(item)"
-                              >
-                                {{ item.value }}
-                              </v-chip>
-                            </template>
-
-                            {{ item.parent }}
-                          </v-tooltip>
-                        </v-chip-group>
-
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-4 mb-2"
-                          dense
-                        >
-                          <small>
-                            The top-level domain is the last part of a domain
-                            name (e.g. '.com'). This can be used to target
-                            websites in specific countries (e.g. '.com.au' for
-                            Australia).
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel ref="industries" value="industries">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Industry
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>Choose which company industries to include.</p>
-
-                        <v-select
-                          v-model="selectedIndustry"
-                          :disabled="selected.sets.company === 'exclude'"
-                          :items="industries"
-                          class="mb-4 pt-0"
-                          label="Select an industry"
-                          hide-details
-                          outlined
-                          dense
-                          eager
-                        >
-                          <template #item="{ item }">
-                            <v-list-item ripple @click="toggleIndustry(item)">
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-                              <v-list-item-content>
-                                {{ item.text }}
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-chip-group
-                          v-if="selected.industries.length"
-                          class="mb-n4"
-                          column
-                        >
-                          <v-chip
-                            v-for="item in selected.industries"
-                            :key="item.value"
-                            color="primary lighten-1 primary--text"
-                            label
-                            close
-                            @click:close="toggleIndustry(item)"
-                          >
-                            {{ item.text }}
-                          </v-chip>
-                        </v-chip-group>
-
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-8 mb-2"
-                          dense
-                        >
-                          <small>
-                            Industry information is available for a portion of
-                            the websites we track. To get more results, leave
-                            this blank or select multiple.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel ref="companySizes" value="companySizes">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Company size
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>Choose what size companies to include.</p>
-
-                        <v-select
-                          v-model="selectedCompanySize"
-                          :disabled="selected.sets.company === 'exclude'"
-                          :items="companySizes"
-                          class="mb-4 pt-0"
-                          label="Number of employees"
-                          hide-details
-                          outlined
-                          dense
-                          eager
-                        >
-                          <template #item="{ item }">
-                            <v-list-item
-                              ripple
-                              @click="toggleCompanySize(item)"
-                            >
-                              <v-list-item-action>
-                                <v-icon :color="item.active ? 'primary' : ''">
-                                  {{
-                                    item.active
-                                      ? mdiCheckboxMarked
-                                      : mdiCheckboxBlankOutline
-                                  }}
-                                </v-icon>
-                              </v-list-item-action>
-                              <v-list-item-content>
-                                {{ item.text }}
-                              </v-list-item-content>
-                            </v-list-item>
-                          </template>
-                        </v-select>
-
-                        <v-chip-group
-                          v-if="selected.companySizes.length"
-                          class="mb-n4"
-                          column
-                        >
-                          <v-chip
-                            v-for="item in selected.companySizes"
-                            :key="item.value"
-                            color="primary lighten-1 primary--text"
-                            label
-                            close
-                            @click:close="toggleCompanySize(item)"
-                          >
-                            {{ item.text }}
-                          </v-chip>
-                        </v-chip-group>
-
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-8 mb-2"
-                          dense
-                        >
-                          <small>
-                            Company size is available for a portion of the
-                            websites we track. To get more results, leave this
-                            blank or select multiple.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel ref="subset">
-                      <v-expansion-panel-header class="subtitle-2">
-                        List size &amp; website traffic
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>
-                          Optionally limit the size of the list to a number of
-                          high or low traffic websites per technology.
-                        </p>
-
-                        <v-text-field
-                          v-model="subset"
-                          label="Max number of websites to include"
-                          :rules="[
-                            (v) =>
-                              !v ||
-                              /^[0-9]+$/.test(v) ||
-                              'Value must be numeric',
-                            (v) =>
-                              !v ||
-                              (parseInt(v, 10) >= minListSize &&
-                                (isAdmin || parseInt(v, 10) <= 1000000)) ||
-                              `List size must be between at ${minListSize} and 1M. For larger lists, please contact us.`,
-                          ]"
-                          class="mt-6 mb-8 pt-0"
-                          placeholder="500000"
-                          hide-details="auto"
-                          outlined
-                          dense
-                        />
-
-                        <v-slider
-                          v-model="subsetSlice"
-                          label="Traffic"
-                          :tick-labels="['Highest', '', 'Medium', '', 'Lowest']"
-                          :disabled="!subset || !selectedItems.length"
-                          min="0"
-                          max="4"
-                          hide-details="auto"
-                          class="mb-10"
-                        />
-
-                        <v-checkbox
-                          v-model="excludeNoTraffic"
-                          label="Exclude websites without traffic data"
-                          hide-details
-                          :disabled="!selectedItems.length"
-                        />
-
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-6 mb-2"
-                          dense
-                        >
-                          <small>
-                            Set a list size limit to control your budget or to
-                            only include less trafficked websites. The default
-                            limit is 500,000 most trafficked websites per
-                            technology.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-
-                    <v-expansion-panel
-                      ref="age"
-                      value="age"
-                      :disabled="!selectedItems.length"
+                    <v-select
+                      v-if="selectedCountry"
+                      ref="tld"
+                      :items="tlds"
+                      class="mb-8"
+                      label="Select a top-level-domain"
+                      hide-details
+                      outlined
+                      dense
+                      eager
                     >
-                      <v-expansion-panel-header class="subtitle-2">
-                        Freshness
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>
-                          Choose a range in months to only include websites
-                          verified within this range. Recommended range is 0-3.
-                        </p>
+                      <template #prepend-item>
+                        <v-list-item ripple @click="toggleTlds">
+                          <v-list-item-action>
+                            <v-icon
+                              :color="selected.tlds.length > 0 ? 'primary' : ''"
+                            >
+                              {{
+                                tlds.every(({ active }) => active)
+                                  ? mdiCheckboxMarked
+                                  : tlds.some(({ active }) => active)
+                                  ? mdiMinusBoxOutline
+                                  : mdiCheckboxBlankOutline
+                              }}
+                            </v-icon>
+                          </v-list-item-action>
 
-                        <v-row class="mt-6">
-                          <v-col>
-                            <v-slider
-                              v-model="minAge"
-                              label="Min"
-                              min="0"
-                              max="11"
-                              thumb-size="20"
-                              thumb-label="always"
-                              hint="A non-zero minimum returns historical results only"
-                              :rules="[
-                                (v) =>
-                                  v < maxAge || 'Must be lower than max age',
-                              ]"
-                              :persistent-hint="minAge > 0"
-                              hide-details="auto"
-                            />
-                          </v-col>
-                          <v-col>
-                            <v-slider
-                              v-model="maxAge"
-                              label="Max"
-                              min="1"
-                              max="12"
-                              thumb-size="20"
-                              thumb-label="always"
-                              :rules="[
-                                (v) =>
-                                  v > minAge || 'Must be greater than min age',
-                              ]"
-                              hide-details="auto"
-                            />
-                          </v-col>
-                        </v-row>
+                          <v-list-item-content>
+                            <v-list-item-title> Select All </v-list-item-title>
+                          </v-list-item-content>
+                        </v-list-item>
 
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mt-6 mb-2"
-                          dense
-                        >
-                          <small>
-                            We attempt to analyse every website at least once a
-                            month. A range of 0-3 means we include websites that
-                            have been verified at least once in the last three
-                            months.<br /><br />
-                            A lower maximum yields fresher but fewer results.<br />
-                            A higher maximum yields more but possibly outdated
-                            results.<br />
-                            A higher minimum yields historic data.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
+                        <v-divider class="mt-2" />
+                      </template>
 
-                    <v-expansion-panel ref="exclusions" value="exclusions">
-                      <v-expansion-panel-header class="subtitle-2">
-                        Exclusions
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <p>
-                          Upload a .txt file with domain names to exclude, each
-                          on a new line. Or, upload the CSV file from a previous
-                          purchase.
-                        </p>
+                      <template #item="{ item }">
+                        <v-list-item ripple @click="toggleTld(item)">
+                          <v-list-item-action>
+                            <v-icon :color="item.active ? 'primary' : ''">
+                              {{
+                                item.active
+                                  ? mdiCheckboxMarked
+                                  : mdiCheckboxBlankOutline
+                              }}
+                            </v-icon>
+                          </v-list-item-action>
 
-                        <v-file-input
-                          :error-messages="fileErrors"
-                          :hint="
-                            file
-                              ? `${file
-                                  .split('\n')
-                                  .length.toLocaleString()} URLs`
-                              : ''
-                          "
-                          persistent-hint
-                          placeholder="Select a file..."
-                          accept="text/plain,text/csv"
-                          class="mb-0 pt-0"
-                          outlined
-                          dense
-                          small-chips
-                          multiple
-                          clearable
-                          @change="fileChange"
-                        />
+                          <v-list-item-content>
+                            {{ item.text }}
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-select>
 
-                        <v-checkbox
-                          v-model="removeInvalid"
-                          v-if="removeInvalid || fileErrors.length"
-                          label="Remove invalid URLs"
-                          class="mt-0 mb-6"
+                    <v-chip-group
+                      v-if="selected.tlds.length"
+                      class="mt-n1 mb-4"
+                      column
+                    >
+                      <v-tooltip
+                        v-for="(item, i) in selected.tlds"
+                        :key="i"
+                        bottom
+                      >
+                        <template #activator="{ on }">
+                          <v-chip
+                            color="primary lighten-1 primary--text"
+                            label
+                            close
+                            v-on="item.parent ? on : undefined"
+                            @click:close="toggleTld(item)"
+                          >
+                            {{ item.value }}
+                          </v-chip>
+                        </template>
+
+                        {{ item.parent }}
+                      </v-tooltip>
+                    </v-chip-group>
+
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mt-4 mb-2"
+                      dense
+                    >
+                      <small>
+                        The top-level domain is the last part of a domain name
+                        (e.g. '.com'). This can be used to target websites in
+                        specific countries (e.g. '.com.au' for Australia).
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel ref="industries" value="industries">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Industry
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>Choose which company industries to include.</p>
+
+                    <v-select
+                      v-model="selectedIndustry"
+                      :disabled="selected.sets.company === 'exclude'"
+                      :items="industries"
+                      class="mb-4 pt-0"
+                      label="Select an industry"
+                      hide-details
+                      outlined
+                      dense
+                      eager
+                    >
+                      <template #item="{ item }">
+                        <v-list-item ripple @click="toggleIndustry(item)">
+                          <v-list-item-action>
+                            <v-icon :color="item.active ? 'primary' : ''">
+                              {{
+                                item.active
+                                  ? mdiCheckboxMarked
+                                  : mdiCheckboxBlankOutline
+                              }}
+                            </v-icon>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            {{ item.text }}
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-select>
+
+                    <v-chip-group
+                      v-if="selected.industries.length"
+                      class="mb-n4"
+                      column
+                    >
+                      <v-chip
+                        v-for="item in selected.industries"
+                        :key="item.value"
+                        color="primary lighten-1 primary--text"
+                        label
+                        close
+                        @click:close="toggleIndustry(item)"
+                      >
+                        {{ item.text }}
+                      </v-chip>
+                    </v-chip-group>
+
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mt-8 mb-2"
+                      dense
+                    >
+                      <small>
+                        Industry information is available for a portion of the
+                        websites we track. To get more results, leave this blank
+                        or select multiple.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel ref="companySizes" value="companySizes">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Company size
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>Choose what size companies to include.</p>
+
+                    <v-select
+                      v-model="selectedCompanySize"
+                      :disabled="selected.sets.company === 'exclude'"
+                      :items="companySizes"
+                      class="mb-4 pt-0"
+                      label="Number of employees"
+                      hide-details
+                      outlined
+                      dense
+                      eager
+                    >
+                      <template #item="{ item }">
+                        <v-list-item ripple @click="toggleCompanySize(item)">
+                          <v-list-item-action>
+                            <v-icon :color="item.active ? 'primary' : ''">
+                              {{
+                                item.active
+                                  ? mdiCheckboxMarked
+                                  : mdiCheckboxBlankOutline
+                              }}
+                            </v-icon>
+                          </v-list-item-action>
+                          <v-list-item-content>
+                            {{ item.text }}
+                          </v-list-item-content>
+                        </v-list-item>
+                      </template>
+                    </v-select>
+
+                    <v-chip-group
+                      v-if="selected.companySizes.length"
+                      class="mb-n4"
+                      column
+                    >
+                      <v-chip
+                        v-for="item in selected.companySizes"
+                        :key="item.value"
+                        color="primary lighten-1 primary--text"
+                        label
+                        close
+                        @click:close="toggleCompanySize(item)"
+                      >
+                        {{ item.text }}
+                      </v-chip>
+                    </v-chip-group>
+
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mt-8 mb-2"
+                      dense
+                    >
+                      <small>
+                        Company size is available for a portion of the websites
+                        we track. To get more results, leave this blank or
+                        select multiple.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel ref="subset">
+                  <v-expansion-panel-header class="subtitle-2">
+                    List size &amp; website traffic
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>
+                      Optionally limit the size of the list to a number of high
+                      or low traffic websites per technology.
+                    </p>
+
+                    <v-text-field
+                      v-model="subset"
+                      label="Max number of websites to include"
+                      :rules="[
+                        (v) =>
+                          !v || /^[0-9]+$/.test(v) || 'Value must be numeric',
+                        (v) =>
+                          !v ||
+                          (parseInt(v, 10) >= minListSize &&
+                            (isAdmin || parseInt(v, 10) <= 1000000)) ||
+                          `List size must be between at ${minListSize} and 1M. For larger lists, please contact us.`,
+                      ]"
+                      class="mt-6 mb-8 pt-0"
+                      placeholder="500000"
+                      hide-details="auto"
+                      outlined
+                      dense
+                    />
+
+                    <v-slider
+                      v-model="subsetSlice"
+                      label="Traffic"
+                      :tick-labels="['Highest', '', 'Medium', '', 'Lowest']"
+                      :disabled="!subset || !selectedItems.length"
+                      min="0"
+                      max="4"
+                      hide-details="auto"
+                      class="mb-10"
+                    />
+
+                    <v-checkbox
+                      v-model="excludeNoTraffic"
+                      label="Exclude websites without traffic data"
+                      hide-details
+                      :disabled="!selectedItems.length"
+                    />
+
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mt-6 mb-2"
+                      dense
+                    >
+                      <small>
+                        Set a list size limit to control your budget or to only
+                        include less trafficked websites. The default limit is
+                        500,000 most trafficked websites per technology.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel
+                  ref="age"
+                  value="age"
+                  :disabled="!selectedItems.length"
+                >
+                  <v-expansion-panel-header class="subtitle-2">
+                    Freshness
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>
+                      Choose a range in months to only include websites verified
+                      within this range. Recommended range is 0-3.
+                    </p>
+
+                    <v-row class="mt-6">
+                      <v-col>
+                        <v-slider
+                          v-model="minAge"
+                          label="Min"
+                          min="0"
+                          max="11"
+                          thumb-size="20"
+                          thumb-label="always"
+                          hint="A non-zero minimum returns historical results only"
+                          :rules="[
+                            (v) => v < maxAge || 'Must be lower than max age',
+                          ]"
+                          :persistent-hint="minAge > 0"
                           hide-details="auto"
                         />
+                      </v-col>
+                      <v-col>
+                        <v-slider
+                          v-model="maxAge"
+                          label="Max"
+                          min="1"
+                          max="12"
+                          thumb-size="20"
+                          thumb-label="always"
+                          :rules="[
+                            (v) => v > minAge || 'Must be greater than min age',
+                          ]"
+                          hide-details="auto"
+                        />
+                      </v-col>
+                    </v-row>
 
-                        <v-alert
-                          color="secondary"
-                          border="left"
-                          class="mb-2"
-                          dense
-                        >
-                          <small>
-                            If you purchased a similar list before and want to
-                            avoid duplicates, upload a list of websites to
-                            exclude. This way you only pay for results you don't
-                            already have.
-                          </small>
-                        </v-alert>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-                  </v-expansion-panels>
-                </v-card-text>
-              </v-col>
-            </v-row>
+                    <v-alert
+                      color="secondary"
+                      border="left"
+                      class="mt-6 mb-2"
+                      dense
+                    >
+                      <small>
+                        We attempt to analyse every website at least once a
+                        month. A range of 0-3 means we include websites that
+                        have been verified at least once in the last three
+                        months.<br /><br />
+                        A lower maximum yields fresher but fewer results.<br />
+                        A higher maximum yields more but possibly outdated
+                        results.<br />
+                        A higher minimum yields historic data.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
 
-            <v-card-text class="py-0">
-              <v-btn
-                :disabled="!selection"
-                :loading="creating"
-                color="primary"
-                class="mt-4 mb-4"
-                large
-                depressed
-                @click="submit()"
-              >
-                Create list
-                <v-icon right>
-                  {{ mdiArrowRight }}
-                </v-icon>
-              </v-btn>
-            </v-card-text>
-          </v-card>
+                <v-expansion-panel ref="exclusions" value="exclusions">
+                  <v-expansion-panel-header class="subtitle-2">
+                    Exclusions
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <p>
+                      Upload a .txt file with domain names to exclude, each on a
+                      new line. Or, upload the CSV file from a previous
+                      purchase.
+                    </p>
+
+                    <v-file-input
+                      :error-messages="fileErrors"
+                      :hint="
+                        file
+                          ? `${file.split('\n').length.toLocaleString()} URLs`
+                          : ''
+                      "
+                      persistent-hint
+                      placeholder="Select a file..."
+                      accept="text/plain,text/csv"
+                      class="mb-0 pt-0"
+                      outlined
+                      dense
+                      small-chips
+                      multiple
+                      clearable
+                      @change="fileChange"
+                    />
+
+                    <v-checkbox
+                      v-model="removeInvalid"
+                      v-if="removeInvalid || fileErrors.length"
+                      label="Remove invalid URLs"
+                      class="mt-0 mb-6"
+                      hide-details="auto"
+                    />
+
+                    <v-alert color="secondary" border="left" class="mb-2" dense>
+                      <small>
+                        If you purchased a similar list before and want to avoid
+                        duplicates, upload a list of websites to exclude. This
+                        way you only pay for results you don't already have.
+                      </small>
+                    </v-alert>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-col>
+          </v-row>
+
+          <v-btn
+            :disabled="!selection"
+            :loading="creating"
+            color="primary"
+            class="mb-4"
+            large
+            depressed
+            @click="submit()"
+          >
+            Create list
+            <v-icon right>
+              {{ mdiArrowRight }}
+            </v-icon>
+          </v-btn>
         </v-form>
       </template>
 

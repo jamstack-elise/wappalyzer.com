@@ -59,7 +59,13 @@
       <h2 class="mt-14 mb-6">Browse</h2>
 
       <v-card class="mb-4">
-        <div v-for="group in groups" :key="group.slug" :id="group.slug">
+        <div
+          v-for="(group, index) in groups"
+          :key="group.slug"
+          :id="group.slug"
+        >
+          <v-divider v-if="index" />
+
           <v-card-title class="subtitle-1 mb-2">{{ group.name }}</v-card-title>
           <v-card-text class="pb-8">
             <v-row>
@@ -79,8 +85,6 @@
               </v-col>
             </v-row>
           </v-card-text>
-
-          <v-divider />
         </div>
       </v-card>
     </template>

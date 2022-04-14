@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="1280.000000pt" height="640.000000pt" viewBox="0 0 1280.000000 640.000000" preserveAspectRatio="xMidYMid meet">
-<g transform="translate(0.000000,640.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+<svg fill="currentColor" version="1.0" xmlns="http://www.w3.org/2000/svg" width="1280.000000pt" height="640.000000pt" viewBox="0 0 1280.000000 640.000000" preserveAspectRatio="xMidYMid meet">
+<g transform="translate(0.000000,640.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
 <path d="M0 3920 l0 -650 650 0 650 0 0 650 0 650 -650 0 -650 0 0 -650z"/>
 <path d="M1437 4563 c-4 -3 -7 -296 -7 -650 l0 -643 650 0 650 0 0 650 0 650 -643 0 c-354 0 -647 -3 -650 -7z"/>
 <path d="M11870 4130 c-105 -23 -216 -101 -263 -187 -41 -76 -57 -154 -57 -275 l0 -107 -97 -3 -98 -3 -3 -112 -3 -113 101 0 100 0 0 -475 0 -475 140 0 140 0 0 475 0 475 205 0 205 0 0 -302 c1 -361 8 -429 52 -518 37 -72 95 -120 171 -141 64 -17 203 -14 275 6 l62 18 0 112 0 112 -57 -19 c-92 -31 -164 -12 -200 55 -16 28 -18 69 -21 355 l-3 322 140 0 141 0 0 115 0 115 -140 0 -140 0 0 171 0 171 -27 -7 c-16 -3 -79 -22 -140 -41 l-113 -35 0 -132 0 -132 -206 3 -206 3 3 117 c4 128 17 165 71 205 37 27 123 34 182 14 l46 -16 0 119 c0 101 -2 119 -17 124 -30 12 -197 15 -243 6z"/>

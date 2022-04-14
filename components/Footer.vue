@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-card flat tile width="100%" class="text-center">
+    <v-sheet color="transparent" width="100%" class="text-center">
       <v-divider />
 
       <v-container class="px-0">
         <v-row class="text-left justify-space-between">
           <template v-for="{ to, title, items: _items } in mainNav">
             <v-col :key="title" cols="12" sm="6" md="auto" lg="2">
-              <v-list subheader>
+              <v-list color="transparent" subheader>
                 <v-subheader class="subtitle-2">
                   {{ title }}
                 </v-subheader>
@@ -37,9 +37,9 @@
           </template>
         </v-row>
       </v-container>
-    </v-card>
+    </v-sheet>
 
-    <v-card flat tile class="footer" color="secondary">
+    <v-sheet class="footer" color="secondary">
       <v-container tag="footer">
         <v-row justify="space-between" align="center">
           <v-col cols="12" sm="auto" class="text-center">
@@ -81,7 +81,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-card>
+    </v-sheet>
   </div>
 </template>
 
