@@ -266,7 +266,13 @@
                       :value="progress"
                       color="accent"
                       class="mr-2"
-                    />{{ progress ? `${progress}%` : 'Starting...' }}
+                    />{{
+                      progress === 100
+                        ? 'Finalising...'
+                        : progress
+                        ? `${progress}%`
+                        : 'Starting...'
+                    }}
                   </small>
                 </td>
               </tr>
@@ -1016,7 +1022,7 @@ export default {
     },
     progress() {
       return this.order
-        ? Math.round(
+        ? Math.ceil(
             (100 / (this.order.bulk.rows || 1)) *
               (this.order.bulk.rowsProcessed || 0)
           )
