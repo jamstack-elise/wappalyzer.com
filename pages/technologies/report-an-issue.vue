@@ -196,6 +196,12 @@ export default {
               )
             }
 
+            if (this.hostnameBlacklisted(hostname)) {
+              throw new Error(
+                'Reports for this website are not accepted for technical reasons.'
+              )
+            }
+
             return true
           } catch (error) {
             return error.message || error.toString()
