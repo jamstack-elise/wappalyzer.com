@@ -24,7 +24,6 @@
               v-model="email"
               label="Email address"
               placeholder="info@example.com"
-              background-color="white"
               :hint="
                 isSignedIn
                   ? `1 Credit per lookup. You have ${formatNumber(
@@ -229,7 +228,6 @@
                 placeholder="Select a file..."
                 accept="text/plain"
                 hide-details="auto"
-                background-color="white"
                 outlined
                 @change="fileChange"
               />

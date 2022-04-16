@@ -33,7 +33,7 @@
         </v-chip>
       </v-chip-group>
 
-      <v-alert color="primary lighten-1" class="mt-6">
+      <v-alert color="primary lighten-2" class="mt-6">
         <p class="subtitle-1 font-weight-medium primary--text mb-2">
           Reach out to {{ category.name }} users
         </p>
@@ -311,6 +311,7 @@ export default {
       mdiMinus,
       mdiPlus,
       pieChartOptions: {
+        backgroundColor: 'transparent',
         chartArea: {
           height: '100%',
           width: '100%',
@@ -323,6 +324,7 @@ export default {
         legend: {
           textStyle: {
             fontSize: 13,
+            color: this.$vuetify.theme.dark ? '#FFF' : 'inherit',
           },
           position: 'labeled',
         },

@@ -176,39 +176,6 @@ export default {
     icons: {
       iconfont: 'mdiSvg',
     },
-    theme: {
-      dark: false,
-      themes: {
-        light: {
-          primary: {
-            base: '#4608ad',
-            lighten1: '#f0ebf9',
-            darken1: '#32067c',
-            darken2: '#150233',
-          },
-          accent: {
-            base: '#2196f3',
-            lighten1: '#e4f2fe',
-          },
-          secondary: '#fafafa',
-          anchor: '#2196f3',
-        },
-        dark: {
-          primary: {
-            base: '#4608ad',
-            lighten1: '#150233',
-            darken1: '#f0ebf9',
-            darken2: '#f0ebf9',
-          },
-          accent: {
-            base: '#2196f3',
-            lighten1: '#e4f2fe',
-          },
-          secondary: '#222222',
-          anchor: '#2196f3',
-        },
-      },
-    },
   },
   build: {
     extend(config) {

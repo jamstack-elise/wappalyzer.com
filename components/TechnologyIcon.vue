@@ -1,6 +1,6 @@
 <template>
   <v-avatar
-    :color="`${white ? 'white' : 'secondary'}${
+    :color="`${white && !$vuetify.theme.dark ? 'white' : 'secondary'}${
       flat ? '' : ' elevation-1'
     } mr-2`"
     :size="xLarge ? 80 : large ? 40 : 32"

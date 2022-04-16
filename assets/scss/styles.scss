@@ -43,6 +43,10 @@ body {
   padding: 0.1rem 0.2rem;
 }
 
+.theme--dark.v-application .primary--text {
+  color: #fff !important;
+}
+
 .theme--light.v-application code {
   background-color: #f0ebf9 !important;
   color: #4608ad !important;
@@ -50,7 +54,7 @@ body {
 
 .theme--dark.v-application code {
   background-color: #4608ad !important;
-  color: #f0ebf9 !important;
+  color: #fff !important;
 }
 
 .no-x-padding .v-expansion-panel-content__wrap {

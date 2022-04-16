@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-sheet color="transparent" width="100%" class="text-center">
+    <div width="100%" class="text-center">
       <v-divider />
 
       <v-container class="px-0">
@@ -37,9 +37,11 @@
           </template>
         </v-row>
       </v-container>
-    </v-sheet>
+    </div>
 
-    <v-sheet class="footer" color="secondary">
+    <div class="footer">
+      <v-divider />
+
       <v-container tag="footer">
         <v-row justify="space-between" align="center">
           <v-col cols="12" sm="auto" class="text-center">
@@ -81,7 +83,7 @@
           </v-col>
         </v-row>
       </v-container>
-    </v-sheet>
+    </div>
   </div>
 </template>
 

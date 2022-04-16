@@ -24,7 +24,7 @@
           class="body-2 text-center text-decoration-none"
         >
           <v-hover v-slot="{ hover }">
-            <v-card flat>
+            <v-card color="transparent" flat>
               <v-card-text class="d-flex align-center pa-0">
                 <TechnologyIcon :icon="icon" large white />
 

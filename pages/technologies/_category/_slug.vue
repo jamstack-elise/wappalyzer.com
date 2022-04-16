@@ -180,7 +180,7 @@
           </v-col>
         </v-row>
 
-        <v-alert color="primary lighten-1">
+        <v-alert color="primary lighten-2">
           <p class="subtitle-1 font-weight-medium primary--text mb-2">
             Reach out to {{ technology.name }}
             {{ technology.saas ? `customers` : `users` }}
@@ -549,6 +549,7 @@ export default {
       createListError: false,
       createListDialog: false,
       lineChartOptions: {
+        backgroundColor: 'transparent',
         chartArea: {
           height: '100%',
           width: '100%',
@@ -571,10 +572,12 @@ export default {
           gridlines: { count: 0 },
         },
         legend: {
+          textStyle: { color: this.$vuetify.theme.dark ? '#FFF' : 'inherit' },
           position: 'in',
         },
       },
       pieChartOptions: {
+        backgroundColor: 'transparent',
         chartArea: {
           height: '100%',
           width: '100%',
@@ -586,6 +589,7 @@ export default {
         pieSliceText: 'none',
         legend: {
           textStyle: {
+            color: this.$vuetify.theme.dark ? '#FFF' : 'inherit',
             fontSize: 13,
           },
         },

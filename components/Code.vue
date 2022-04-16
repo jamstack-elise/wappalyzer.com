@@ -63,7 +63,7 @@ export default {
 }
 
 .theme--dark .code__value {
-  background-color: #32067c;
-  color: #f0ebf9;
+  background-color: #333;
+  color: #fff;
 }
 </style>

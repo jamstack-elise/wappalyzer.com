@@ -85,7 +85,7 @@
       </p>
 
       <v-row>
-        <v-col class="py-0">
+        <v-col>
           <v-card height="100%" class="d-flex flex-column" flat>
             <v-card-title class="subtitle-2">
               <v-icon left>
@@ -121,7 +121,7 @@
           </v-card>
         </v-col>
 
-        <v-col class="py-0">
+        <v-col>
           <v-card height="100%" class="d-flex flex-column" flat>
             <v-card-title class="subtitle-2">
               <v-icon left>
