@@ -44,7 +44,6 @@
                   : ''
               "
               placeholder="Example or example.com"
-              background-color="white"
               hide-details="auto"
               :append-icon="mdiMagnify"
               outlined
@@ -99,7 +98,6 @@
                 placeholder="Select a file..."
                 accept="text/plain,text/csv"
                 hide-details="auto"
-                background-color="white"
                 outlined
                 @change="fileChange"
               />

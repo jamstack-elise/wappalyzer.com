@@ -1,9 +1,5 @@
 <template>
-  <v-img
-    :src="`/images/products/${$vuetify.theme.dark ? 'dark/' : ''}${name}.png`"
-    width="100%"
-    contain
-  />
+  <v-img :src="`/images/products/${name}.png`" width="100%" contain />
 </template>
 
 <script>
