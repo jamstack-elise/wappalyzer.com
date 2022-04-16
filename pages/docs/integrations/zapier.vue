@@ -27,18 +27,18 @@
           >Zapier</a
         >
         to create your integration ('Zap'). Refer to the
-        <a href="https://zapier.com/help" rel="noopener" target="_blank">
-          Help &amp; Support
-        </a>
+        <a href="https://zapier.com/help" rel="noopener" target="_blank"
+          >Help &amp; Support</a
+        >
         page to learn more.
       </p>
 
-      <Heading id="pricing" size="2" class="mt-8 mb-2"> Pricing </Heading>
+      <Heading id="pricing" size="2" class="mt-8 mb-2">Pricing</Heading>
 
       <p>
         A technology lookup costs 1 credit. Refer to the
-        <nuxt-link to="/pricing/"> Pricing </nuxt-link> page for more
-        information about credits and plans.
+        <nuxt-link to="/pricing/">Pricing</nuxt-link> page for more information
+        about credits and plans.
       </p>
     </Page>
   </div>

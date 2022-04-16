@@ -109,10 +109,11 @@ export default {
       })
     },
   },
-  beforeCreate() {
-    this.$vuetify.theme.dark = this.$cookies.get('theme') === 'dark'
-  },
   mounted() {
+    setTimeout(() => {
+      this.$vuetify.theme.dark = this.$cookies.get('theme') === 'dark'
+    }, 1)
+
     this.initChat()
 
     this.initSurvey()
