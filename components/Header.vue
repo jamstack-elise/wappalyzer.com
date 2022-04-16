@@ -240,7 +240,12 @@
                 >
                   Sign in
                 </v-btn>
-                <v-btn color="white" outlined @click="signUpDialog = true">
+                <v-btn
+                  color="white"
+                  class="mr-4"
+                  outlined
+                  @click="signUpDialog = true"
+                >
                   Sign up free
                 </v-btn>
               </template>
@@ -255,7 +260,7 @@
                 </div>
 
                 <v-btn icon color="white" class="ml-2" @click="search = false">
-                  <v-icon>{{ mdi.mdiClose }}</v-icon>
+                  <v-icon size="20">{{ mdi.mdiClose }}</v-icon>
                 </v-btn>
               </div>
             </v-scroll-x-reverse-transition>
@@ -266,13 +271,11 @@
               color="white"
               @click="$vuetify.theme.dark = !$vuetify.theme.dark"
             >
-              <v-icon size="22">{{
+              <v-icon size="20">{{
                 $vuetify.theme.dark ? mdi.mdiWeatherSunny : mdi.mdiWeatherNight
-              }}</v-icon>
-            </v-btn>
-
-            <v-btn v-if="!search" icon color="white" @click="search = true">
-              <v-icon size="22">{{ mdi.mdiMagnify }}</v-icon>
+              }}</v-icon> </v-btn
+            ><v-btn v-if="!search" icon color="white" @click="search = true">
+              <v-icon size="20">{{ mdi.mdiMagnify }}</v-icon>
             </v-btn>
           </v-col>
 
