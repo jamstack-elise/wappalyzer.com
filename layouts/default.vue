@@ -102,6 +102,15 @@ export default {
 
       this.checkSurvey()
     },
+    '$vuetify.theme.dark'() {
+      this.$cookies.set('theme', this.$vuetify.theme.dark ? 'dark' : 'light', {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365,
+      })
+    },
+  },
+  beforeCreate() {
+    this.$vuetify.theme.dark = this.$cookies.get('theme') === 'dark'
   },
   mounted() {
     this.initChat()

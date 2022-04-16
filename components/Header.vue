@@ -99,10 +99,12 @@
                       </v-list-item>
                     </div>
                   </v-list>
-                </v-menu> </template
-              ><span v-if="isLoading" class="px-4">
-                <Spinner color="white" /> </span
-              ><v-menu
+                </v-menu>
+              </template>
+              <span v-if="isLoading" class="px-4">
+                <Spinner color="white" />
+              </span>
+              <v-menu
                 v-else-if="isSignedIn"
                 class="text-left"
                 offset-y
@@ -258,8 +260,19 @@
               </div>
             </v-scroll-x-reverse-transition>
 
+            <v-btn
+              v-if="!search"
+              icon
+              color="white"
+              @click="$vuetify.theme.dark = !$vuetify.theme.dark"
+            >
+              <v-icon size="22">{{
+                $vuetify.theme.dark ? mdi.mdiWeatherSunny : mdi.mdiWeatherNight
+              }}</v-icon>
+            </v-btn>
+
             <v-btn v-if="!search" icon color="white" @click="search = true">
-              <v-icon>{{ mdi.mdiMagnify }}</v-icon>
+              <v-icon size="22">{{ mdi.mdiMagnify }}</v-icon>
             </v-btn>
           </v-col>
 
@@ -308,6 +321,8 @@ import {
   mdiMagnify,
   mdiEmailCheckOutline,
   mdiClose,
+  mdiWeatherNight,
+  mdiWeatherSunny,
 } from '@mdi/js'
 import Logo from '~/components/Logo.vue'
 import SignIn from '~/components/SignIn.vue'
@@ -364,6 +379,8 @@ export default {
         mdiMagnify,
         mdiEmailCheckOutline,
         mdiClose,
+        mdiWeatherNight,
+        mdiWeatherSunny,
       },
     }
   },
