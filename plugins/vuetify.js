@@ -11,7 +11,6 @@ export default new Vuetify({
         primary: {
           base: '#4608ad',
           lighten1: '#f0ebf9',
-          lighten2: '#f0ebf9',
           darken1: '#32067c',
         },
         accent: {
@@ -24,15 +23,14 @@ export default new Vuetify({
       dark: {
         primary: {
           base: '#4608ad',
-          lighten1: '#333',
-          lighten2: '#222',
+          lighten1: '#2b2b2b',
           darken1: '#32067c',
         },
         accent: {
           base: '#2196f3',
           lighten1: '#1e272f',
         },
-        secondary: '#222',
+        secondary: '#1e1e1e',
         anchor: '#a384d6',
       },
     },
