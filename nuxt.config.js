@@ -32,8 +32,14 @@ export default {
   target: 'static',
   generate: {
     concurrency: 200,
-    exclude: [/^\/compare\/.+/],
+    exclude: process.env.QUICK_BUILD
+      ? [/^\/(compare|categories|technologies)\/.+/]
+      : [/^\/compare\/.+/],
     async routes() {
+      if (process.env.QUICK_BUILD) {
+        return []
+      }
+
       const categories = (
         await axios.get(`${publicRuntimeConfig.BASE_URL}categories`)
       ).data.map(({ slug }) => `/technologies/${slug}`)

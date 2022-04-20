@@ -11,8 +11,17 @@ $body-font-family: Averta, Arial, sans-serif;
 $font-size-root: 18px;
 
 $material-light: (
+  table: (
+    hover: #fafafa
+  ),
   text: (
     primary: #4a4a4a
+  )
+);
+
+$material-dark: (
+  table: (
+    hover: #2b2b2b
   )
 );
 

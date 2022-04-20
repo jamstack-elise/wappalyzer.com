@@ -9,7 +9,6 @@
     hide-details="auto"
     return-object
     solo
-    light
     :dense="dense"
     :flat="dense || outlined"
     :outlined="outlined"

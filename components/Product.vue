@@ -79,14 +79,13 @@
       <v-btn
         v-for="(button, index) in product.buttons"
         :key="index"
-        :to="button.to"
         :href="button.href"
         :target="button.href ? '_blank' : '_self'"
         :color="button.secondary ? 'primary lighten-1' : 'primary'"
         :class="`mb-2 mr-4${button.secondary ? ' primary--text' : ''}`"
         large
         depressed
-        @click="$gtm.push({ event: button.event })"
+        @click="clickButton(button)"
       >
         {{ button.text }}
         <v-icon right>
@@ -180,6 +179,15 @@ export default {
   computed: {
     product() {
       return meta[this.name]
+    },
+  },
+  methods: {
+    clickButton(button) {
+      if (button.event) {
+        this.$gtm.push({ event: button.event })
+      }
+
+      this.$router.push(button.to)
     },
   },
 }
