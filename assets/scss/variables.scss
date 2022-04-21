@@ -4,7 +4,6 @@
 // $font-size-root: 20px;
 
 $theme-primary: #4608ad;
-$theme-secondary: #fafafa;
 
 $body-font-family: Averta, Arial, sans-serif;
 
@@ -42,13 +41,10 @@ $headings: (
   )
 );
 
+$tooltip-background-color: $theme-primary;
+
 @import '~vuetify/src/styles/styles.sass';
 @import '~vuetify/src/components/VBtn/_variables.scss';
 
 $btn-text-transform: none;
 $btn-letter-spacing: normal;
-
-$tooltip-background-color: #f0ebf9;
-$tooltip-text-color: #4608ad;
-$tooltip-opacity: 1;
-$tooltip-padding: 16px 12px;

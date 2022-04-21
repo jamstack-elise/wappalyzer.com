@@ -1128,12 +1128,7 @@
                       </v-col>
                     </v-row>
 
-                    <v-alert
-                      color="secondary"
-                      border="left"
-                      class="mt-6 mb-2"
-                      dense
-                    >
+                    <v-alert color="secondary" border="left" class="my-6" dense>
                       <small>
                         We attempt to analyse every website at least once a
                         month. A range of 0-3 means we include websites that
@@ -1145,6 +1140,21 @@
                         A higher minimum yields historic data.
                       </small>
                     </v-alert>
+
+                    <p>
+                      Optionally only include websites that we discovered after
+                      a specific date. Useful if you purchased this list in the
+                      past and want only new results.
+                    </p>
+
+                    <v-switch
+                      v-model="enableFromDate"
+                      label="Enable date filter"
+                    />
+
+                    <v-card v-if="enableFromDate" class="mb-2" outlined>
+                      <v-date-picker v-model="fromDate" full-width />
+                    </v-card>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -1380,6 +1390,8 @@ export default {
       countriesEurope,
       confirmDialog: false,
       error: false,
+      fromDate: '',
+      enableFromDate: false,
       createDialog: false,
       file: '',
       fileErrors: [],
@@ -1641,6 +1653,12 @@ export default {
     maxAge() {
       this.updateQuery()
     },
+    enableFromDate() {
+      this.updateQuery()
+    },
+    fromDate() {
+      this.updateQuery()
+    },
     matchAny() {
       this.updateQuery()
     },
@@ -1751,6 +1769,10 @@ export default {
               excludeMultilingual: this.excludeMultilingual,
               minAge: this.minAge,
               maxAge: this.maxAge,
+              fromDate:
+                this.fromDate && this.enableFromDate
+                  ? (new Date(this.fromDate).getTime() / 1000).toString()
+                  : undefined,
               industries: this.selected.industries.map(({ value }) => value),
               companySizes: this.selected.companySizes.map(
                 ({ value, text }) => ({ value, text })
@@ -2123,6 +2145,10 @@ export default {
           multilingual: this.excludeMultilingual ? 'exclude' : undefined,
           min: this.minAge !== 0 ? this.minAge.toString() : undefined,
           max: this.maxAge !== 3 ? this.maxAge.toString() : undefined,
+          from:
+            this.fromDate && this.enableFromDate
+              ? (new Date(this.fromDate).getTime() / 1000).toString()
+              : undefined,
           filters: this.matchAny ? 'or' : undefined,
           selection:
             this.matchAllTechnologies === 'and' ||
@@ -2175,6 +2201,7 @@ export default {
         attributes,
         min,
         max,
+        from,
         subset,
         traffic,
         notraffic,
@@ -2204,6 +2231,14 @@ export default {
         1,
         Math.min(12, parseInt(typeof max === 'undefined' ? 3 : max || 0, 10))
       )
+
+      this.fromDate = from
+        ? new Date(parseInt(from, 10) * 1000).toISOString().split('T')[0]
+        : ''
+
+      if (this.fromDate) {
+        this.enableFromDate = true
+      }
 
       this.subset =
         typeof subset === 'undefined'
@@ -2408,7 +2443,7 @@ export default {
         this.$refs.attributes.toggle()
       }
 
-      if (this.minAge || this.maxAge !== 3) {
+      if (this.minAge || this.maxAge !== 3 || this.fromDate) {
         this.$refs.age.toggle()
       }
 

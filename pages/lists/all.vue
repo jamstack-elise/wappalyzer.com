@@ -47,116 +47,136 @@
             </thead>
             <tbody>
               <template v-for="list in filteredLists">
-                <v-hover v-slot="{ hover }">
-                  <tr :key="list.createdAt">
-                    <td style="white-space: nowrap">
-                      <nuxt-link :to="`/lists/${list.id}`">{{
-                        list.id
-                      }}</nuxt-link>
+                <v-tooltip bottom>
+                  <template #activator="{ on }">
+                    <v-hover v-slot="{ hover }">
+                      <tr v-on="on" :key="list.createdAt">
+                        <td style="white-space: nowrap">
+                          <nuxt-link :to="`/lists/${list.id}`">
+                            {{ list.id }}
+                          </nuxt-link>
 
-                      <v-tooltip v-if="list.repeatListId" max-width="250" top>
-                        <template #activator="{ on }">
-                          <nuxt-link
+                          <v-tooltip
                             v-if="list.repeatListId"
-                            :to="`/lists/${list.repeatListId}`"
-                            ><sup>
-                              <v-icon color="accent" small v-on="on">{{
-                                mdiUpdate
-                              }}</v-icon>
-                            </sup></nuxt-link
+                            max-width="250"
+                            top
                           >
-                        </template>
+                            <template #activator="{ on }">
+                              <nuxt-link
+                                v-if="list.repeatListId"
+                                :to="`/lists/${list.repeatListId}`"
+                                ><sup>
+                                  <v-icon color="accent" small v-on="on">{{
+                                    mdiUpdate
+                                  }}</v-icon>
+                                </sup></nuxt-link
+                              >
+                            </template>
 
-                        Weekly update for list {{ list.repeatListId }}. Click to
-                        manage.
-                      </v-tooltip>
-                    </td>
-                    <td>
-                      <template v-if="list.name">
-                        {{ list.name }}
-                      </template>
+                            Weekly update for list {{ list.repeatListId }}.
+                            Click to manage.
+                          </v-tooltip>
+                        </td>
+                        <td>
+                          <template v-if="list.name">
+                            {{ list.name }}
+                          </template>
 
-                      <v-chip-group v-else-if="list.technologies.length" column>
-                        <v-chip
-                          v-for="technology in list.technologies.slice(0, 10)"
-                          :key="technology"
-                          small
-                          outlined
-                          label
-                        >
-                          {{ technology }}
-                        </v-chip>
-                        <v-chip
-                          v-if="list.technologies.length > 10"
-                          small
-                          outlined
-                          label
-                        >
-                          (+{{ list.technologies.length - 10 }} more)
-                        </v-chip>
-                      </v-chip-group>
-                      <v-chip-group v-else-if="list.keywords.length" column>
-                        <v-chip
-                          v-for="keyword in list.keywords.slice(0, 10)"
-                          :key="keyword"
-                          small
-                          outlined
-                          label
-                        >
-                          {{ keyword }}
-                        </v-chip>
-                        <v-chip
-                          v-if="list.keywords.length > 10"
-                          small
-                          outlined
-                          label
-                        >
-                          (+{{ list.keywords.length - 10 }} more)
-                        </v-chip>
-                      </v-chip-group>
-                    </td>
-                    <td v-if="list.status === 'Calculating'">
-                      <Spinner />
-                    </td>
-                    <td v-else>
-                      {{ list.rows ? formatNumber(list.rows) : '-' }}
-                    </td>
-                    <td class="text-center">
-                      <v-icon v-if="list.repeat">
-                        {{ mdiUpdate }}
-                      </v-icon>
-                    </td>
-                    <td class="text-center">
-                      <v-icon v-if="list.status === 'Complete'" color="success">
-                        {{ mdiCheck }}
-                      </v-icon>
-                    </td>
-                    <td style="white-space: nowrap">
-                      <div :style="hover ? '' : 'visibility: hidden'">
-                        <v-btn
-                          color="accent"
-                          icon
-                          @click="
-                            selected = list
-                            editDialog = true
-                          "
-                        >
-                          <v-icon>{{ mdiPencil }}</v-icon> </v-btn
-                        ><v-btn
-                          :disabled="list.status === 'Complete'"
-                          color="error"
-                          icon
-                          @click="
-                            selected = list
-                            cancelDialog = true
-                          "
-                        >
-                          <v-icon>{{ mdiDelete }}</v-icon>
-                        </v-btn>
-                      </div>
-                    </td>
-                  </tr>
-                </v-hover>
+                          <v-chip-group
+                            v-else-if="list.technologies.length"
+                            column
+                          >
+                            <v-chip
+                              v-for="technology in list.technologies.slice(
+                                0,
+                                10
+                              )"
+                              :key="technology"
+                              small
+                              outlined
+                              label
+                            >
+                              {{ technology }}
+                            </v-chip>
+                            <v-chip
+                              v-if="list.technologies.length > 10"
+                              small
+                              outlined
+                              label
+                            >
+                              (+{{ list.technologies.length - 10 }} more)
+                            </v-chip>
+                          </v-chip-group>
+                          <v-chip-group v-else-if="list.keywords.length" column>
+                            <v-chip
+                              v-for="keyword in list.keywords.slice(0, 10)"
+                              :key="keyword"
+                              small
+                              outlined
+                              label
+                            >
+                              {{ keyword }}
+                            </v-chip>
+                            <v-chip
+                              v-if="list.keywords.length > 10"
+                              small
+                              outlined
+                              label
+                            >
+                              (+{{ list.keywords.length - 10 }} more)
+                            </v-chip>
+                          </v-chip-group>
+                        </td>
+                        <td v-if="list.status === 'Calculating'">
+                          <Spinner />
+                        </td>
+                        <td v-else>
+                          {{ list.rows ? formatNumber(list.rows) : '-' }}
+                        </td>
+                        <td class="text-center">
+                          <v-icon v-if="list.repeat">
+                            {{ mdiUpdate }}
+                          </v-icon>
+                        </td>
+                        <td class="text-center">
+                          <v-icon
+                            v-if="list.status === 'Complete'"
+                            color="success"
+                          >
+                            {{ mdiCheck }}
+                          </v-icon>
+                        </td>
+                        <td style="white-space: nowrap">
+                          <div :style="hover ? '' : 'visibility: hidden'">
+                            <v-btn
+                              color="accent"
+                              icon
+                              @click="
+                                selected = list
+                                editDialog = true
+                              "
+                            >
+                              <v-icon>{{ mdiPencil }}</v-icon> </v-btn
+                            ><v-btn
+                              :disabled="list.status === 'Complete'"
+                              color="error"
+                              icon
+                              @click="
+                                selected = list
+                                cancelDialog = true
+                              "
+                            >
+                              <v-icon>{{ mdiDelete }}</v-icon>
+                            </v-btn>
+                          </div>
+                        </td>
+                      </tr>
+                    </v-hover>
+                  </template>
+
+                  Created:
+                  {{ formatDate(new Date(list.createdAt * 1000)) }}
+                </v-tooltip>
               </template>
             </tbody>
           </v-simple-table>

@@ -116,7 +116,6 @@
                   <v-btn
                     class="font-weight-regular text-left"
                     color="white"
-                    dark
                     text
                     v-on="on"
                   >
@@ -265,12 +264,7 @@
               </div>
             </v-scroll-x-reverse-transition>
 
-            <v-btn
-              v-if="!search"
-              icon
-              color="white"
-              @click="$vuetify.theme.dark = !$vuetify.theme.dark"
-            >
+            <v-btn v-if="!search" icon color="white" @click="toggleTheme">
               <v-icon size="20">{{
                 $vuetify.theme.dark ? mdi.mdiWeatherSunny : mdi.mdiWeatherNight
               }}</v-icon> </v-btn
@@ -415,6 +409,16 @@ export default {
     },
     $route() {
       this.search = false
+    },
+  },
+  methods: {
+    toggleTheme() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+
+      this.$cookies.set('theme', this.$vuetify.theme.dark ? 'dark' : 'light', {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 365,
+      })
     },
   },
 }

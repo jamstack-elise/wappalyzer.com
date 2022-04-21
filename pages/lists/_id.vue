@@ -756,7 +756,13 @@
                         </v-icon>
                       </td>
                     </tr>
-                    <tr v-if="!list.query.matchAll">
+                    <tr
+                      v-if="
+                        !list.query.matchAll &&
+                        list.query.geoIps.length &&
+                        list.query.languages.length
+                      "
+                    >
                       <th width="40%">Match country or language</th>
                       <td>
                         <v-icon color="primary">
@@ -771,6 +777,12 @@
                           list.query.maxAge || 3
                         }}
                         months
+                      </td>
+                    </tr>
+                    <tr v-if="list.query.fromDate">
+                      <th width="40%">Websites discovered from</th>
+                      <td>
+                        {{ formatDate(new Date(list.query.fromDate * 1000)) }}
                       </td>
                     </tr>
                     <tr v-if="list.exclusionsFilename">
@@ -1191,6 +1203,9 @@ export default {
           this.list.query.maxAge !== null && this.list.query.maxAge !== 3
             ? this.list.query.maxAge.toString()
             : undefined,
+        from: this.list.query.fromDate
+          ? this.list.query.fromDate.toString()
+          : undefined,
         filters: this.list.query.matchAll ? undefined : 'or',
         selection:
           this.list.query.matchAllTechnologies === 'and' ||

@@ -305,6 +305,10 @@ export default {
   height: 1.2rem;
 }
 
+.v-application.theme--dark .ttt-player-icon {
+  color: #fff;
+}
+
 .ttt-player-icon--hidden {
   display: none;
 }
@@ -321,6 +325,10 @@ export default {
   width: 6rem;
 }
 
+.v-application.theme--dark .ttt-grid {
+  background: #2b2b2b;
+}
+
 .ttt-cell {
   border: 1px solid #4608ad;
   border-width: 1px 0 0 1px;
@@ -329,6 +337,10 @@ export default {
   padding: 0.2rem;
   width: 2rem;
   height: 2rem;
+}
+
+.v-application.theme--dark .ttt-cell {
+  border-color: #fff;
 }
 
 .ttt-row:first-child .ttt-cell {
@@ -348,6 +360,10 @@ export default {
 .ttt-cell .ttt-icon {
   color: #4608ad;
   display: block;
+}
+
+.v-application.theme--dark .ttt-cell .ttt-icon {
+  color: #fff;
 }
 
 .ttt-blink .ttt-icon {

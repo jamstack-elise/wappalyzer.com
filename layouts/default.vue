@@ -102,16 +102,16 @@ export default {
 
       this.checkSurvey()
     },
-    '$vuetify.theme.dark'() {
-      this.$cookies.set('theme', this.$vuetify.theme.dark ? 'dark' : 'light', {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 365,
-      })
-    },
   },
   mounted() {
     setTimeout(() => {
-      this.$vuetify.theme.dark = this.$cookies.get('theme') === 'dark'
+      const theme =
+        this.$cookies.get('theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light')
+
+      this.$vuetify.theme.dark = theme === 'dark'
     }, 1)
 
     this.initChat()
