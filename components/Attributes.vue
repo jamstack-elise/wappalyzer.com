@@ -4,9 +4,9 @@
       v-for="(set, setKey) in attributes"
       :key="setKey"
       class="mb-4 pb-4"
-      outlined
+      :outlined="!$vuetify.theme.dark"
     >
-      <v-sheet color="secondary">
+      <v-sheet :color="$vuetify.theme.dark ? 'primary lighten-1' : 'secondary'">
         <v-card-title
           class="subtitle-2 d-flex justify-space-between"
           style="line-height: 1rem"

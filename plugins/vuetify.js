@@ -31,7 +31,7 @@ export default new Vuetify({
           lighten1: '#1e272f',
         },
         secondary: '#1e1e1e',
-        anchor: '#a384d6',
+        anchor: '#2196f3',
       },
     },
   },

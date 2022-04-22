@@ -171,6 +171,8 @@ export default {
         technology: '',
         description: '',
         website: '',
+        version: '',
+        agent: '',
         name: '',
         email: '',
       },
@@ -225,6 +227,8 @@ export default {
   mounted() {
     this.form = { ...this.formInit }
     this.form.website = this.$route.query.url || ''
+    this.form.version = this.$route.query.version || ''
+    this.form.agent = window.navigator.userAgent
     this.form.name = this.user.name
     this.form.email = this.user.email
   },

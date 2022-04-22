@@ -32,7 +32,7 @@
                 v-for="index in [0, 1, 2]"
                 class="mb-4"
                 :key="index"
-                outlined
+                :outlined="!$vuetify.theme.dark"
               >
                 <v-card-text>
                   <v-skeleton-loader type="card-heading" />
@@ -52,9 +52,13 @@
               v-for="category in categorised"
               :key="category.slug"
             >
-              <v-card class="mb-4" outlined>
+              <v-card class="mb-4" :outlined="!$vuetify.theme.dark">
                 <v-hover v-slot="{ hover }">
-                  <v-sheet color="secondary">
+                  <v-sheet
+                    :color="
+                      $vuetify.theme.dark ? 'primary lighten-1' : 'secondary'
+                    "
+                  >
                     <v-card-title class="subtitle-2" style="line-height: 1rem">
                       <nuxt-link
                         :class="hover ? '' : 'text-decoration-none'"
@@ -158,7 +162,7 @@
             <v-card
               v-if="isLoading || (!signInDialog && loading)"
               class="mb-4"
-              outlined
+              :outlined="!$vuetify.theme.dark"
             >
               <v-card-text>
                 <v-skeleton-loader type="article, article " />
@@ -173,8 +177,16 @@
                 :masked-sets="maskedSets"
               />
 
-              <v-card v-if="keywords && keywords.length" class="mb-4" outlined>
-                <v-sheet color="secondary">
+              <v-card
+                v-if="keywords && keywords.length"
+                class="mb-4"
+                :outlined="!$vuetify.theme.dark"
+              >
+                <v-sheet
+                  :color="
+                    $vuetify.theme.dark ? 'primary lighten-1' : 'secondary'
+                  "
+                >
                   <v-card-title class="subtitle-2">Keywords</v-card-title>
                 </v-sheet>
 

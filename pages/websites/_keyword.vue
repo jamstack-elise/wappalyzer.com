@@ -14,6 +14,12 @@
             label="Keyword"
             :append-icon="mdiMagnify"
             :error-messages="keywordError ? [keywordError] : []"
+            :rules="[
+              (v) =>
+                !v ||
+                v.match(/^[a-z0-9]*$/i) ||
+                'Must be alphanumeric (a-z0-9, no spaces). Works best with English nouns, e.g. \'fashion\'.',
+            ]"
             required
             outlined
             hide-details="auto"
