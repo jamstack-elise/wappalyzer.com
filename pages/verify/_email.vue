@@ -1,6 +1,6 @@
 <template>
   <Page :title="title" :seo-title="seoTitle" :head="meta" no-heading>
-    <div class="mt-4 mb-8">
+    <div class="my-6">
       <v-btn to="/api/" class="mb-2" depressed>
         <v-icon left>
           {{ mdiConsole }}
@@ -100,7 +100,7 @@
               </v-alert>
             </div>
 
-            <v-card class="my-4">
+            <v-card class="my-4" outlined>
               <v-card-title class="subtitle-2">Checks</v-card-title>
               <v-card-text class="pt-0 px-0">
                 <v-simple-table>
@@ -206,8 +206,8 @@
             >).
           </p>
 
-          <v-card class="mb-4">
-            <v-card-title class="subtitle-2"> Upload your list </v-card-title>
+          <v-card outlined>
+            <v-card-title class="subtitle-2">Upload your list</v-card-title>
             <v-card-text>
               <p class="mb-6">
                 Upload a .txt file with up to 100,000 email addresses, each on a
@@ -217,13 +217,7 @@
               <v-file-input
                 ref="file"
                 :error-messages="fileErrors"
-                :hint="
-                  file
-                    ? `${file
-                        .split('\n')
-                        .length.toLocaleString()} email addresses`
-                    : ''
-                "
+                :hint="file ? `${results} email addresses` : ''"
                 persistent-hint
                 placeholder="Select a file..."
                 accept="text/plain"
@@ -238,39 +232,60 @@
                 label="Remove invalid email addresses"
                 hide-details="auto"
               />
+
+              <v-alert v-if="error" color="error" class="mt-4 mb-0" text>
+                {{ error }}
+              </v-alert>
             </v-card-text>
           </v-card>
 
-          <v-row>
-            <v-col>
-              <v-btn
-                :disabled="!!(!file || fileErrors.length)"
-                :loading="ordering"
-                color="primary"
-                large
-                depressed
-                @click="submitBulk"
-              >
-                Get a quote
-                <v-icon right>
-                  {{ mdiArrowRight }}
-                </v-icon>
-              </v-btn>
-            </v-col>
-            <v-col class="flex-shrink-1 flex-grow-0">
-              <v-btn
-                color="primary primary--text lighten-1"
-                depressed
-                large
-                @click="$refs.pricingDialog.open()"
-              >
-                <v-icon left>
-                  {{ mdiCalculator }}
-                </v-icon>
-                Pricing
-              </v-btn>
-            </v-col>
-          </v-row>
+          <template v-if="file && !fileErrors.length">
+            <div class="mb-4" />
+
+            <v-alert v-if="credits < totalCredits" color="warning" text>
+              You have
+              <strong>{{ formatNumber(credits) }}</strong> credits.
+              <template v-if="isPro">
+                Please
+                <nuxt-link class="warning--text" to="/credits/"
+                  >top up your credits</nuxt-link
+                >
+              </template>
+              <template v-else
+                >Sign up for a Pro plan to get more credits or create a smaller
+                list.
+              </template>
+            </v-alert>
+
+            <v-btn
+              :disabled="totalCredits > credits"
+              :loading="submitting"
+              color="primary"
+              class="mr-4"
+              large
+              depressed
+              @click="submitBulk('credits')"
+            >
+              <v-icon left size="20">
+                {{ mdiAlphaCCircle }}
+              </v-icon>
+              Spend {{ totalCredits }} credit{{
+                totalCredits === 1 ? '' : 's'
+              }} </v-btn
+            ><v-btn
+              v-if="freeLists.remaining"
+              large
+              depressed
+              color="primary lighten-1 primary--text"
+              :loading="claiming"
+              @click="submitBulk('free')"
+            >
+              <v-icon left size="20">
+                {{ mdiGift }}
+              </v-icon>
+              Claim free list
+            </v-btn>
+          </template>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -282,8 +297,6 @@
     >
       <SignIn mode-sign-up mode-continue />
     </v-dialog>
-
-    <PricingDialog ref="pricingDialog" product="verify" />
 
     <template #footer>
       <Logos />
@@ -306,13 +319,14 @@ import {
   mdiCheck,
   mdiClose,
   mdiConsole,
+  mdiGift,
+  mdiAlphaCCircle,
 } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
 import Credits from '~/components/Credits.vue'
 import SignIn from '~/components/SignIn.vue'
-import PricingDialog from '~/components/PricingDialog.vue'
-import Logos from '~/components/PricingDialog.vue'
+import Logos from '~/components/Logos.vue'
 import { verify as meta } from '~/assets/json/meta.json'
 
 export default {
@@ -320,7 +334,6 @@ export default {
     Page,
     Credits,
     SignIn,
-    PricingDialog,
     Logos,
   },
   async asyncData({
@@ -415,7 +428,10 @@ export default {
       mdiCheck,
       mdiClose,
       mdiConsole,
-      ordering: false,
+      mdiGift,
+      mdiAlphaCCircle,
+      claiming: false,
+      submitting: false,
       email: '',
       lastEmail: '',
       signInDialog: false,
@@ -430,6 +446,13 @@ export default {
       isPro: ({ credits }) => credits.pro,
       isSignedIn: ({ user }) => user.isSignedIn,
       credits: ({ credits: { credits } }) => credits,
+      freeLists: ({ credits: { freeLists } }) => freeLists,
+      results() {
+        return this.file.split('\n').length
+      },
+      totalCredits() {
+        return this.results * (this.live ? 2 : 1)
+      },
     }),
     seoTitle() {
       if (this.email) {
@@ -454,8 +477,8 @@ export default {
           this.submit()
         }
 
-        if (this.panels === 1 && this.ordering) {
-          this.submitBulk()
+        if (this.panels === 1 && (this.submitting || this.claiming)) {
+          this.submitBulk(this.submitting ? 'credits' : 'free')
         }
       }
     },
@@ -562,8 +585,9 @@ export default {
 
       this.loading = false
     },
-    async submitBulk() {
-      this.ordering = true
+    async submitBulk(paymentMethod = 'credits') {
+      this.submitting = paymentMethod === 'credits'
+      this.claiming = paymentMethod === 'free'
 
       if (!this.$store.state.user.isSignedIn) {
         this.signInDialog = true
@@ -573,20 +597,20 @@ export default {
 
       try {
         const { id } = (
-          await this.$axios.put('orders', {
-            product: 'Email verification',
+          await this.$axios.put('verify-site/lists', {
             bulk: {
               input: this.file,
             },
           })
         ).data
 
-        this.$router.push(`/orders/${id}`)
+        this.$router.push(`/verify/lists/${id}`)
       } catch (error) {
         this.error = this.getErrorMessage(error)
       }
 
-      this.ordering = false
+      this.claiming = false
+      this.submitting = false
     },
 
     async fileChange(file = this.inputFile) {
@@ -609,6 +633,10 @@ export default {
           const domain = `http://${email.split('@').pop()}`
 
           try {
+            if (!email.includes('@')) {
+              throw new Error(`Invalid email address on line ${i + 1}: ${line}`)
+            }
+
             new URL(domain) // eslint-disable-line no-new
           } catch (error) {
             if (this.removeInvalid) {

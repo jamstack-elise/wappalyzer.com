@@ -108,9 +108,9 @@
             </div>
             <template v-else>
               <v-progress-circular
+                color="accent"
                 size="100"
                 width="5"
-                style="opacity: 0.3"
                 indeterminate
               />
 
@@ -1397,8 +1397,6 @@ export default {
     async saveCallbackUrl() {
       this.error = false
       this.savingCallbackUrl = true
-
-      console.log(this.list.callbackUrl)
 
       try {
         await this.$axios.patch(`lists-site/${this.list.id}`, {

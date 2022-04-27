@@ -27,21 +27,19 @@
         </v-col>
       </v-row>
 
-      <v-card class="mb-4">
-        <v-card-text v-if="!filteredLists.length">
-          <v-alert class="ma-0" color="info" text>
-            You don't have any lists.
-          </v-alert>
-        </v-card-text>
-        <v-card-text v-else class="px-0">
+      <v-alert v-if="!filteredLists.length" class="ma-0" color="info" text>
+        You don't have any lists.
+      </v-alert>
+      <v-card v-else class="mb-4">
+        <v-card-text class="px-0">
           <v-simple-table>
             <thead>
               <tr>
                 <th width="20%">ID</th>
+                <th width="1">Status</th>
                 <th>Description</th>
                 <th width="10%">Websites</th>
                 <th width="1">Repeat</th>
-                <th width="1">Paid</th>
                 <th width="1"></th>
               </tr>
             </thead>
@@ -76,6 +74,26 @@
                             Weekly update for list {{ list.repeatListId }}.
                             Click to manage.
                           </v-tooltip>
+                        </td>
+                        <td>
+                          <v-chip
+                            :color="
+                              list.status === 'Complete'
+                                ? 'success'
+                                : list.status === 'Calculating'
+                                ? 'warning'
+                                : list.status === 'Insufficient'
+                                ? 'warning'
+                                : list.status === 'Failed'
+                                ? 'error'
+                                : 'accent'
+                            "
+                            label
+                            outlined
+                            small
+                          >
+                            {{ list.status }}
+                          </v-chip>
                         </td>
                         <td>
                           <template v-if="list.name">
@@ -136,14 +154,6 @@
                         <td class="text-center">
                           <v-icon v-if="list.repeat">
                             {{ mdiUpdate }}
-                          </v-icon>
-                        </td>
-                        <td class="text-center">
-                          <v-icon
-                            v-if="list.status === 'Complete'"
-                            color="success"
-                          >
-                            {{ mdiCheck }}
                           </v-icon>
                         </td>
                         <td style="white-space: nowrap">

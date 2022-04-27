@@ -11,7 +11,7 @@
       {{ error }}
     </v-alert>
 
-    <v-row class="mb-4">
+    <v-row class="mb-2">
       <v-col cols="12" lg="8" class="py-0">
         <p>
           Connect Wappalyzer to

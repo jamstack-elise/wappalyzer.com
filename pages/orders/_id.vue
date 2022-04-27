@@ -1,13 +1,10 @@
 <template>
   <Page
     :title="title"
-    :head="{ title, subtitle: order && order.name }"
     :crumbs="[{ title: 'Orders', to: '/orders/' }]"
     :loading="!order && !error"
     secure
   >
-    <div v-if="order && order.name" class="mb-2"></div>
-
     <v-alert v-if="success" type="success" border="left" text prominent>
       {{ success }}
     </v-alert>
@@ -24,18 +21,6 @@
     </v-alert>
 
     <template v-if="order">
-      <v-alert
-        v-if="order.status === 'Failed'"
-        type="error"
-        border="left"
-        :icon="mdiAlertOctagonOutline"
-        text
-        prominent
-      >
-        Sorry, something went wrong during the processing of your order. Please
-        contact us.
-      </v-alert>
-
       <template v-if="order.status === 'Open'">
         <v-alert type="info" border="left" text prominent>
           Your order has been created. Please make payment below to complete the
@@ -55,13 +40,7 @@
       </template>
 
       <template v-if="order.status === 'Pending'">
-        <v-alert
-          v-if="['Subscription'].includes(order.product)"
-          type="warning"
-          border="left"
-          text
-          prominent
-        >
+        <v-alert type="warning" border="left" text prominent>
           <p>
             Your card could not be charged automatically, please use the link
             below to complete the payment. An additional step may be required by
@@ -81,139 +60,49 @@
             </v-icon>
           </v-btn>
         </v-alert>
-        <v-alert v-else type="info" border="left" text prominent>
-          Your order is awaiting payment. Please use the
-          <a :href="order.invoiceUrl" target="_blank">invoice</a> to complete
-          the purchase.
-        </v-alert>
       </template>
 
-      <v-alert
-        v-if="order.status === 'Processing'"
-        type="info"
-        border="left"
-        text
-        prominent
-      >
-        Thank you, your order is being processed. You'll receive an email when
-        it's ready.
-      </v-alert>
-
-      <v-alert
-        v-if="order.status === 'Complete'"
-        type="success"
-        border="left"
-        text
-        prominent
-      >
+      <template v-if="order.status === 'Complete'">
         <template v-if="order.product === 'Subscription'">
-          Thank you for your payment, your subscription has been created.
+          <v-alert type="success" border="left" text prominent>
+            Thank you for your payment, your subscription has been created.
 
-          <div
-            v-if="order.plan && order.plan.id.startsWith('credits_plus')"
-            class="mt-2"
+            <div
+              v-if="order.plan && order.plan.id.startsWith('credits_plus')"
+              class="mt-2"
+            >
+              To enable Plus features in the browser extension,
+              <nuxt-link to="/apikey/">create an API key</nuxt-link>
+              and add it in the 'More info' tab.
+            </div>
+          </v-alert>
+
+          <v-btn
+            to="/plan/"
+            color="primary lighten-1"
+            class="mr-2 mb-4 primary--text"
+            depressed
           >
-            To enable Plus features in the browser extension,
-            <nuxt-link to="/apikey/">create an API key</nuxt-link>
-            and add it in the 'More info' tab.
-          </div>
+            <v-icon left>{{ mdiTagOutline }}</v-icon
+            >Manage plan
+          </v-btn>
         </template>
-        <template
-          v-else-if="
-            ['Technology lookup', 'Email verification'].includes(order.product)
-          "
+
+        <v-alert
+          v-if="order.product === 'Credits'"
+          type="success"
+          border="left"
+          text
+          prominent
         >
-          Thank you for your payment, your list is ready.
-        </template>
-        <template v-else-if="order.product === 'Credits'">
           Thank you for your payment, credits have been added to your balance.
-        </template>
-        <template v-else>Thank you for your payment.</template>
-      </v-alert>
-
-      <v-btn
-        v-if="isAdmin"
-        :disabled="order.status === 'Complete'"
-        color="success lighten-5 success--text"
-        class="mr-2 mb-4"
-        depressed
-        @click="editDialog = true"
-      >
-        <v-icon left>
-          {{ mdiPencil }}
-        </v-icon>
-        Edit order
-      </v-btn>
-
-      <v-btn
-        v-if="
-          isAdmin &&
-          ['Technology lookup', 'Email verification'].includes(order.product)
-        "
-        :loading="processing"
-        color="success lighten-5 success--text"
-        class="mr-2 mb-4"
-        depressed
-        @click="process"
-      >
-        <v-icon left>
-          {{ mdiReload }}
-        </v-icon>
-        Process order
-      </v-btn>
-
-      <template
-        v-if="
-          ['Technology lookup', 'Email verification'].includes(order.product)
-        "
-      >
-        <v-btn
-          v-if="order.status === 'Complete'"
-          :href="`${bulkLookupBaseUrl}${order.bulk.filename}`"
-          color="success"
-          class="mr-2 mb-4"
-          depressed
-        >
-          <v-icon left> {{ mdiDownload }} </v-icon>Download list
-        </v-btn>
-      </template>
-
-      <template v-if="order.stripeSubscription">
-        <v-btn
-          to="/plan/"
-          color="primary lighten-1"
-          class="mr-2 mb-4 primary--text"
-          depressed
-        >
-          <v-icon left>{{ mdiTagOutline }}</v-icon
-          >Manage plan
-        </v-btn>
-      </template>
-
-      <template
-        v-if="
-          order.status === 'Complete' &&
-          order.plan &&
-          order.plan.id.startsWith('credits_plus')
-        "
-      >
-        <v-btn
-          to="/apikey/"
-          color="primary lighten-1"
-          class="mr-2 mb-4 primary--text"
-          depressed
-        >
-          <v-icon left>{{ mdiKeyVariant }}</v-icon
-          >API key
-        </v-btn>
+        </v-alert>
       </template>
 
       <v-btn
         v-if="
           (order.status === 'Pending' && order.invoiceUrl) ||
-          (order.status === 'Complete' &&
-            order.product !== 'Subscription' &&
-            order.paymentMethod === 'stripe')
+          order.status === 'Complete'
         "
         :href="order.status === 'Pending' && order.invoiceUrl"
         :to="order.status === 'Complete' && `/invoices/${order.id}`"
@@ -232,13 +121,7 @@
           <v-simple-table>
             <tbody>
               <tr>
-                <th width="30%">ID</th>
-                <td class="font-weight-medium">
-                  {{ order.id }}
-                </td>
-              </tr>
-              <tr>
-                <th>Status</th>
+                <th width="30%">Status</th>
                 <td class="d-flex align-center">
                   <v-chip
                     :color="
@@ -246,34 +129,14 @@
                         ? 'success'
                         : order.status === 'Pending'
                         ? 'warning'
-                        : order.status === 'Failed'
-                        ? 'error'
                         : 'accent'
                     "
                     label
                     outlined
                     small
                   >
-                    {{ order.status }} </v-chip
-                  ><small
-                    v-if="order.status === 'Processing'"
-                    class="ml-4 text--disabled"
-                  >
-                    <v-progress-circular
-                      :rotate="-90"
-                      :size="24"
-                      :width="3"
-                      :value="progress"
-                      color="accent"
-                      class="mr-2"
-                    />{{
-                      progress === 100
-                        ? 'Finalising...'
-                        : progress
-                        ? `${progress}%`
-                        : 'Starting...'
-                    }}
-                  </small>
+                    {{ order.status }}
+                  </v-chip>
                 </td>
               </tr>
               <tr>
@@ -381,35 +244,10 @@
           <v-card-title>Price</v-card-title>
 
           <v-card-text class="px-0">
-            <v-simple-table
-              v-if="(order.paymentMethod || paymentMethod) === 'free'"
-            >
+            <v-simple-table>
               <tbody>
                 <tr>
-                  <th width="30%">Total</th>
-                  <td>Free</td>
-                </tr>
-              </tbody>
-            </v-simple-table>
-            <v-simple-table
-              v-else-if="
-                (order.paymentMethod || paymentMethod) === 'credits' ||
-                (!order.total && order.totalCredits)
-              "
-            >
-              <tbody>
-                <tr>
-                  <th width="30%">Credits</th>
-                  <td>
-                    {{ formatNumber(order.totalCredits) }}
-                  </td>
-                </tr>
-              </tbody>
-            </v-simple-table>
-            <v-simple-table v-else>
-              <tbody>
-                <tr>
-                  <th width="30%">Subotal</th>
+                  <th width="30%">Subtotal</th>
                   <td>
                     {{
                       formatCurrency(order.subtotal / 100, order.currency, true)
@@ -490,113 +328,55 @@
         </template>
 
         <template v-if="order.status === 'Open'">
-          <template
-            v-if="
-              !isMember &&
-              !['credits', 'free'].includes(paymentMethod) &&
-              !['credits', 'free'].includes(order.paymentMethod)
-            "
-          >
-            <v-divider />
+          <v-divider />
 
-            <v-card-title>Billing</v-card-title>
-            <v-card-text class="px-0 pb-0">
-              <v-alert v-if="accountSuccess" type="success" class="mx-4" text>
-                {{ accountSuccess }}
-              </v-alert>
-              <v-alert
-                v-if="!user.billingEmail"
-                color="info"
-                class="my-0 mx-4"
-                text
-              >
-                No billing details provided.
-              </v-alert>
-              <v-simple-table v-else>
-                <tbody>
-                  <tr>
-                    <th width="30%">Name</th>
-                    <td>{{ user.billingName }}</td>
-                  </tr>
-                  <tr>
-                    <th>Email address</th>
-                    <td>{{ user.billingEmail }}</td>
-                  </tr>
-                  <tr>
-                    <th>Address</th>
-                    <td>
-                      {{ billingAddress }}
-                    </td>
-                  </tr>
-                </tbody>
-              </v-simple-table>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn color="accent" text @click="billingDialog = true">
-                <v-icon left>
-                  {{ mdiPencil }}
-                </v-icon>
-                Edit details
-              </v-btn>
-            </v-card-actions>
-          </template>
+          <v-card-title>Billing</v-card-title>
+          <v-card-text class="px-0 pb-0">
+            <v-alert v-if="accountSuccess" type="success" class="mx-4" text>
+              {{ accountSuccess }}
+            </v-alert>
+            <v-alert
+              v-if="!user.billingEmail"
+              color="info"
+              class="my-0 mx-4"
+              text
+            >
+              No billing details provided.
+            </v-alert>
+            <v-simple-table v-else>
+              <tbody>
+                <tr>
+                  <th width="30%">Name</th>
+                  <td>{{ user.billingName }}</td>
+                </tr>
+                <tr>
+                  <th>Email address</th>
+                  <td>{{ user.billingEmail }}</td>
+                </tr>
+                <tr>
+                  <th>Address</th>
+                  <td>
+                    {{ billingAddress }}
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="accent" text @click="billingDialog = true">
+              <v-icon left>
+                {{ mdiPencil }}
+              </v-icon>
+              Edit details
+            </v-btn>
+          </v-card-actions>
 
           <v-divider />
 
           <v-card-title v-if="!isMember">Payment</v-card-title>
 
-          <v-card-text
-            v-if="!['Credits', 'Subscription'].includes(order.product)"
-            class="px-0"
-          >
-            <v-simple-table>
-              <tbody>
-                <tr>
-                  <th width="30%">Method</th>
-                  <td>
-                    <v-radio-group
-                      v-model="paymentMethod"
-                      class="my-0"
-                      hide-details
-                    >
-                      <v-radio label="Credit card" value="stripe" />
-                      <v-radio
-                        v-if="order.product !== 'Credits'"
-                        label="Credit balance"
-                        value="credits"
-                      />
-                      <v-radio
-                        v-if="
-                          ['Technology lookup', 'Email verification'].includes(
-                            order.product
-                          )
-                        "
-                        label="Claim free list"
-                        value="free"
-                      />
-                    </v-radio-group>
-                  </td>
-                </tr>
-              </tbody>
-            </v-simple-table>
-
-            <v-divider class="mt-4" />
-
-            <v-alert
-              v-if="!isPro && paymentMethod !== 'free'"
-              color="primary lighten-1 primary--text"
-              class="text-center mt-4 mb-0"
-              tile
-            >
-              Come here often? Save with a plan. See
-              <nuxt-link class="primary--text" to="/pricing/"
-                >plans &amp; pricing</nuxt-link
-              >.
-            </v-alert>
-          </v-card-text>
-
-          <v-card-text v-if="paymentMethod === 'stripe'" class="pa-0">
+          <v-card-text class="pa-0">
             <div v-if="!cardsLoaded" class="d-flex justify-center pt-2 pb-6">
               <Progress />
             </div>
@@ -643,104 +423,6 @@
               </v-btn>
             </div>
           </v-card-text>
-          <template v-if="paymentMethod === 'credits'">
-            <v-card-text class="pa-0">
-              <div
-                :class="`d-flex justify-center pt-4${
-                  !isMember && credits < order.totalCredits ? '' : ' pb-8'
-                }`"
-              >
-                <v-btn
-                  :loading="paying"
-                  :disabled="
-                    !order.totalCredits || credits < order.totalCredits
-                  "
-                  class="primary"
-                  large
-                  depressed
-                  @click="pay"
-                >
-                  <v-icon left>
-                    {{ mdiAlphaCCircle }}
-                  </v-icon>
-                  Spend {{ formatNumber(order.totalCredits || 0) }} credits
-                </v-btn>
-              </div>
-            </v-card-text>
-            <v-card-actions v-if="!isMember && credits < order.totalCredits">
-              <v-spacer />
-              <v-btn color="accent" to="/credits" text>
-                <v-icon left>
-                  {{ mdiAlphaCCircle }}
-                </v-icon>
-                Buy credits
-              </v-btn>
-            </v-card-actions>
-          </template>
-          <template
-            v-if="order.product !== 'Subscription' && paymentMethod === 'free'"
-          >
-            <v-card-text class="pa-0 text-center">
-              <v-alert
-                v-if="freeLists.total === 0"
-                color="primary lighten-1 primary--text"
-                class="text-center mb-4"
-                tile
-              >
-                Free lists are included in selected plans. See
-                <nuxt-link class="primary--text" to="/pricing/"
-                  >plans &amp; pricing</nuxt-link
-                >.
-              </v-alert>
-              <v-alert
-                v-else-if="freeLists.availableAt"
-                color="primary lighten-1 primary--text"
-                class="text-center mb-4"
-                tile
-              >
-                You next free list will be available from
-                {{ formatDate(new Date(freeLists.availableAt * 1000)) }}.
-              </v-alert>
-
-              <v-btn
-                :loading="paying"
-                :disabled="!freeLists.remaining"
-                class="primary mt-4 mb-8"
-                large
-                depressed
-                @click="pay"
-              >
-                <v-icon left>
-                  {{ mdiGift }}
-                </v-icon>
-                Claim free list
-              </v-btn>
-            </v-card-text>
-          </template>
-        </template>
-
-        <template v-if="['Processing', 'Complete'].includes(order.status)">
-          <v-divider />
-
-          <v-card-title>Payment</v-card-title>
-          <v-card-text class="px-0">
-            <v-simple-table>
-              <tbody>
-                <tr>
-                  <th width="30%">Method</th>
-                  <td v-if="order.paymentMethod === 'stripe'">Credit card</td>
-                  <td v-if="order.paymentMethod === 'paypal'">PayPal</td>
-                  <td v-if="order.paymentMethod === 'credits'">
-                    Credit balance
-                  </td>
-                  <td v-if="order.paymentMethod === 'free'">Free list</td>
-                  <td v-else />
-                </tr>
-              </tbody>
-            </v-simple-table>
-
-            <v-divider class="mt-4 mb-n4" />
-          </v-card-text>
         </template>
       </v-card>
 
@@ -785,53 +467,6 @@
             </v-btn>
             <v-btn :loading="cancelling" color="error" text @click="cancel">
               Ok
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog v-model="editDialog" max-width="400px" eager>
-        <v-card>
-          <v-card-title>Edit order</v-card-title>
-          <v-card-text>
-            <v-alert v-if="editError" type="error" text>
-              {{ editError }}
-            </v-alert>
-
-            <v-form @submit.prevent="edit">
-              <v-text-field v-model="order.userId" label="User ID" readonly />
-
-              <v-text-field
-                v-model="order.createdAt"
-                label="Timestamp"
-                readonly
-              />
-
-              <v-select v-model="status" :items="statusItems" label="Status" />
-
-              <v-text-field
-                v-if="!['Subscription', 'Credits'].includes(order.product)"
-                v-model="totalCredits"
-                label="Credits"
-              />
-
-              <v-text-field
-                v-if="order.product !== 'Subscription'"
-                v-model="discount"
-                :label="`Discount (subtotal ${formatCurrency(
-                  order.subtotal / 100,
-                  order.currency
-                )})`"
-              />
-            </v-form>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="accent" text @click="editDialog = false">
-              Cancel
-            </v-btn>
-            <v-btn :loading="editing" color="accent" text @click="edit">
-              Save
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -899,25 +534,15 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import {
-  mdiArrowLeft,
   mdiPencil,
-  mdiReload,
   mdiFileDocumentOutline,
   mdiTagOutline,
-  mdiDownload,
   mdiCartRemove,
   mdiCreditCard,
   mdiEmail,
-  mdiPlus,
-  mdiMinus,
   mdiCheckboxMarked,
-  mdiAlphaCCircle,
-  mdiGift,
-  mdiChevronDown,
-  mdiChevronUp,
   mdiAlertOctagonOutline,
   mdiArrowRight,
-  mdiKeyVariant,
 } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
@@ -948,37 +573,21 @@ export default {
       cancelError: false,
       cancelling: false,
       cardsLoaded: false,
-      checks: 0,
-      bulkLookupBaseUrl: this.$config.BULK_LOOKUP_BASE_URL,
       declineCodes,
       discount: 0,
-      editDialog: false,
-      editError: false,
-      editing: false,
       error: false,
       invoicing: false,
-      mdiArrowLeft,
       mdiPencil,
-      mdiReload,
       mdiFileDocumentOutline,
       mdiTagOutline,
-      mdiDownload,
       mdiCartRemove,
       mdiCreditCard,
       mdiEmail,
-      mdiPlus,
-      mdiMinus,
       mdiCheckboxMarked,
-      mdiAlphaCCircle,
-      mdiGift,
-      mdiChevronDown,
-      mdiChevronUp,
       mdiAlertOctagonOutline,
       mdiArrowRight,
-      mdiKeyVariant,
       order: null,
       orderLoaded: false,
-      paymentMethod: 'stripe',
       paying: false,
       processing: false,
       sets,
@@ -992,7 +601,6 @@ export default {
         'Complete',
       ],
       stripePaymentMethod: null,
-      totalCredits: 0,
       success: false,
     }
   },
@@ -1043,21 +651,6 @@ export default {
         }
       }
     },
-    '$store.state.credits.credits'() {
-      if (this.freeLists.remaining && this.order?.product !== 'Subscription') {
-        this.paymentMethod = 'free'
-      } else if (
-        this.isMember ||
-        (this.order &&
-          !['Credits', 'Subscription'].includes(this.order.product) &&
-          this.order.totalCredits &&
-          this.credits >= this.order.totalCredits)
-      ) {
-        this.paymentMethod = 'credits'
-      } else {
-        this.paymentMethod = 'stripe'
-      }
-    },
     billingDialog(open) {
       if (open) {
         this.billingSuccess = false
@@ -1066,49 +659,14 @@ export default {
     user() {
       this.billingDialog = false
     },
-    order({ id, status, totalCredits, discount }) {
+    order({ id, status, discount }) {
       this.status = status
-      this.totalCredits = totalCredits
       this.discount = discount / 100
-
-      if (!this.orderLoaded) {
-        this.orderLoaded = true
-
-        if (
-          this.freeLists.remaining &&
-          this.order?.product !== 'Subscription'
-        ) {
-          this.paymentMethod = 'free'
-        } else if (
-          this.isMember ||
-          (!['Credits', 'Subscription'].includes(this.order.product) &&
-            this.order.totalCredits &&
-            this.credits >= this.order.totalCredits)
-        ) {
-          this.paymentMethod = 'credits'
-        } else {
-          this.paymentMethod = 'stripe'
-        }
-      }
 
       if (status === 'Processing') {
         setTimeout(async () => {
           this.order = (await this.$axios.get(`orders/${id}`)).data
         }, 5000)
-      }
-    },
-    paymentMethod() {
-      this.cardsLoaded = false
-      this.stripePaymentMethod = null
-
-      if (
-        this.isMember &&
-        this.paymentMethod !== 'credits' &&
-        this.paymentMethod !== 'free'
-      ) {
-        this.$nextTick(() => {
-          this.paymentMethod = 'credits'
-        })
       }
     },
   },
@@ -1157,16 +715,7 @@ export default {
           })
 
           this.order = (await this.$axios.get(`orders/${this.order.id}`)).data
-        } else if (
-          this.paymentMethod === 'credits' ||
-          this.paymentMethod === 'free'
-        ) {
-          await this.$axios.patch(`orders/${this.order.id}`, {
-            paymentMethod: this.paymentMethod,
-          })
-
-          this.order = (await this.$axios.get(`orders/${this.order.id}`)).data
-        } else if (this.paymentMethod === 'stripe') {
+        } else {
           if (!this.order.stripePaymentIntent.id) {
             await this.$axios.patch(`orders/${this.order.id}`)
 
@@ -1243,9 +792,8 @@ export default {
 
       try {
         await this.$axios.patch(`orders/${this.order.id}`, {
-          paymentMethod: this.paymentMethod,
-          stripePaymentMethod:
-            this.paymentMethod === 'stripe' ? this.stripePaymentMethod : null,
+          paymentMethod: 'stripe',
+          stripePaymentMethod: this.stripePaymentMethod,
         })
 
         this.order = (await this.$axios.get(`orders/${this.order.id}`)).data
@@ -1274,31 +822,6 @@ export default {
 
       this.cancelling = false
     },
-    async edit() {
-      this.editError = false
-      this.editing = true
-      this.success = false
-
-      try {
-        await this.$axios.patch(`orders/${this.order.id}`, {
-          status: this.status,
-          totalCredits: this.totalCredits,
-          discount: Math.min(this.discount * 100, this.order.subtotal),
-        })
-
-        this.order = (await this.$axios.get(`orders/${this.order.id}`)).data
-
-        this.success = 'The order has been updated.'
-
-        this.editDialog = false
-      } catch (error) {
-        this.error = this.getErrorMessage(error)
-      }
-
-      this.editing = false
-
-      this.scrollToTop()
-    },
     async saveCoupon(coupon = this.coupon) {
       this.couponError = false
       this.savingCoupon = true
@@ -1326,11 +849,6 @@ export default {
       }
 
       this.savingCoupon = false
-    },
-    totalRows(rows, matchAllTechnologies) {
-      return matchAllTechnologies === 'or'
-        ? Object.values(rows).reduce((total, rows) => total + rows, 0)
-        : Object.values(rows)[0]
     },
     async billingUpdated() {
       this.accountSuccess = 'Your billing details have been updated.'

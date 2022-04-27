@@ -12,10 +12,10 @@
       <v-btn
         :href="`https://dashboard.stripe.com/customers/${user.stripeCustomer}`"
         :disabled="!user.stripeCustomer"
-        color="success lighten-5 success--text"
+        color="success"
         class="mr-2 mb-4"
         target="_blank"
-        depressed
+        outlined
       >
         Stripe customer
         <v-icon right>
@@ -26,9 +26,9 @@
       <v-btn
         v-if="!user.disabled"
         :loading="disabling"
-        color="error lighten-5 error--text"
+        color="error"
         class="mr-2 mb-4"
-        depressed
+        outlined
         @click="disable"
       >
         <v-icon left>

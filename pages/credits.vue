@@ -7,51 +7,53 @@
       {{ error }}
     </v-alert>
 
-    <p class="mb-8" style="max-width: 600px">
+    <p class="mb-6" style="max-width: 600px">
       Credits can be spent on any product, including technology lookups, APIs
       and lead lists.
     </p>
 
     <template v-if="!loading">
-      <v-btn
-        v-if="isAdmin"
-        color="success lighten-5 success--text"
-        class="mr-2 mb-4"
-        depressed
-        @click="addDialog = true"
-      >
-        <v-icon left>
-          {{ mdiAlphaCCircle }}
-        </v-icon>
-        Add credits
-      </v-btn>
+      <div class="mb-6">
+        <v-btn
+          v-if="isAdmin"
+          color="success"
+          class="mr-2"
+          outlined
+          @click="addDialog = true"
+        >
+          <v-icon left>
+            {{ mdiAlphaCCircle }}
+          </v-icon>
+          Add credits
+        </v-btn>
 
-      <v-btn
-        v-if="isAdmin"
-        color="success lighten-5 success--text"
-        class="mr-2 mb-4"
-        depressed
-        @click="spendDialog = true"
-      >
-        <v-icon left>
-          {{ mdiAlphaCCircle }}
-        </v-icon>
-        Spend credits
-      </v-btn>
+        <v-btn
+          v-if="isAdmin"
+          color="success"
+          class="mr-2"
+          outlined
+          @click="spendDialog = true"
+        >
+          <v-icon left>
+            {{ mdiAlphaCCircle }}
+          </v-icon>
+          Spend credits
+        </v-btn>
 
-      <v-btn class="mr-2 mb-4" depressed @click="$refs.faqDialog.open()">
-        <v-icon left>
-          {{ mdiForum }}
-        </v-icon>
-        FAQs
-      </v-btn>
+        <v-btn class="mr-2" depressed @click="$refs.faqDialog.open()">
+          <v-icon left>
+            {{ mdiForum }}
+          </v-icon>
+          FAQs
+        </v-btn>
 
-      <v-btn href="/pricing" class="mr-2 mb-4" depressed>
-        <v-icon left>
-          {{ mdiCalculator }}
-        </v-icon>
-        Plans &amp; pricing
-      </v-btn>
+        <v-btn href="/pricing" class="mr-2" depressed>
+          <v-icon left>
+            {{ mdiCalculator }}
+          </v-icon>
+          Plans &amp; pricing
+        </v-btn>
+      </div>
 
       <v-card
         v-if="!isPro"
@@ -83,9 +85,9 @@
         </v-card-actions>
       </v-card>
 
-      <v-row class="mb-4">
-        <v-col cols="12" md="6" class="d-flex">
-          <v-card width="100%" height="100%">
+      <v-card width="100%" height="100%">
+        <v-row class="my-6">
+          <v-col cols="12" md="6" class="py-0 pr-md-0">
             <v-form @submit.prevent="submit" :disabled="!isPro">
               <v-card-title class="d-flex justify-space-between">
                 <span>Buy credits</span>
@@ -137,11 +139,13 @@
                 </v-btn>
               </v-card-text>
             </v-form>
-          </v-card>
-        </v-col>
+          </v-col>
 
-        <v-col cols="12" md="6" class="d-flex">
-          <v-card width="100%" height="100%">
+          <v-divider class="d-none d-md-block" vertical />
+
+          <v-col cols="12" md="6" class="py-0 pl-md-0">
+            <v-divider class="d-md-none" />
+
             <v-card-title class="d-flex justify-space-between">
               <span>Auto top-up</span>
               <v-chip
@@ -181,9 +185,9 @@
                 Configure
               </v-btn>
             </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
 
       <v-card>
         <v-card-title>Bundles</v-card-title>
@@ -263,7 +267,19 @@
             <tbody>
               <tr v-for="(item, index) in spends" :key="index">
                 <td v-if="item.orderId">
-                  <nuxt-link :to="`/orders/${item.orderId}/`">
+                  <nuxt-link
+                    v-if="item.orderId.startsWith('lkp_')"
+                    :to="`/lookup/lists/${item.orderId}/`"
+                  >
+                    {{ item.description }}
+                  </nuxt-link>
+                  <nuxt-link
+                    v-else-if="item.orderId.startsWith('vrf_')"
+                    :to="`/verify/lists/${item.orderId}/`"
+                  >
+                    {{ item.description }}
+                  </nuxt-link>
+                  <nuxt-link v-else :to="`/orders/${item.orderId}/`">
                     {{ item.description }}
                   </nuxt-link>
                 </td>

@@ -35,7 +35,7 @@
                   </tr>
                   <tr>
                     <th>Email address</th>
-                    <td>info@wappalyzer.com</td>
+                    <td>hello@wappalyzer.com</td>
                   </tr>
                   <tr>
                     <th>Postal address</th>

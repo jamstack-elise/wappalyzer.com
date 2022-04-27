@@ -7,7 +7,7 @@
       {{ error }}
     </v-alert>
 
-    <p class="mb-8">
+    <p class="mb-6">
       Your API key provides authenticated access to your account when using our
       <nuxt-link to="/api/">APIs</nuxt-link> or
       <nuxt-link to="/apps/">browser extension</nuxt-link>. Treat it like a

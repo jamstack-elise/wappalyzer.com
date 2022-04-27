@@ -24,28 +24,34 @@
     "roles": ["developer", "admin"]
   },
   {
+    "title": "Payment methods",
+    "icon": "mdiCreditCard",
+    "to": "/paymentmethods/",
+    "roles": ["admin"]
+  },
+  {
+    "title": "Orders",
+    "icon": "mdiCart",
+    "to": "/orders/",
+    "roles": ["admin"]
+  },
+  {
+    "title": "Technology lookups",
+    "icon": "mdiLayersOutline",
+    "to": "/lookup/lists/",
+    "roles": ["buyer", "developer", "admin"]
+  },
+  {
     "title": "Lead lists",
     "icon": "mdiFilterVariant",
     "to": "/lists/all/",
     "roles": ["buyer", "developer", "admin"]
   },
   {
-    "title": "Orders",
-    "icon": "mdiCart",
-    "to": "/orders/",
+    "title": "Email verifications",
+    "icon": "mdiEmailCheckOutline",
+    "to": "/verify/lists/",
     "roles": ["buyer", "developer", "admin"]
-  },
-  {
-    "title": "Invoices",
-    "icon": "mdiFileDocumentOutline",
-    "to": "/invoices/",
-    "roles": ["admin"]
-  },
-  {
-    "title": "Payment methods",
-    "icon": "mdiCreditCard",
-    "to": "/paymentmethods/",
-    "roles": ["admin"]
   },
   {
     "title": "Integrations",

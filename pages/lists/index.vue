@@ -16,7 +16,7 @@
           Sample list
         </v-btn>
 
-        <v-btn to="/api/" class="mb-2" depressed>
+        <v-btn to="/api/" class="mb-2 mr-2" depressed>
           <v-icon left>
             {{ mdiConsole }}
           </v-icon>

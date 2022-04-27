@@ -80,7 +80,7 @@
             >).
           </p>
 
-          <v-card class="mb-4">
+          <v-card class="mb-4" outlined>
             <v-card-title class="subtitle-2">Upload your list</v-card-title>
             <v-card-text>
               <p class="mb-6">
@@ -199,7 +199,7 @@
                         </th>
                         <td
                           v-for="(key, index) in preview[0]"
-                          class="pl-0"
+                          class="pl-0 py-0"
                           :style="
                             csvUrlColumn === index
                               ? 'background-color: #f0ebf9;'
@@ -272,7 +272,7 @@
 
                   <p class="mb-2">
                     We found
-                    {{ file.split('\n').length.toLocaleString() }}
+                    {{ formatNumber(results) }}
                     URLs.
                   </p>
 
@@ -290,131 +290,150 @@
             </template>
           </v-card>
 
-          <v-expansion-panels class="mb-4">
-            <v-expansion-panel ref="compliance">
-              <v-expansion-panel-header class="subtitle-2">
-                Compliance
-                <span class="body-2">
-                  <v-chip color="primary" class="ml-2" x-small outlined
-                    >PRO</v-chip
-                  >
-                </span>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <Pro class="mx-n6 mb-4" small />
-
-                <v-radio-group
-                  v-model="compliance"
-                  class="my-0"
-                  :disabled="!isPro"
-                  mandatory
+          <v-card outlined class="mb-4">
+            <v-expansion-panels flat>
+              <v-expansion-panel ref="compliance">
+                <v-expansion-panel-header
+                  class="subtitle-2 d-flex align-center"
                 >
-                  <v-radio
-                    value="include"
-                    class="mt-0"
-                    hide-details
-                    :disabled="australia"
+                  Compliance
+                  <span class="body-2">
+                    <v-chip color="primary" class="ml-2" x-small outlined
+                      >PRO</v-chip
+                    >
+                  </span>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <Pro class="mx-n6 mb-4" small />
+
+                  <v-radio-group
+                    v-model="compliance"
+                    class="my-0"
+                    :disabled="!isPro"
+                    mandatory
                   >
-                    <template #label> Include contact details </template>
-                  </v-radio>
-                  <v-radio
-                    value="excludeEU"
+                    <v-radio
+                      value="include"
+                      class="mt-0"
+                      hide-details
+                      :disabled="australia"
+                    >
+                      <template #label> Include contact details </template>
+                    </v-radio>
+                    <v-radio
+                      value="excludeEU"
+                      class="mt-0"
+                      hide-details
+                      :disabled="!isPro || australia"
+                    >
+                      <template #label>
+                        Exclude contact details of EU websites
+                      </template>
+                    </v-radio>
+                    <v-radio value="exclude" class="mt-0" hide-details>
+                      <template #label> Exclude all contact details </template>
+                    </v-radio>
+                  </v-radio-group>
+
+                  <v-checkbox
+                    v-model="australia"
+                    label="I'm in or do business in Australia"
                     class="mt-0"
+                    :disabled="!isPro"
                     hide-details
-                    :disabled="!isPro || australia"
+                  />
+
+                  <v-alert
+                    color="secondary"
+                    border="left"
+                    class="mt-8 mb-2"
+                    dense
                   >
-                    <template #label>
-                      Exclude contact details of EU websites
-                    </template>
-                  </v-radio>
-                  <v-radio value="exclude" class="mt-0" hide-details>
-                    <template #label> Exclude all contact details </template>
-                  </v-radio>
-                </v-radio-group>
-
-                <v-checkbox
-                  v-model="australia"
-                  label="I'm in or do business in Australia"
-                  class="mt-0"
-                  :disabled="!isPro"
-                  hide-details
-                />
-
-                <v-alert
-                  color="secondary"
-                  border="left"
-                  class="mt-8 mb-2"
-                  dense
-                >
-                  <small>
-                    We're unable to supply email addresses and phone numbers if
-                    you're in Australia or carry on business or activities in
-                    Australia.
-                  </small>
-                </v-alert>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-
-          <v-card
-            v-if="!isPro"
-            color="primary lighten-1 primary--text"
-            class="mb-4"
-            flat
-          >
-            <v-card-title class="subtitle-2">
-              <v-icon color="primary" size="20" left>
-                {{ mdiLockOpenVariantOutline }}
-              </v-icon>
-              Unlock PRO features
-            </v-card-title>
-            <v-card-text class="primary--text pb-0">
-              Sign up for a
-              <v-chip to="/pro/" color="primary" x-small outlined>PRO</v-chip>
-              plan to include company and contact information in lookups.
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-
-              <v-btn to="/pricing/" color="primary" text>
-                Compare plans
-                <v-icon right>
-                  {{ mdiArrowRight }}
-                </v-icon>
-              </v-btn>
-            </v-card-actions>
+                    <small>
+                      We're unable to supply email addresses and phone numbers
+                      if you're in Australia or carry on business or activities
+                      in Australia.
+                    </small>
+                  </v-alert>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
           </v-card>
 
-          <v-row>
-            <v-col>
-              <v-btn
-                :disabled="!!(!file || fileErrors.length)"
-                :loading="ordering"
-                color="primary"
-                large
-                depressed
-                @click="submitBulk"
-              >
-                Get a quote
-                <v-icon right>
-                  {{ mdiArrowRight }}
+          <template v-if="file && !fileErrors.length">
+            <v-card
+              v-if="!isPro"
+              color="primary lighten-1 primary--text"
+              class="mb-4"
+              flat
+            >
+              <v-card-title class="subtitle-2">
+                <v-icon color="primary" size="20" left>
+                  {{ mdiLockOpenVariantOutline }}
                 </v-icon>
-              </v-btn>
-            </v-col>
-            <v-col class="flex-shrink-1 flex-grow-0">
-              <v-btn
-                color="primary primary--text lighten-1"
-                depressed
-                large
-                @click="$refs.pricingDialog.open()"
-              >
-                <v-icon left>
-                  {{ mdiCalculator }}
-                </v-icon>
-                Pricing
-              </v-btn>
-            </v-col>
-          </v-row>
+                Unlock PRO features
+              </v-card-title>
+              <v-card-text class="primary--text pb-0">
+                Sign up for a
+                <v-chip to="/pro/" color="primary" x-small outlined>PRO</v-chip>
+                plan to include company and contact information in lookups.
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer />
+
+                <v-btn to="/pricing/" color="primary" text>
+                  Compare plans
+                  <v-icon right>
+                    {{ mdiArrowRight }}
+                  </v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+
+            <v-alert v-if="credits < totalCredits" color="warning" text>
+              You have
+              <strong>{{ formatNumber(credits) }}</strong> credits.
+              <template v-if="isPro">
+                Please
+                <nuxt-link class="warning--text" to="/credits/"
+                  >top up your credits</nuxt-link
+                >
+              </template>
+              <template v-else
+                >Sign up for a Pro plan to get more credits or create a smaller
+                list.
+              </template>
+            </v-alert>
+
+            <v-btn
+              :disabled="totalCredits > credits"
+              :loading="submitting"
+              color="primary"
+              class="mr-4"
+              large
+              depressed
+              @click="submitBulk('credits')"
+            >
+              <v-icon left size="20">
+                {{ mdiAlphaCCircle }}
+              </v-icon>
+              Spend {{ totalCredits }} credit{{
+                totalCredits === 1 ? '' : 's'
+              }} </v-btn
+            ><v-btn
+              v-if="freeLists.remaining"
+              large
+              depressed
+              color="primary lighten-1 primary--text"
+              :loading="claiming"
+              @click="submitBulk('free')"
+            >
+              <v-icon left size="20">
+                {{ mdiGift }}
+              </v-icon>
+              Claim free list
+            </v-btn>
+          </template>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -426,8 +445,6 @@
     >
       <SignIn mode-sign-up mode-continue />
     </v-dialog>
-
-    <PricingDialog ref="pricingDialog" product="lookup" />
 
     <template #footer>
       <Logos />
@@ -442,18 +459,18 @@ import {
   mdiLayersOutline,
   mdiMagnify,
   mdiFileTableOutline,
-  mdiCalculator,
-  mdiArrowRight,
   mdiLockOpenVariantOutline,
   mdiLaptop,
   mdiConsole,
   mdiFaceAgent,
+  mdiAlphaCCircle,
+  mdiArrowRight,
+  mdiGift,
 } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
 import TechnologyIcon from '~/components/TechnologyIcon.vue'
 import SignIn from '~/components/SignIn.vue'
-import PricingDialog from '~/components/PricingDialog.vue'
 import Logos from '~/components/Logos.vue'
 import Pro from '~/components/Pro.vue'
 import { lookup as meta } from '~/assets/json/meta.json'
@@ -493,7 +510,6 @@ export default {
     Page,
     TechnologyIcon,
     SignIn,
-    PricingDialog,
     Logos,
     Pro,
   },
@@ -533,14 +549,15 @@ export default {
       mdiLayersOutline,
       mdiFileTableOutline,
       mdiMagnify,
-      mdiCalculator,
-      mdiArrowRight,
       mdiLockOpenVariantOutline,
       mdiLaptop,
       mdiConsole,
       mdiFaceAgent,
-      order: false,
-      ordering: false,
+      mdiAlphaCCircle,
+      mdiArrowRight,
+      mdiGift,
+      claiming: false,
+      submitting: false,
       url: '',
       signInDialog: false,
       panels: 0,
@@ -554,6 +571,13 @@ export default {
       isPro: ({ credits }) => credits.pro,
       isSignedIn: ({ user }) => user.isSignedIn,
       credits: ({ credits: { credits } }) => credits,
+      freeLists: ({ credits: { freeLists } }) => freeLists,
+      results() {
+        return this.file.split('\n').length
+      },
+      totalCredits() {
+        return this.results * (this.live ? 2 : 1)
+      },
     }),
     preview() {
       try {
@@ -615,8 +639,8 @@ export default {
           this.submit()
         }
 
-        if (this.tab === 1 && this.ordering) {
-          this.submitBulk()
+        if (this.tab === 1 && (this.submitting || this.claiming)) {
+          this.submitBulk(this.submitting ? 'credits' : 'free')
         }
 
         this.compliance = this.isPro && !this.australia ? 'include' : 'exclude'
@@ -745,8 +769,9 @@ export default {
 
       this.$router.push(`/lookup/${encodeURIComponent(url)}`)
     },
-    async submitBulk() {
-      this.ordering = true
+    async submitBulk(paymentMethod = 'credits') {
+      this.submitting = paymentMethod === 'credits'
+      this.claiming = paymentMethod === 'free'
 
       if (!this.$store.state.user.isSignedIn) {
         this.signInDialog = true
@@ -756,8 +781,8 @@ export default {
 
       try {
         const { id } = (
-          await this.$axios.put('orders', {
-            product: 'Technology lookup',
+          await this.$axios.put('lookup-site/lists', {
+            paymentMethod,
             bulk: {
               input: this.file,
               live: this.live,
@@ -771,12 +796,13 @@ export default {
           })
         ).data
 
-        this.$router.push(`/orders/${id}`)
+        this.$router.push(`/lookup/lists/${id}`)
       } catch (error) {
         this.error = this.getErrorMessage(error)
       }
 
-      this.ordering = false
+      this.claiming = false
+      this.submitting = false
     },
     async fileChange(file = this.inputFile) {
       if (!file) {

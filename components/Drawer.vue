@@ -146,6 +146,7 @@ import {
   mdiAccountSwitch,
   mdiPowerPlug,
   mdiMagnify,
+  mdiLayersOutline,
   mdiEmailCheckOutline,
 } from '@mdi/js'
 
@@ -188,6 +189,7 @@ export default {
         mdiAccountSwitch,
         mdiPowerPlug,
         mdiMagnify,
+        mdiLayersOutline,
         mdiEmailCheckOutline,
       },
     }

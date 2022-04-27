@@ -1,7 +1,7 @@
 <template>
   <div>
     <Page :title="title" :side="side" :crumbs="crumbs" no-hero no-head>
-      <h1 class="mb-4">Verify API</h1>
+      <h1 class="mb-4">{{ title }}</h1>
 
       <p>
         Verify email addresses before sending to improve delivery. A high bounce
@@ -216,7 +216,7 @@ export default {
   },
   data() {
     return {
-      title: 'Verify API',
+      title: 'Email verification',
       side,
       crumbs: [
         { title: 'Developer documentation', to: '/docs/' },

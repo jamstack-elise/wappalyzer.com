@@ -15,20 +15,18 @@
     </div>
 
     <template v-if="orders">
-      <v-card class="mb-4">
-        <v-card-text v-if="!filteredOrders.length">
-          <v-alert class="ma-0" color="info" text>
-            <p>You don't have any orders.</p>
+      <v-alert v-if="!filteredOrders.length" color="info" text>
+        <p>You don't have any orders.</p>
 
-            <v-btn to="/" color="accent" outlined>
-              Explore products
-              <v-icon right>
-                {{ mdiArrowRight }}
-              </v-icon>
-            </v-btn>
-          </v-alert>
-        </v-card-text>
-        <v-card-text v-else class="px-0">
+        <v-btn to="/pricing/" color="accent" outlined>
+          Plans &amp; pricing
+          <v-icon right>
+            {{ mdiArrowRight }}
+          </v-icon>
+        </v-btn>
+      </v-alert>
+      <v-card v-else class="mb-4">
+        <v-card-text class="px-0">
           <v-simple-table>
             <thead>
               <tr>
@@ -56,8 +54,6 @@
                             ? 'success'
                             : order.status === 'Pending'
                             ? 'warning'
-                            : order.status === 'Failed'
-                            ? 'error'
                             : 'accent'
                         "
                         label
@@ -68,34 +64,13 @@
                       </v-chip>
                     </td>
                     <td>{{ formatDate(new Date(order.createdAt * 1000)) }}</td>
-                    <td>
-                      <template v-if="order.name">
-                        {{ order.name }}
-                      </template>
-                      <template v-else>
-                        {{ order.product }}
-                      </template>
+                    <td v-if="order.product === 'Subscription'">
+                      {{ order.plan.name }} plan
                     </td>
-                    <td v-if="order.status === 'Calculating'">
-                      <Spinner />
+                    <td v-else>
+                      {{ order.product }}
                     </td>
-                    <td v-else-if="order.status === 'Insufficient'">-</td>
-                    <td v-else-if="order.paymentMethod === 'free'">Free</td>
-                    <td
-                      style="white-space: nowrap"
-                      v-else-if="
-                        (order.product !== 'Subscription' &&
-                          (order.paymentMethod === 'credits' ||
-                            isMember ||
-                            (order.totalCredits &&
-                              credits > order.totalCredits))) ||
-                        !order.total
-                      "
-                    >
-                      {{ formatNumber(order.totalCredits) }}
-                      Credits
-                    </td>
-                    <td style="white-space: nowrap" v-else>
+                    <td style="white-space: nowrap">
                       {{
                         formatCurrency(order.total / 100, order.currency, true)
                       }}
@@ -103,15 +78,6 @@
                     <td style="white-space: nowrap">
                       <div :style="hover ? '' : 'visibility: hidden'">
                         <v-btn
-                          color="accent"
-                          icon
-                          @click="
-                            selected = order
-                            editDialog = true
-                          "
-                        >
-                          <v-icon>{{ mdiPencil }}</v-icon> </v-btn
-                        ><v-btn
                           :disabled="order.status === 'Complete'"
                           color="error"
                           icon
@@ -134,40 +100,6 @@
 
       <small class="text--disabled">Prices are in United States dollars.</small>
     </template>
-
-    <v-dialog v-model="editDialog" max-width="400px" eager>
-      <v-card>
-        <v-card-title>Edit order</v-card-title>
-        <v-card-text>
-          <v-alert v-if="editError" type="error" text>
-            {{ editError }}
-          </v-alert>
-
-          <p>Name your order so you can find it back later.</p>
-
-          <v-form ref="form" @submit.prevent="edit">
-            <v-text-field
-              v-model="selected.name"
-              label="Name"
-              :rules="[(v) => (v && v.length > 250 ? 'Name too long' : true)]"
-              placeholder="My list"
-              hide-details="auto"
-              dense
-              outlined
-            />
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="accent" text @click="editDialog = false">
-            Cancel
-          </v-btn>
-          <v-btn :loading="editing" color="error" text @click="edit">
-            Ok
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <v-dialog v-model="cancelDialog" max-width="400px" eager>
       <v-card>
@@ -212,9 +144,6 @@ export default {
       cancelDialog: false,
       cancelError: false,
       cancelling: false,
-      editDialog: false,
-      editError: false,
-      editing: false,
       error: false,
       orders: null,
       mdiArrowRight,
@@ -262,28 +191,6 @@ export default {
     }
   },
   methods: {
-    async edit() {
-      this.editError = false
-      this.editing = true
-
-      try {
-        await this.$axios.patch(`orders/${this.selected.id}`, {
-          name: this.selected.name,
-        })
-
-        try {
-          this.orders = (await this.$axios.get('orders')).data
-        } catch (error) {
-          this.error = this.getErrorMessage(error)
-        }
-
-        this.editDialog = false
-      } catch (error) {
-        this.editError = this.getErrorMessage(error)
-      }
-
-      this.editing = false
-    },
     async cancel() {
       this.cancelError = false
       this.cancelling = true
@@ -307,20 +214,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.loader {
-  animation: loader 1.5s infinite;
-  display: flex;
-}
-
-@keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>

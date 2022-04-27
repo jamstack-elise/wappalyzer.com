@@ -79,6 +79,8 @@ import {
   mdiStar,
   mdiDomain,
   mdiPowerPlug,
+  mdiLayersOutline,
+  mdiEmailCheckOutline,
 } from '@mdi/js'
 
 export default {
@@ -107,6 +109,8 @@ export default {
         mdiStar,
         mdiDomain,
         mdiPowerPlug,
+        mdiLayersOutline,
+        mdiEmailCheckOutline,
       },
     }
   },

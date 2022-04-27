@@ -148,7 +148,7 @@ export default {
             this.items = (
               await this.$axios.get(`lists-site/find/${this.itemId}`)
             ).data
-          } else if (this.itemId.startsWith('ord_')) {
+          } else if (/^(ord|lkp|vrf)_/.test(this.itemId)) {
             this.items = (
               await this.$axios.get(`orders/find/${this.itemId}`)
             ).data

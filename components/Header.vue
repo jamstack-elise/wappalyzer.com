@@ -316,10 +316,10 @@ import {
   mdiConsole,
   mdiBellOutline,
   mdiMagnify,
-  mdiEmailCheckOutline,
   mdiClose,
   mdiWeatherNight,
   mdiWeatherSunny,
+  mdiEmailCheckOutline,
 } from '@mdi/js'
 import Logo from '~/components/Logo.vue'
 import SignIn from '~/components/SignIn.vue'
@@ -374,10 +374,10 @@ export default {
         mdiConsole,
         mdiBellOutline,
         mdiMagnify,
-        mdiEmailCheckOutline,
         mdiClose,
         mdiWeatherNight,
         mdiWeatherSunny,
+        mdiEmailCheckOutline,
       },
     }
   },
@@ -431,10 +431,14 @@ export default {
 }
 
 .header__menu {
-  max-width: 450px;
+  max-width: 500px;
 }
 
 .header__subtitle {
   white-space: normal !important;
+}
+
+.header .v-menu__content {
+  min-width: 250px !important;
 }
 </style>

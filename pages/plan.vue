@@ -305,6 +305,7 @@
                 <tr
                   v-for="paymentMethod in paymentMethods"
                   :key="paymentMethod.id"
+                  style="cursor: pointer"
                   @click="savePaymentMethod(paymentMethod.id)"
                 >
                   <td>{{ paymentMethod.name }}</td>
