@@ -290,7 +290,7 @@
             </template>
           </v-card>
 
-          <v-card outlined class="mb-4">
+          <v-card outlined>
             <v-expansion-panels flat>
               <v-expansion-panel ref="compliance">
                 <v-expansion-panel-header
@@ -361,6 +361,8 @@
           </v-card>
 
           <template v-if="file && !fileErrors.length">
+            <div class="mb-4"></div>
+
             <v-card
               v-if="!isPro"
               color="primary lighten-1 primary--text"

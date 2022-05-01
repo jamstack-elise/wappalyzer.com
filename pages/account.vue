@@ -157,8 +157,8 @@
 
     <v-btn
       v-if="!isImpersonator"
-      color="error lighten-5 error--text"
-      depressed
+      color="error"
+      outlined
       @click="deleteAccountDialog = true"
     >
       <v-icon left>

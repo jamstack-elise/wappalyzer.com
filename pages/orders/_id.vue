@@ -432,11 +432,7 @@
         v-if="!['Complete', 'Processing'].includes(order.status)"
         class="mt-4"
       >
-        <v-btn
-          color="error lighten-5 error--text"
-          depressed
-          @click="cancelDialog = true"
-        >
+        <v-btn color="error" outlined @click="cancelDialog = true">
           <v-icon left>
             {{ mdiCartRemove }}
           </v-icon>

@@ -138,7 +138,7 @@
                 )"
                 :key="technology.slug"
               >
-                <v-expansion-panel-header>
+                <v-expansion-panel-header class="subtitle-1 font-weight-medium">
                   <template v-if="list.query.matchAllTechnologies === 'and'">
                     <div class="d-flex align-center">
                       <div
@@ -163,21 +163,14 @@
                         </span>
                         {{ _technology.name }}
                       </div>
-                      <span
-                        ><v-chip class="ml-2" small label outlined
-                          >sample</v-chip
-                        ></span
-                      >
+                      <v-chip class="ml-2" small label outlined>sample</v-chip>
                     </div>
                   </template>
                   <div v-else class="d-flex align-center">
                     <TechnologyIcon :icon="technology.icon" />
                     {{ technology.name }}
-                    <span
-                      ><v-chip class="ml-2" small label outlined
-                        >sample</v-chip
-                      ></span
-                    >
+                    <v-spacer />
+                    <v-chip class="mr-2" small label outlined>sample</v-chip>
                   </div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="no-x-padding no-b-padding">
@@ -209,7 +202,15 @@
 
         <v-col cols="12" md="4" class="py-0">
           <v-card class="mb-4">
-            <v-card-title class="subtitle-1 px-6 d-flex justify-space-between">
+            <v-card-title
+              class="
+                subtitle-1
+                font-weight-medium
+                px-6
+                d-flex
+                justify-space-between
+              "
+            >
               <span>Get the full list</span>
               <v-chip
                 to="/pro/"
@@ -399,517 +400,529 @@
                 </div>
               </div>
             </v-card-text>
-          </v-card>
 
-          <v-card
-            class="mb-4"
-            v-if="
-              !list.repeatListId && ['Ready', 'Complete'].includes(list.status)
-            "
-          >
-            <v-card-text class="px-6">
-              <v-switch
-                v-model="repeat"
-                :loading="repeating"
-                :disabled="!isPro || pauseToggleRepeat"
-                class="my-0 pt-0"
-                inset
-                hide-details
-              >
-                <template #label>
-                  Recreate weekly with new websites
-                  <v-tooltip max-width="300" left>
-                    <template #activator="{ on }">
-                      <v-icon class="ml-1" small v-on="on">{{
-                        mdiHelpCircleOutline
-                      }}</v-icon>
-                    </template>
-
-                    Automatically recreate this list every week, with only newly
-                    discovered websites.<br /><br />
-
-                    Costs 1 credit per website. Subscribe to a plan to get
-                    monthly credits.
-                  </v-tooltip>
-                </template>
-              </v-switch>
-            </v-card-text>
-
-            <template v-if="repeat && !repeating">
+            <template
+              v-if="
+                !list.repeatListId &&
+                ['Ready', 'Complete'].includes(list.status)
+              "
+            >
               <v-divider />
 
-              <v-card-text>
-                <p>
-                  <small>
-                    Optionally add a
-                    <nuxt-link to="/docs/api/v2/lists/#create-callback"
-                      >callback URL</nuxt-link
-                    >
-                    to notify your endpoint about new lists (replaces email
-                    notifications).
-                  </small>
-                </p>
-
-                <v-row class="px-3 my-1">
-                  <v-text-field
-                    v-model="list.callbackUrl"
-                    label="Callback URL"
-                    placeholder="https://yourdomain.com/wappalyzer"
-                    hide-details="auto"
-                    :rules="callbackUrlRules"
-                    outlined
-                    dense
-                  />
-
-                  <v-btn
-                    color="primary lighten-1 primary--text"
-                    class="ml-2"
-                    style="height: 40px"
-                    depressed
-                    @click="saveCallbackUrl"
-                    :loading="savingCallbackUrl"
-                    >Save</v-btn
-                  >
-                </v-row>
-              </v-card-text>
-            </template>
-          </v-card>
-
-          <v-expansion-panels v-model="sidePanelIndex" class="mb-4">
-            <v-expansion-panel v-if="technologies.length">
-              <v-expansion-panel-header class="subtitle-1">
-                Technologies
-              </v-expansion-panel-header>
-              <v-expansion-panel-content class="no-x-padding">
-                <v-simple-table>
-                  <tbody>
-                    <tr>
-                      <th>Technology</th>
-                      <th class="text-right">Websites</th>
-                    </tr>
-                    <tr
-                      v-for="technology in technologies"
-                      :key="technology.slug"
-                      outlined
-                      small
-                    >
-                      <td>
-                        <div class="d-flex align-center">
-                          <TechnologyIcon :icon="technology.icon" />
-                          <nuxt-link
-                            :to="`/technologies${
-                              technology.categories.length
-                                ? `/${technology.categories[0].slug}`
-                                : ''
-                            }/${technology.slug}`"
-                          >
-                            {{ technology.name }}
-                          </nuxt-link>
-                          <v-chip
-                            v-if="technology.operator && technology.version"
-                            class="ml-2"
-                            small
-                            label
-                            outlined
-                          >
-                            {{ technology.operator }} v{{ technology.version }}
-                          </v-chip>
-                        </div>
-                      </td>
-                      <td
-                        v-if="['Insufficient', 'Failed'].includes(list.status)"
-                        class="text-right"
-                      >
-                        -
-                      </td>
-                      <td
-                        v-else-if="list.status !== 'Calculating'"
-                        class="text-right"
-                      >
-                        {{ formatNumber(list.rows[technology.slug]) }}
-                      </td>
-                      <td v-else class="text-right">
-                        <Spinner />
-                      </td>
-                    </tr>
-                  </tbody>
-                </v-simple-table>
-
-                <div class="text-right">
-                  <v-btn
-                    v-if="
-                      list.query.technologies.length > 20 ||
-                      list.query.matchAllTechnologies === 'not'
-                    "
-                    color="accent"
-                    class="mt-2 mr-3"
-                    text
-                    small
-                    @click="technologiesViewAll = !technologiesViewAll"
-                  >
-                    <v-icon small left text>
-                      {{ technologiesViewAll ? mdiMinus : mdiPlus }}
-                    </v-icon>
-                    {{
-                      technologiesViewAll
-                        ? 'View less'
-                        : `View all ${list.query.technologies.length}`
-                    }}
-                  </v-btn>
-                </div>
-
-                <v-card-text
-                  v-if="list.query.technologies.length >= 2"
-                  class="px-6 pb-0"
+              <v-card-text class="px-6">
+                <v-switch
+                  v-model="repeat"
+                  :loading="repeating"
+                  :disabled="!isPro || pauseToggleRepeat"
+                  class="my-0 pt-0"
+                  inset
+                  hide-details
                 >
-                  <small>
-                    <template v-if="list.query.matchAllTechnologies === 'and'">
-                      Matching <strong>all</strong> of the above.
-                    </template>
-                    <template
-                      v-else-if="list.query.matchAllTechnologies === 'not'"
-                    >
-                      Matching
-                      <nuxt-link
-                        :to="`/technologies${
-                          list.query.technologies[0].categories[0]
-                            ? `/${list.query.technologies[0].categories[0].slug}`
-                            : ''
-                        }/${list.query.technologies[0].slug}/`"
-                        >{{ list.query.technologies[0].name }}</nuxt-link
-                      >
-                      and excluding all others.
-                    </template>
-                    <template v-else
-                      >Matching <strong>any</strong> of the above.</template
-                    >
-                  </small>
-                </v-card-text>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-
-            <v-expansion-panel v-if="list.query.keywords.length">
-              <v-expansion-panel-header class="subtitle-1">
-                Keywords
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                <v-chip-group column>
-                  <v-chip
-                    v-for="keyword in list.query.keywords"
-                    :key="keyword"
-                    color="primary lighten-1 primary--text"
-                    label
-                  >
-                    {{ keyword }}
-                  </v-chip>
-                </v-chip-group>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-
-            <v-expansion-panel>
-              <v-expansion-panel-header class="subtitle-1">
-                Filters
-              </v-expansion-panel-header>
-              <v-expansion-panel-content class="no-x-padding">
-                <v-simple-table>
-                  <tbody>
-                    <tr
-                      v-if="
-                        list.query.industries && list.query.industries.length
-                      "
-                    >
-                      <th width="40%">Industries</th>
-                      <td>
-                        <v-chip-group class="my-2" column>
-                          <v-chip
-                            v-for="industry in list.query.industries"
-                            :key="industry"
-                            outlined
-                            small
-                            label
-                          >
-                            {{ industry }}
-                          </v-chip>
-                        </v-chip-group>
-                      </td>
-                    </tr>
-                    <tr
-                      v-if="
-                        list.query.companySizes &&
-                        list.query.companySizes.length
-                      "
-                    >
-                      <th width="40%">Company sizes</th>
-                      <td>
-                        <v-chip-group class="my-2" column>
-                          <v-chip
-                            v-for="{ value, text } in list.query.companySizes"
-                            :key="value"
-                            outlined
-                            small
-                            label
-                          >
-                            {{ text }}
-                          </v-chip>
-                        </v-chip-group>
-                      </td>
-                    </tr>
-                    <tr v-if="list.query.subset">
-                      <th width="40%">List size limit</th>
-                      <td>
-                        {{ formatNumber(list.query.subset) }}
-                        <template v-if="list.query.technologies.length">
-                          ({{
-                            list.query.subsetSlice === 1
-                              ? 'high'
-                              : list.query.subsetSlice === 2
-                              ? 'medium'
-                              : list.query.subsetSlice === 3
-                              ? 'low'
-                              : list.query.subsetSlice === 4
-                              ? 'lowest'
-                              : 'highest'
-                          }}
-                          traffic)
-                        </template>
-                      </td>
-                    </tr>
-                    <tr
-                      v-if="
-                        list.query.technologies.length &&
-                        list.query.excludeNoTraffic
-                      "
-                    >
-                      <th width="40%">Exclude websites without traffic data</th>
-                      <td>
-                        <v-icon color="primary">
-                          {{ mdiCheckboxMarked }}
-                        </v-icon>
-                      </td>
-                    </tr>
-                    <tr v-if="list.query.geoIps.length">
-                      <th width="40%">IP countries</th>
-                      <td>
-                        <v-chip-group class="my-2" column>
-                          <v-tooltip
-                            v-for="{ text, value } in list.query.geoIps"
-                            :key="value"
-                            bottom
-                          >
-                            <template #activator="{ on }">
-                              <v-chip outlined small label v-on="on">
-                                {{ value }}
-                              </v-chip>
-                            </template>
-
-                            {{ text }}
-                          </v-tooltip>
-                        </v-chip-group>
-                      </td>
-                    </tr>
-                    <tr v-if="list.query.tlds.length">
-                      <th width="40%">TLDs</th>
-                      <td>
-                        <v-chip-group class="my-2" column>
-                          <v-chip
-                            v-for="tld in list.query.tlds"
-                            :key="tld"
-                            outlined
-                            small
-                            label
-                          >
-                            {{ tld }}
-                          </v-chip>
-                        </v-chip-group>
-                      </td>
-                    </tr>
-                    <tr v-if="list.query.languages.length">
-                      <th width="40%">Languages</th>
-                      <td>
-                        <v-chip-group class="my-2" column>
-                          <v-tooltip
-                            v-for="{ text, value } in list.query.languages"
-                            :key="value"
-                            bottom
-                          >
-                            <template #activator="{ on }">
-                              <v-chip outlined small label v-on="on">
-                                {{ value }}
-                              </v-chip>
-                            </template>
-
-                            {{ text }}
-                          </v-tooltip>
-                        </v-chip-group>
-                      </td>
-                    </tr>
-                    <tr
-                      v-if="
-                        list.query.languages.length &&
-                        list.query.excludeMultilingual
-                      "
-                    >
-                      <th width="40%">Exclude multilingual</th>
-                      <td>
-                        <v-icon color="primary">
-                          {{ mdiCheckboxMarked }}
-                        </v-icon>
-                      </td>
-                    </tr>
-                    <tr
-                      v-if="
-                        !list.query.matchAll &&
-                        list.query.geoIps.length &&
-                        list.query.languages.length
-                      "
-                    >
-                      <th width="40%">Match country or language</th>
-                      <td>
-                        <v-icon color="primary">
-                          {{ mdiCheckboxMarked }}
-                        </v-icon>
-                      </td>
-                    </tr>
-                    <tr v-if="list.query.technologies.length">
-                      <th width="40%">Freshness</th>
-                      <td>
-                        {{ list.query.minAge || 0 }}-{{
-                          list.query.maxAge || 3
-                        }}
-                        months
-                      </td>
-                    </tr>
-                    <tr v-if="list.query.fromDate">
-                      <th width="40%">Websites discovered from</th>
-                      <td>
-                        {{ formatDate(new Date(list.query.fromDate * 1000)) }}
-                      </td>
-                    </tr>
-                    <tr v-if="list.exclusionsFilename">
-                      <th width="40%">Exclusions</th>
-                      <td>
-                        <v-btn
-                          :href="`${datasetsBaseUrl}${list.exclusionsFilename}`"
-                          color="accent"
-                          icon
-                        >
-                          <v-icon>{{ mdiDownload }}</v-icon>
-                        </v-btn>
-                      </td>
-                    </tr>
-                    <tr v-if="list.query.requiredSets.length">
-                      <th width="40%">Required</th>
-                      <td>
-                        <div v-for="key in list.query.requiredSets" :key="key">
-                          {{
-                            (set =
-                              sets.find(({ key: _key }) => _key === key) ||
-                              {}) && null
-                          }}
-                          {{
-                            (set.name || key).charAt(0).toUpperCase() +
-                            (set.name || key).substring(1)
-                          }}
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </v-simple-table>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-
-            <v-expansion-panel>
-              <v-expansion-panel-header class="subtitle-1">
-                Fields
-              </v-expansion-panel-header>
-              <v-expansion-panel-content class="no-x-padding">
-                <v-alert
-                  v-if="
-                    list.query.compliance === 'exclude' ||
-                    list.query.compliance === 'excludeEU'
-                  "
-                  color="warning"
-                  class="mx-6 pb-3"
-                  border="left"
-                  dense
-                  text
-                >
-                  <small v-if="list.query.compliance === 'exclude'">
-                    Contact details are excluded.
-                  </small>
-                  <small v-else-if="list.query.compliance === 'excludeEU'">
-                    Contact details are excluded for EU websites.
-                  </small>
-                </v-alert>
-
-                <v-simple-table dense>
-                  <tbody>
-                    <tr>
-                      <th>Field set</th>
-                      <th class="text-right">Results</th>
-                    </tr>
-                    <v-tooltip
-                      v-for="set in sets.filter(
-                        ({ key }) =>
-                          key === 'base-list' || list.sets.includes(key)
-                      )"
-                      :key="set.key"
-                      max-width="200"
-                      left
-                    >
+                  <template #label>
+                    Recreate weekly with new websites
+                    <v-tooltip max-width="300" left>
                       <template #activator="{ on }">
-                        <tr v-on="on">
-                          <td>
-                            <small>
-                              {{ set.name }}
-                            </small>
-                          </td>
-                          <td
-                            v-if="list.status === 'Insufficient'"
-                            class="text-right"
-                          >
-                            -
-                          </td>
-                          <td
-                            v-else-if="list.status !== 'Calculating'"
-                            class="text-right"
-                          >
-                            <small>
-                              {{
-                                formatNumber(
-                                  set.key === 'base-list'
-                                    ? totalRows(
-                                        list.rows || 0,
-                                        list.query.matchAllTechnologies
-                                      )
-                                    : list.setRows
-                                    ? list.setRows[set.key] || 0
-                                    : 0
-                                )
-                              }}
-                            </small>
-                          </td>
-                          <td v-else class="text-right">
-                            <Spinner />
-                          </td>
-                        </tr>
+                        <v-icon class="ml-1" small v-on="on">{{
+                          mdiHelpCircleOutline
+                        }}</v-icon>
                       </template>
 
-                      {{
-                        set.attributes
-                          .map(
-                            ({ name, key }) =>
-                              (name || key).charAt(0).toUpperCase() +
-                              (name || key).substring(1)
-                          )
-                          .join(', ')
-                      }}
+                      Automatically recreate this list every week, with only
+                      newly discovered websites.<br /><br />
+
+                      We'll send you an email when a new list is available.
                     </v-tooltip>
-                  </tbody>
-                </v-simple-table>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
+                  </template>
+                </v-switch>
+
+                <template v-if="repeat && !repeating">
+                  <p class="mt-4">
+                    <small>
+                      Optionally add a
+                      <nuxt-link to="/docs/api/v2/lists/#create-callback"
+                        >callback URL</nuxt-link
+                      >
+                      to notify your endpoint about new lists (replaces email
+                      notifications).
+                    </small>
+                  </p>
+
+                  <v-row class="px-3 my-1">
+                    <v-text-field
+                      v-model="list.callbackUrl"
+                      label="Callback URL"
+                      placeholder="https://yourdomain.com/wappalyzer"
+                      hide-details="auto"
+                      :rules="callbackUrlRules"
+                      outlined
+                      dense
+                    />
+
+                    <v-btn
+                      color="primary lighten-1 primary--text"
+                      class="ml-2"
+                      style="height: 40px"
+                      depressed
+                      @click="saveCallbackUrl"
+                      :loading="savingCallbackUrl"
+                      >Save</v-btn
+                    >
+                  </v-row>
+                </template>
+              </v-card-text>
+            </template>
+
+            <v-divider />
+
+            <v-expansion-panels v-model="sidePanelIndex" accordion flat>
+              <v-expansion-panel v-if="technologies.length">
+                <v-expansion-panel-header class="subtitle-1 font-weight-medium">
+                  Technologies
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="no-x-padding no-b-padding">
+                  <v-simple-table>
+                    <tbody>
+                      <tr>
+                        <th>Technology</th>
+                        <th class="text-right">Websites</th>
+                      </tr>
+                      <tr
+                        v-for="technology in technologies"
+                        :key="technology.slug"
+                        outlined
+                        small
+                      >
+                        <td>
+                          <div class="d-flex align-center">
+                            <TechnologyIcon :icon="technology.icon" />
+                            <nuxt-link
+                              :to="`/technologies${
+                                technology.categories.length
+                                  ? `/${technology.categories[0].slug}`
+                                  : ''
+                              }/${technology.slug}`"
+                            >
+                              {{ technology.name }}
+                            </nuxt-link>
+                            <v-chip
+                              v-if="technology.operator && technology.version"
+                              class="ml-2"
+                              small
+                              label
+                              outlined
+                            >
+                              {{ technology.operator }} v{{
+                                technology.version
+                              }}
+                            </v-chip>
+                          </div>
+                        </td>
+                        <td
+                          v-if="
+                            ['Insufficient', 'Failed'].includes(list.status)
+                          "
+                          class="text-right"
+                        >
+                          -
+                        </td>
+                        <td
+                          v-else-if="list.status !== 'Calculating'"
+                          class="text-right"
+                        >
+                          {{ formatNumber(list.rows[technology.slug]) }}
+                        </td>
+                        <td v-else class="text-right">
+                          <Spinner />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </v-simple-table>
+
+                  <div class="text-right">
+                    <v-btn
+                      v-if="
+                        list.query.technologies.length > 20 ||
+                        list.query.matchAllTechnologies === 'not'
+                      "
+                      color="accent"
+                      class="mt-2 mr-3"
+                      text
+                      small
+                      @click="technologiesViewAll = !technologiesViewAll"
+                    >
+                      <v-icon small left text>
+                        {{ technologiesViewAll ? mdiMinus : mdiPlus }}
+                      </v-icon>
+                      {{
+                        technologiesViewAll
+                          ? 'View less'
+                          : `View all ${list.query.technologies.length}`
+                      }}
+                    </v-btn>
+                  </div>
+
+                  <v-card-text
+                    v-if="list.query.technologies.length >= 2"
+                    class="px-6 pb-0"
+                  >
+                    <small>
+                      <template
+                        v-if="list.query.matchAllTechnologies === 'and'"
+                      >
+                        Matching <strong>all</strong> of the above.
+                      </template>
+                      <template
+                        v-else-if="list.query.matchAllTechnologies === 'not'"
+                      >
+                        Matching
+                        <nuxt-link
+                          :to="`/technologies${
+                            list.query.technologies[0].categories[0]
+                              ? `/${list.query.technologies[0].categories[0].slug}`
+                              : ''
+                          }/${list.query.technologies[0].slug}/`"
+                          >{{ list.query.technologies[0].name }}</nuxt-link
+                        >
+                        and excluding all others.
+                      </template>
+                      <template v-else
+                        >Matching <strong>any</strong> of the above.</template
+                      >
+                    </small>
+                  </v-card-text>
+
+                  <v-divider />
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+
+              <v-expansion-panel v-if="list.query.keywords.length">
+                <v-expansion-panel-header class="subtitle-1 font-weight-medium">
+                  Keywords
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-chip-group column>
+                    <v-chip
+                      v-for="keyword in list.query.keywords"
+                      :key="keyword"
+                      color="primary lighten-1 primary--text"
+                      label
+                    >
+                      {{ keyword }}
+                    </v-chip>
+                  </v-chip-group>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+
+              <v-expansion-panel>
+                <v-expansion-panel-header class="subtitle-1 font-weight-medium">
+                  Filters
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="no-x-padding no-b-padding">
+                  <v-simple-table>
+                    <tbody>
+                      <tr
+                        v-if="
+                          list.query.industries && list.query.industries.length
+                        "
+                      >
+                        <th width="40%">Industries</th>
+                        <td>
+                          <v-chip-group class="my-2" column>
+                            <v-chip
+                              v-for="industry in list.query.industries"
+                              :key="industry"
+                              outlined
+                              small
+                              label
+                            >
+                              {{ industry }}
+                            </v-chip>
+                          </v-chip-group>
+                        </td>
+                      </tr>
+                      <tr
+                        v-if="
+                          list.query.companySizes &&
+                          list.query.companySizes.length
+                        "
+                      >
+                        <th width="40%">Company sizes</th>
+                        <td>
+                          <v-chip-group class="my-2" column>
+                            <v-chip
+                              v-for="{ value, text } in list.query.companySizes"
+                              :key="value"
+                              outlined
+                              small
+                              label
+                            >
+                              {{ text }}
+                            </v-chip>
+                          </v-chip-group>
+                        </td>
+                      </tr>
+                      <tr v-if="list.query.subset">
+                        <th width="40%">List size limit</th>
+                        <td>
+                          {{ formatNumber(list.query.subset) }}
+                          <template v-if="list.query.technologies.length">
+                            ({{
+                              list.query.subsetSlice === 1
+                                ? 'high'
+                                : list.query.subsetSlice === 2
+                                ? 'medium'
+                                : list.query.subsetSlice === 3
+                                ? 'low'
+                                : list.query.subsetSlice === 4
+                                ? 'lowest'
+                                : 'highest'
+                            }}
+                            traffic)
+                          </template>
+                        </td>
+                      </tr>
+                      <tr
+                        v-if="
+                          list.query.technologies.length &&
+                          list.query.excludeNoTraffic
+                        "
+                      >
+                        <th width="40%">
+                          Exclude websites without traffic data
+                        </th>
+                        <td>
+                          <v-icon color="primary">
+                            {{ mdiCheckboxMarked }}
+                          </v-icon>
+                        </td>
+                      </tr>
+                      <tr v-if="list.query.geoIps.length">
+                        <th width="40%">IP countries</th>
+                        <td>
+                          <v-chip-group class="my-2" column>
+                            <v-tooltip
+                              v-for="{ text, value } in list.query.geoIps"
+                              :key="value"
+                              bottom
+                            >
+                              <template #activator="{ on }">
+                                <v-chip outlined small label v-on="on">
+                                  {{ value }}
+                                </v-chip>
+                              </template>
+
+                              {{ text }}
+                            </v-tooltip>
+                          </v-chip-group>
+                        </td>
+                      </tr>
+                      <tr v-if="list.query.tlds.length">
+                        <th width="40%">TLDs</th>
+                        <td>
+                          <v-chip-group class="my-2" column>
+                            <v-chip
+                              v-for="tld in list.query.tlds"
+                              :key="tld"
+                              outlined
+                              small
+                              label
+                            >
+                              {{ tld }}
+                            </v-chip>
+                          </v-chip-group>
+                        </td>
+                      </tr>
+                      <tr v-if="list.query.languages.length">
+                        <th width="40%">Languages</th>
+                        <td>
+                          <v-chip-group class="my-2" column>
+                            <v-tooltip
+                              v-for="{ text, value } in list.query.languages"
+                              :key="value"
+                              bottom
+                            >
+                              <template #activator="{ on }">
+                                <v-chip outlined small label v-on="on">
+                                  {{ value }}
+                                </v-chip>
+                              </template>
+
+                              {{ text }}
+                            </v-tooltip>
+                          </v-chip-group>
+                        </td>
+                      </tr>
+                      <tr
+                        v-if="
+                          list.query.languages.length &&
+                          list.query.excludeMultilingual
+                        "
+                      >
+                        <th width="40%">Exclude multilingual</th>
+                        <td>
+                          <v-icon color="primary">
+                            {{ mdiCheckboxMarked }}
+                          </v-icon>
+                        </td>
+                      </tr>
+                      <tr
+                        v-if="
+                          !list.query.matchAll &&
+                          list.query.geoIps.length &&
+                          list.query.languages.length
+                        "
+                      >
+                        <th width="40%">Match country or language</th>
+                        <td>
+                          <v-icon color="primary">
+                            {{ mdiCheckboxMarked }}
+                          </v-icon>
+                        </td>
+                      </tr>
+                      <tr v-if="list.query.technologies.length">
+                        <th width="40%">Freshness</th>
+                        <td>
+                          {{ list.query.minAge || 0 }}-{{
+                            list.query.maxAge || 3
+                          }}
+                          months
+                        </td>
+                      </tr>
+                      <tr v-if="list.query.fromDate">
+                        <th width="40%">Websites discovered from</th>
+                        <td>
+                          {{ formatDate(new Date(list.query.fromDate * 1000)) }}
+                        </td>
+                      </tr>
+                      <tr v-if="list.exclusionsFilename">
+                        <th width="40%">Exclusions</th>
+                        <td>
+                          <v-btn
+                            :href="`${datasetsBaseUrl}${list.exclusionsFilename}`"
+                            color="accent"
+                            icon
+                          >
+                            <v-icon>{{ mdiDownload }}</v-icon>
+                          </v-btn>
+                        </td>
+                      </tr>
+                      <tr v-if="list.query.requiredSets.length">
+                        <th width="40%">Required</th>
+                        <td>
+                          <div
+                            v-for="key in list.query.requiredSets"
+                            :key="key"
+                          >
+                            {{
+                              (set =
+                                sets.find(({ key: _key }) => _key === key) ||
+                                {}) && null
+                            }}
+                            {{
+                              (set.name || key).charAt(0).toUpperCase() +
+                              (set.name || key).substring(1)
+                            }}
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </v-simple-table>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+
+              <v-expansion-panel>
+                <v-expansion-panel-header class="subtitle-1 font-weight-medium">
+                  Fields
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="no-x-padding">
+                  <v-alert
+                    v-if="
+                      list.query.compliance === 'exclude' ||
+                      list.query.compliance === 'excludeEU'
+                    "
+                    color="warning"
+                    class="mx-6 pb-3"
+                    border="left"
+                    dense
+                    text
+                  >
+                    <small v-if="list.query.compliance === 'exclude'">
+                      Contact details are excluded.
+                    </small>
+                    <small v-else-if="list.query.compliance === 'excludeEU'">
+                      Contact details are excluded for EU websites.
+                    </small>
+                  </v-alert>
+
+                  <v-simple-table dense>
+                    <tbody>
+                      <tr>
+                        <th>Field set</th>
+                        <th class="text-right">Results</th>
+                      </tr>
+                      <v-tooltip
+                        v-for="set in sets.filter(
+                          ({ key }) =>
+                            key === 'base-list' || list.sets.includes(key)
+                        )"
+                        :key="set.key"
+                        max-width="200"
+                        left
+                      >
+                        <template #activator="{ on }">
+                          <tr v-on="on">
+                            <td>
+                              <small>
+                                {{ set.name }}
+                              </small>
+                            </td>
+                            <td
+                              v-if="list.status === 'Insufficient'"
+                              class="text-right"
+                            >
+                              -
+                            </td>
+                            <td
+                              v-else-if="list.status !== 'Calculating'"
+                              class="text-right"
+                            >
+                              <small>
+                                {{
+                                  formatNumber(
+                                    set.key === 'base-list'
+                                      ? totalRows(
+                                          list.rows || 0,
+                                          list.query.matchAllTechnologies
+                                        )
+                                      : list.setRows
+                                      ? list.setRows[set.key] || 0
+                                      : 0
+                                  )
+                                }}
+                              </small>
+                            </td>
+                            <td v-else class="text-right">
+                              <Spinner />
+                            </td>
+                          </tr>
+                        </template>
+
+                        {{
+                          set.attributes
+                            .map(
+                              ({ name, key }) =>
+                                (name || key).charAt(0).toUpperCase() +
+                                (name || key).substring(1)
+                            )
+                            .join(', ')
+                        }}
+                      </v-tooltip>
+                    </tbody>
+                  </v-simple-table>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </v-card>
 
           <v-card-actions class="mb-4 pa-0 d-flex">
             <v-btn small depressed @click="$refs.faqDialog.open()">

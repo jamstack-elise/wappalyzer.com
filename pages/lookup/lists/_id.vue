@@ -136,11 +136,7 @@
       </v-card>
 
       <div v-if="list.status === 'Failed'" class="mt-4">
-        <v-btn
-          color="error lighten-5 error--text"
-          depressed
-          @click="cancelDialog = true"
-        >
+        <v-btn color="error" outlined @click="cancelDialog = true">
           <v-icon left>
             {{ mdiCartRemove }}
           </v-icon>

@@ -28,9 +28,9 @@
       <v-btn
         v-if="isAdmin"
         :href="`https://dashboard.stripe.com/subscriptions/${plan.subscriptionId}`"
-        color="success lighten-5 success--text"
+        color="success"
         target="_blank"
-        depressed
+        outlined
       >
         Stripe subscription
         <v-icon right>
