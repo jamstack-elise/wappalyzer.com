@@ -36,6 +36,12 @@
     "roles": ["admin"]
   },
   {
+    "title": "Invoices",
+    "icon": "mdiFileDocumentOutline",
+    "to": "/invoices/",
+    "roles": ["admin"]
+  },
+  {
     "title": "Technology lookups",
     "icon": "mdiLayersOutline",
     "to": "/lookup/lists/",
