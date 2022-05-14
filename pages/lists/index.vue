@@ -112,7 +112,9 @@
                                 <v-col class="pr-0 text-right">
                                   <small
                                     >(x{{
-                                      Math.min(100, item.technologiesCount)
+                                      matchAllTechnologies === 'not'
+                                        ? item.technologiesCount
+                                        : Math.min(100, item.technologiesCount)
                                     }})</small
                                   >
                                 </v-col>
@@ -1820,10 +1822,16 @@ export default {
           this.selected.technologies.push(item)
         }
       } else {
-        if (totalTechnologies + Math.min(100, item.technologiesCount) > 101) {
+        if (
+          this.matchAllTechnologies !== 'not' &&
+          totalTechnologies + Math.min(100, item.technologiesCount) > 101
+        ) {
           this.maxTechnologiesDialog = true
         } else {
-          if (item.technologiesCount > 100) {
+          if (
+            this.matchAllTechnologies !== 'not' &&
+            item.technologiesCount > 100
+          ) {
             this.categoryTruncatedDialog = true
           }
 
