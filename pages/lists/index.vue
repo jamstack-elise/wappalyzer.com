@@ -1814,13 +1814,13 @@ export default {
         )
 
       if (item.type === 'technology') {
-        if (totalTechnologies + 1 > 100) {
+        if (totalTechnologies > 101) {
           this.maxTechnologiesDialog = true
         } else {
           this.selected.technologies.push(item)
         }
       } else {
-        if (totalTechnologies + Math.min(100, item.technologiesCount) > 100) {
+        if (totalTechnologies + Math.min(100, item.technologiesCount) > 101) {
           this.maxTechnologiesDialog = true
         } else {
           if (item.technologiesCount > 100) {
