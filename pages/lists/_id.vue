@@ -105,6 +105,16 @@
           >
             <div v-if="playGame">
               <TicTacToe class="mt-6" />
+
+              <div class="mt-6">
+                <small
+                  ><a
+                    class="text--disabled text-decoration-underline"
+                    @click="playGame = false"
+                    >Close</a
+                  ></small
+                >
+              </div>
             </div>
             <template v-else>
               <v-progress-circular
@@ -922,6 +932,37 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
+
+            <template v-if="isAdmin">
+              <v-divider />
+              <v-card-title class="px-6 subtitle-1 font-weight-medium"
+                >Administration</v-card-title
+              >
+              <v-card-text class="px-0">
+                <v-simple-table>
+                  <tbody>
+                    <tr>
+                      <th class="px-6 pb-4" width="30%">User ID</th>
+                      <td class="px-6 pb-4">
+                        <code class="small">{{ list.userId }}</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="px-6">Timestamp</th>
+                      <td class="px-6">
+                        <code class="small">{{ list.createdAt }}</code>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="px-6">Filename</th>
+                      <td class="px-6">
+                        <code class="small">{{ list.filename }}</code>
+                      </td>
+                    </tr>
+                  </tbody>
+                </v-simple-table>
+              </v-card-text>
+            </template>
           </v-card>
 
           <v-card-actions class="mb-4 pa-0 d-flex">

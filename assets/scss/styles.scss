@@ -43,6 +43,11 @@ body {
   padding: 0.1rem 0.2rem;
 }
 
+.v-application code.small {
+  font-size: .6rem !important;
+  line-height: 1rem;
+}
+
 .theme--dark.v-application .primary--text {
   color: #fff !important;
 }

@@ -93,7 +93,7 @@
                   <span v-else class="text--disabled">Not provided</span>
                 </td>
                 <td>{{ member.user.email }}</td>
-                <td class="text-right">
+                <td class="text-right" style="white-space: nowrap">
                   <v-chip
                     v-if="member.user.sub === member.user.email"
                     color="warning"

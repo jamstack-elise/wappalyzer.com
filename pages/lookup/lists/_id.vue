@@ -75,6 +75,16 @@
       >
         <div v-if="playGame">
           <TicTacToe class="mt-6" />
+
+          <div class="mt-6">
+            <small
+              ><a
+                class="text--disabled text-decoration-underline"
+                @click="playGame = false"
+                >Close</a
+              ></small
+            >
+          </div>
         </div>
         <template v-else>
           <v-progress-circular
@@ -107,17 +117,46 @@
         </template>
       </div>
       <v-card v-else class="mb-4">
+        <template v-if="isAdmin">
+          <v-card-title>Administration</v-card-title>
+          <v-card-text class="px-0">
+            <v-simple-table>
+              <tbody>
+                <tr>
+                  <th width="30%">User ID</th>
+                  <td>
+                    <code class="small">{{ list.userId }}</code>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Timestamp</th>
+                  <td>
+                    <code class="small">{{ list.createdAt }}</code>
+                  </td>
+                </tr>
+                <tr>
+                  <th>Filename</th>
+                  <td>
+                    <code class="small">{{ list.bulk.filename }}</code>
+                  </td>
+                </tr>
+              </tbody>
+            </v-simple-table>
+
+            <v-divider />
+          </v-card-text>
+        </template>
         <v-card-text class="px-0">
           <v-simple-table>
             <tbody>
               <tr>
-                <th>Created</th>
+                <th width="30%">Created</th>
                 <td>
                   {{ formatDate(new Date(list.createdAt * 1000)) }}
                 </td>
               </tr>
               <tr>
-                <th width="30%">Websites</th>
+                <th>Websites</th>
                 <td>
                   {{ formatNumber(list.bulk.rows) }}
                 </td>
