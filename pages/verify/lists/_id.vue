@@ -44,6 +44,18 @@
         Your list is ready.
       </v-alert>
 
+      <v-alert
+        v-if="list.status === 'Failed'"
+        :icon="mdiAlertOctagonOutline"
+        type="error"
+        border="left"
+        text
+        prominent
+      >
+        Sorry, something went wrong during the processing of your list. Please
+        contact us.
+      </v-alert>
+
       <v-btn
         v-if="isAdmin"
         :loading="processing"
@@ -177,7 +189,7 @@
       <div v-if="list.status === 'Failed'" class="mt-4">
         <v-btn color="error" outlined @click="cancelDialog = true">
           <v-icon left>
-            {{ mdiCartRemove }}
+            {{ mdiDelete }}
           </v-icon>
           Delete list
         </v-btn>
@@ -216,6 +228,7 @@ import {
   mdiDownload,
   mdiAlertOctagonOutline,
   mdiCheckboxMarked,
+  mdiDelete,
 } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
@@ -242,6 +255,7 @@ export default {
       mdiDownload,
       mdiAlertOctagonOutline,
       mdiCheckboxMarked,
+      mdiDelete,
       list: null,
       listLoaded: false,
       playGame: false,

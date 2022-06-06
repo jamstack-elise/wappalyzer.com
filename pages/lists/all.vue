@@ -50,9 +50,25 @@
                     <v-hover v-slot="{ hover }">
                       <tr v-on="on" :key="list.createdAt">
                         <td style="white-space: nowrap">
-                          <nuxt-link :to="`/lists/${list.id}`">
-                            {{ list.id }}
-                          </nuxt-link>
+                          <nuxt-link :to="`/lists/${list.id}`">{{
+                            list.id
+                          }}</nuxt-link>
+
+                          <v-tooltip
+                            v-if="list.paymentMethod === 'free'"
+                            max-width="250"
+                            top
+                          >
+                            <template #activator="{ on }">
+                              <sup>
+                                <v-icon small v-on="on">{{
+                                  mdiGiftOutline
+                                }}</v-icon>
+                              </sup>
+                            </template>
+
+                            Free list
+                          </v-tooltip>
 
                           <v-tooltip
                             v-if="list.repeatListId"
@@ -60,9 +76,7 @@
                             top
                           >
                             <template #activator="{ on }">
-                              <nuxt-link
-                                v-if="list.repeatListId"
-                                :to="`/lists/${list.repeatListId}`"
+                              <nuxt-link :to="`/lists/${list.repeatListId}`"
                                 ><sup>
                                   <v-icon color="accent" small v-on="on">{{
                                     mdiUpdate
@@ -256,7 +270,14 @@
 
 <script>
 import { mapState } from 'vuex'
-import { mdiPlus, mdiCheck, mdiUpdate, mdiPencil, mdiDelete } from '@mdi/js'
+import {
+  mdiPlus,
+  mdiCheck,
+  mdiUpdate,
+  mdiPencil,
+  mdiDelete,
+  mdiGiftOutline,
+} from '@mdi/js'
 import Page from '~/components/Page.vue'
 import Spinner from '~/components/Spinner.vue'
 
@@ -281,6 +302,7 @@ export default {
       mdiUpdate,
       mdiPencil,
       mdiDelete,
+      mdiGiftOutline,
       selected: {},
       viewMine: false,
     }

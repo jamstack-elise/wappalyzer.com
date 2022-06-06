@@ -48,9 +48,25 @@
                 <v-hover v-slot="{ hover }">
                   <tr :key="list.createdAt">
                     <td>
-                      <nuxt-link :to="`/lookup/lists/${list.id}`">
-                        {{ list.id }}
-                      </nuxt-link>
+                      <nuxt-link :to="`/lookup/lists/${list.id}`">{{
+                        list.id
+                      }}</nuxt-link>
+
+                      <v-tooltip
+                        v-if="list.paymentMethod === 'free'"
+                        max-width="250"
+                        top
+                      >
+                        <template #activator="{ on }">
+                          <sup>
+                            <v-icon small v-on="on">{{
+                              mdiGiftOutline
+                            }}</v-icon>
+                          </sup>
+                        </template>
+
+                        Free list
+                      </v-tooltip>
                     </td>
                     <td>
                       <v-chip
@@ -138,7 +154,13 @@
 
 <script>
 import { mapState } from 'vuex'
-import { mdiPlus, mdiCheck, mdiUpdate, mdiPencil } from '@mdi/js'
+import {
+  mdiPlus,
+  mdiCheck,
+  mdiUpdate,
+  mdiPencil,
+  mdiGiftOutline,
+} from '@mdi/js'
 import Page from '~/components/Page.vue'
 import Spinner from '~/components/Spinner.vue'
 
@@ -162,6 +184,7 @@ export default {
       mdiCheck,
       mdiUpdate,
       mdiPencil,
+      mdiGiftOutline,
       selected: {},
       viewMine: false,
     }
