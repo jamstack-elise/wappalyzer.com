@@ -30,6 +30,7 @@
         :href="`https://dashboard.stripe.com/subscriptions/${plan.subscriptionId}`"
         color="success"
         target="_blank"
+        class="mb-4"
         outlined
       >
         Stripe subscription

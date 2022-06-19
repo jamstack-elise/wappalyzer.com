@@ -220,7 +220,12 @@
                             </div>
                           </template>
                         </v-radio>
-                        <v-radio class="mt-0" value="and" hide-details>
+                        <v-radio
+                          v-if="selectedItems.length <= 3"
+                          class="mt-0"
+                          value="and"
+                          hide-details
+                        >
                           <template #label>
                             <div>
                               <strong>All</strong> of the selected technologies

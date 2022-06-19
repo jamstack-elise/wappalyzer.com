@@ -364,7 +364,7 @@
     <v-dialog v-model="syncDialog" max-width="400px">
       <v-card>
         <v-card-title>Update all organisations</v-card-title>
-        <v-card-text class="pb-0">
+        <v-card-text>
           <v-alert v-if="syncError" type="error" class="mb-4" text>
             {{ syncError }}
           </v-alert>

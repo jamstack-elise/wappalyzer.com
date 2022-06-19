@@ -59,6 +59,11 @@ export default {
               : true
           )
     },
+    member() {
+      return this.isMember || this.isAdmin
+        ? this.user.impersonator.email
+        : this.user.email
+    },
     headerNav() {
       return this.mainNav.filter(({ header }) => header !== false)
     },
@@ -74,17 +79,17 @@ export default {
           await Promise.all([this.getOrganisations(), this.getCredits()])
         }
 
-        this.$gtm.push({ event: 'signIn', userId: this.user.sub })
+        this.$gtm.push({ event: 'signIn', userId: this.member.sub })
 
         if (this.$refiner) {
           this.$refiner('identifyUser', {
-            id: this.user.sub,
-            email: this.user.email,
-            name: this.user.name,
+            id: this.member.sub,
+            email: this.member.email,
+            name: this.member.name,
           })
         }
 
-        this.$cookies.set('userId', this.user.sub, {
+        this.$cookies.set('userId', this.member.sub, {
           path: '/',
           maxAge: 60 * 60 * 24 * 30,
         })
@@ -119,13 +124,13 @@ export default {
     this.initSurvey()
 
     if (this.isSignedIn) {
-      this.$gtm.push({ event: 'signIn', userId: this.user.sub })
+      this.$gtm.push({ event: 'signIn', userId: this.member.sub })
 
       if (this.$refiner) {
         this.$refiner('identifyUser', {
-          id: this.user.sub,
-          email: this.user.email,
-          name: this.user.name,
+          id: this.member.sub,
+          email: this.member.email,
+          name: this.member.name,
         })
       }
     }
@@ -176,9 +181,9 @@ export default {
       }
 
       if (this.isSignedIn) {
-        $crisp.push(['set', 'user:email', [this.user.email]])
-        $crisp.push(['set', 'user:nickname', [this.user.name]])
-        $crisp.push(['set', 'user:company', [this.user.billingName]])
+        $crisp.push(['set', 'user:email', [this.member.email]])
+        $crisp.push(['set', 'user:nickname', [this.member.name]])
+        $crisp.push(['set', 'user:company', [this.member.billingName]])
       }
 
       if (
