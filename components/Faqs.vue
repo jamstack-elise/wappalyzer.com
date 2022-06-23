@@ -302,7 +302,8 @@
           <p>
             On a free account, you can create lead lists to get a free sample.
             Once you find what you need you can sign up for a
-            <nuxt-link to="/pro/">PRO</nuxt-link> plan to access the full list.
+            <nuxt-link to="/pro/">PRO</nuxt-link> plan or purchase a credit
+            bundle to access the full list.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -313,14 +314,9 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            A <nuxt-link to="/pro/">PRO</nuxt-link> plan is required to access
-            lead lists, purchase additional credits and access to all data
-            points in data products, including company and contact details.
-          </p>
-
-          <p>
-            Sign up for a free account to get 50 credits every month to spend on
-            technology lookups, email verifications and alerts.
+            No, you're welcome to sign up for a free account and buy credits as
+            needed. Credit bundles include
+            <nuxt-link to="/pro/">PRO features</nuxt-link>.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -388,8 +384,8 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            Credits included in plans expire after 60 days. Credits purchased
-            directly expire after 365 days. Expired credits can no longer be
+            Credits included in plans expire after 60 days. Credits purchased in
+            bundles expire after 365 days. Expired credits can no longer be
             used.
           </p>
         </v-expansion-panel-content>

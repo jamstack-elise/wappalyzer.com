@@ -55,141 +55,68 @@
         </v-btn>
       </div>
 
-      <v-card
-        v-if="!isPro"
-        color="primary lighten-1 primary--text"
-        class="mb-6"
-        flat
-      >
-        <v-card-title class="subtitle-2">
-          <v-icon color="primary" size="20" left>
-            {{ mdiLockOpenVariantOutline }}
-          </v-icon>
-          Unlock PRO features
+      <v-card>
+        <v-card-title>Buy credits</v-card-title>
+
+        <v-card-text class="pb-0">
+          <p style="max-width: 600px">
+            Buy credits as needed, on a free or paid plan. Credit bundles
+            include
+            <nuxt-link to="/pro/">
+              <v-chip to="/pro/" color="accent" class="mr-1" x-small outlined
+                >PRO</v-chip
+              >features</nuxt-link
+            >
+            and are valid for one year.
+          </p>
+        </v-card-text>
+
+        <BuyCredits />
+
+        <v-divider />
+
+        <v-card-title class="d-flex justify-space-between">
+          <span>Auto top-up</span>
+          <v-chip
+            to="/pro/"
+            class="font-weight-regular"
+            color="primary"
+            x-small
+            outlined
+            >PRO</v-chip
+          >
         </v-card-title>
-        <v-card-text class="primary--text pb-0">
-          Sign up for a
-          <v-chip to="/pro/" color="primary" x-small outlined>PRO</v-chip>
-          plan to get monthly credits. If you ever need more, you can purchase
-          additional credits here at any time.
+        <v-card-text v-if="autoTopUp.enabled">
+          <p>
+            When your balance reaches
+            <strong>{{ formatNumber(autoTopUp.threshold) }}</strong>
+            credits, automatically buy
+            <strong>{{ formatNumber(autoTopUp.credits) }}</strong> credits.
+          </p>
+        </v-card-text>
+        <v-card-text v-else>
+          <v-alert color="accent" class="mb-0" text>
+            Turned off. Turn on to automatically buy credits when your balance
+            is low.
+          </v-alert>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
 
-          <v-btn to="/pricing/" color="primary" text>
-            Compare plans
-            <v-icon right>
-              {{ mdiArrowRight }}
-            </v-icon>
+          <v-btn
+            color="accent"
+            text
+            :disabled="!isPro"
+            @click="autoTopUpDialog = true"
+          >
+            <v-icon left>{{ mdiPencil }}</v-icon>
+
+            Configure
           </v-btn>
         </v-card-actions>
-      </v-card>
 
-      <v-card width="100%" height="100%">
-        <v-row class="my-6">
-          <v-col cols="12" md="6" class="py-0 pr-md-0">
-            <v-form @submit.prevent="submit" :disabled="!isPro">
-              <v-card-title class="d-flex justify-space-between">
-                <span>Buy credits</span>
-                <v-chip
-                  to="/pro/"
-                  class="font-weight-regular"
-                  color="primary"
-                  x-small
-                  outlined
-                  >PRO</v-chip
-                >
-              </v-card-title>
-              <v-card-text>
-                <v-text-field
-                  v-model="credits"
-                  :rules="rules.credits"
-                  label="Credits"
-                  placeholder="1000"
-                  outlined
-                  dense
-                >
-                  <template v-slot:append>
-                    <v-chip
-                      :disabled="!isPro"
-                      color="primary lighten-1 primary--text"
-                      label
-                      small
-                    >
-                      Price:
-                      {{
-                        formatCurrency(
-                          creditsToCents(parseInt(credits, 10)) / 100
-                        )
-                      }}
-                    </v-chip>
-                  </template>
-                </v-text-field>
+        <v-divider />
 
-                <v-btn
-                  :loading="submitting"
-                  :disabled="!isPro"
-                  color="primary"
-                  depressed
-                  @click="submit"
-                >
-                  <v-icon left>{{ mdiCart }}</v-icon>
-
-                  Create order
-                </v-btn>
-              </v-card-text>
-            </v-form>
-          </v-col>
-
-          <v-divider class="d-none d-md-block" vertical />
-
-          <v-col cols="12" md="6" class="py-0 pl-md-0">
-            <v-divider class="d-md-none" />
-
-            <v-card-title class="d-flex justify-space-between">
-              <span>Auto top-up</span>
-              <v-chip
-                to="/pro/"
-                class="font-weight-regular"
-                color="primary"
-                x-small
-                outlined
-                >PRO</v-chip
-              >
-            </v-card-title>
-            <v-card-text v-if="autoTopUp.enabled">
-              <p>
-                When your balance reaches
-                <strong>{{ formatNumber(autoTopUp.threshold) }}</strong>
-                credits, automatically buy
-                <strong>{{ formatNumber(autoTopUp.credits) }}</strong> credits.
-              </p>
-            </v-card-text>
-            <v-card-text v-else>
-              <v-alert color="accent" class="mb-0" text>
-                Turned off. Turn on to automatically buy credits when your
-                balance is low.
-              </v-alert>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-
-              <v-btn
-                color="accent"
-                text
-                :disabled="!isPro"
-                @click="autoTopUpDialog = true"
-              >
-                <v-icon left>{{ mdiPencil }}</v-icon>
-
-                Configure
-              </v-btn>
-            </v-card-actions>
-          </v-col>
-        </v-row>
-      </v-card>
-
-      <v-card>
         <v-card-title>Bundles</v-card-title>
         <v-card-text v-if="!adds.length" class="pb-0">
           <v-alert color="info" text>
@@ -219,9 +146,19 @@
                   </nuxt-link>
                 </td>
                 <td v-else-if="item.orderId">
-                  <nuxt-link :to="`/orders/${item.orderId}/`">
-                    {{ item.description }}
-                  </nuxt-link>
+                  <nuxt-link :to="`/orders/${item.orderId}/`">{{
+                    item.description
+                  }}</nuxt-link>
+
+                  <v-chip
+                    v-if="item.credits >= 5000 && item.creditsRemaining"
+                    to="/pro/"
+                    color="primary"
+                    class="ml-1"
+                    x-small
+                    outlined
+                    >PRO</v-chip
+                  >
                 </td>
                 <td v-else>
                   {{ item.description }}
@@ -506,6 +443,7 @@ import Page from '~/components/Page.vue'
 import FaqDialog from '~/components/FaqDialog.vue'
 import CreditCards from '~/components/CreditCards.vue'
 import Progress from '~/components/Progress.vue'
+import BuyCredits from '~/components/BuyCredits.vue'
 
 export default {
   components: {
@@ -513,6 +451,7 @@ export default {
     FaqDialog,
     CreditCards,
     Progress,
+    BuyCredits,
   },
   data() {
     return {

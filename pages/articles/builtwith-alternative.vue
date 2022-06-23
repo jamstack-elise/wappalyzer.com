@@ -146,6 +146,19 @@
                     </td>
                   </tr>
                   <tr>
+                    <th>Pay-as-you-go pricing</th>
+                    <td class="text-center">
+                      <v-icon color="success">
+                        {{ mdiCheck }}
+                      </v-icon>
+                    </td>
+                    <td class="text-center">
+                      <v-icon color="error">
+                        {{ mdiClose }}
+                      </v-icon>
+                    </td>
+                  </tr>
+                  <tr>
                     <th>Full dataset reverified monthly</th>
                     <td class="text-center">
                       <v-icon color="success">
@@ -257,7 +270,8 @@
           <p>
             Wappalyzer uses a transparent credit-based system. Credits are
             included in plans and can be spent on any product, including lists
-            and APIs, giving you the most flexibility.
+            and APIs, giving you the most flexibility. A subscription is
+            optional; you can buy credits as needed even on the free plan.
           </p>
 
           <p class="mb-8">
@@ -306,6 +320,7 @@ import { mdiCheck, mdiClose } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
 import Pricing from '~/components/Pricing.vue'
+import BuyCredits from '~/components/BuyCredits.vue'
 import Logos from '~/components/Logos.vue'
 import LogoWappalyzer from '~/assets/images/logo/light.svg?inline'
 import LogoBuiltWith from '~/assets/images/articles/wappalyzer-vs-builtwith/builtwith.svg?inline'
@@ -317,6 +332,7 @@ export default {
     Logos,
     LogoWappalyzer,
     LogoBuiltWith,
+    BuyCredits,
   },
   data() {
     return {

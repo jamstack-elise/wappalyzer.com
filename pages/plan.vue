@@ -40,12 +40,7 @@
       </v-btn>
 
       <v-alert v-if="!plan.status" color="accent" text>
-        <p>
-          You're currently on the Free plan. Sign up for a
-          <v-chip color="accent" to="/pro/" x-small outlined>PRO</v-chip> plan
-          to access lead lists and include company and contact details in all
-          data products.
-        </p>
+        <p>You're currently on the free plan.</p>
 
         <v-btn to="/pricing/" color="accent" depressed>
           Compare plans

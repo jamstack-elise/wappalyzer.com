@@ -232,6 +232,25 @@
                   {{ formatNumber(order.credits) }}
                 </td>
               </tr>
+              <tr v-if="order.credits >= 5000">
+                <td>
+                  <nuxt-link to="/pro/"
+                    ><v-chip
+                      to="/pro/"
+                      color="accent"
+                      class="mr-1"
+                      x-small
+                      outlined
+                      >PRO</v-chip
+                    >features</nuxt-link
+                  >
+                </td>
+                <td>
+                  <v-icon color="primary">
+                    {{ mdiCheckboxMarked }}
+                  </v-icon>
+                </td>
+              </tr>
             </tbody>
           </v-simple-table>
         </v-card-text>

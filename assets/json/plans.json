@@ -15,7 +15,7 @@
       "interval": "month",
       "price": 14900,
       "attrs": {
-        "credits": 5000,
+        "credits": 10000,
         "users": 1,
         "support": ["Email"],
         "lookups": true,
@@ -78,7 +78,7 @@
       "interval": "year",
       "price": 149000,
       "attrs": {
-        "credits": 5000,
+        "credits": 10000,
         "users": 1,
         "support": ["Email"],
         "lookups": true,

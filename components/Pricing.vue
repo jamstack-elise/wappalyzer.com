@@ -11,7 +11,7 @@
         align-center
         body-2
         font-weight-medium
-        mb-6
+        mb-8
         mt-4 mt-md-0
       "
     >
