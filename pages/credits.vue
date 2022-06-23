@@ -144,6 +144,16 @@
                   <nuxt-link to="/plan/">
                     {{ item.description }}
                   </nuxt-link>
+
+                  <v-chip
+                    v-if="item.credits >= 5000 && item.creditsRemaining"
+                    to="/pro/"
+                    color="primary"
+                    class="ml-1"
+                    x-small
+                    outlined
+                    >PRO</v-chip
+                  >
                 </td>
                 <td v-else-if="item.orderId">
                   <nuxt-link :to="`/orders/${item.orderId}/`">{{

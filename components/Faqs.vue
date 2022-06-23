@@ -314,8 +314,8 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            No, you're welcome to sign up for a free account and buy credits as
-            needed. Credit bundles include
+            You're welcome to sign up for a free account and buy credits as
+            needed. Like any of the plans, credit bundles include
             <nuxt-link to="/pro/">PRO features</nuxt-link>.
           </p>
         </v-expansion-panel-content>
