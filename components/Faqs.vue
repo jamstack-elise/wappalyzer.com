@@ -314,8 +314,16 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            You're welcome to sign up for a free account and buy credits as
-            needed. Like any of the plans, credit bundles include
+            Paid plans are generally more cost-effective as they include monthly
+            credits at a lower rate. Larger plans also include free lists,
+            additional logins and priority support.
+          </p>
+
+          <p>
+            If you prefer the flexibility of not having a plan and don't need to
+            coordinate with team members, you're welcome to sign up for a free
+            account and buy credits on a pay-as-you-go basis. Like any of the
+            plans, credit bundles include
             <nuxt-link to="/pro/">PRO features</nuxt-link>.
           </p>
         </v-expansion-panel-content>
@@ -358,7 +366,7 @@
             Yes, you can cancel your plan any time without losing access to your
             credits or past purchases. Your plan will remain active for the
             remainder of the billing period and you'll be able to use your
-            credits during that time.
+            credits until they expire.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -426,10 +434,10 @@
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           The browser extension shows the technologies a websites uses, for
-          free. On a PRO plan, the 'more info' tab reveals available company and
-          contact information for the website as well as social media profiles
-          and any other metadata we find.
-          <nuxt-link to="/pro/">See all PRO features</nuxt-link>.
+          free. On PLUS and PRO plans, the 'more info' tab reveals available
+          company and contact information for the website as well as social
+          media profiles and any other metadata we find.
+          <nuxt-link to="/plus/">See all PLUS features</nuxt-link>.
 
           <v-card class="my-8" :max-width="1118 * 0.5">
             <v-img

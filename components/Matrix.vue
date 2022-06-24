@@ -300,7 +300,7 @@ export default {
     }),
   },
   watch: {
-    '$store.state.user.isSignedIn'(isSignedIn) {
+    isSignedIn(isSignedIn) {
       if (isSignedIn && this.signInDialog) {
         this.signInDialog = false
       }

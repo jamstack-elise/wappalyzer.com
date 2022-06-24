@@ -268,10 +268,15 @@
           <h2 class="text-h2 mt-8 mb-2">Wappalyzer pricing</h2>
 
           <p>
-            Wappalyzer uses a transparent credit-based system. Credits are
-            included in plans and can be spent on any product, including lists
-            and APIs, giving you the most flexibility. A subscription is
-            optional; you can buy credits as needed even on the free plan.
+            Wappalyzer offers two pricing models using a transparent,
+            credit-based system. Subscribe to a plan to get monthly credits at a
+            lower rate, free lists and extra logins for your team members. Or,
+            sign up for a free account and buy credits as needed.
+          </p>
+
+          <p>
+            Credits can be spent on any product, including lead lists,
+            technology lookups and APIs.
           </p>
 
           <p class="mb-8">
@@ -287,7 +292,13 @@
 
       <v-row justify="center" no-gutters>
         <v-col sm="10" lg="8">
-          <h2 class="text-h2 mt-8 mb-2">Conclusion</h2>
+          <h3 class="text-h3 mt-6 mb-4 text-center">
+            Or, buy credits on a free plan
+          </h3>
+
+          <BuyCredits />
+
+          <h2 class="text-h2 mb-2">Conclusion</h2>
 
           <p>
             Wappalyzer has been an expert in the

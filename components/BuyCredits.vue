@@ -48,11 +48,18 @@
         Buy credits
       </v-btn>
     </v-card-text>
+
+    <v-dialog v-model="signInDialog" max-width="400px">
+      <SignIn mode-sign-up />
+    </v-dialog>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { mdiAlphaCCircle, mdiUnfoldMoreVertical } from '@mdi/js'
+
+import SignIn from '~/components/SignIn.vue'
 
 const bundles = [
   { value: 5000, text: '5K' },
@@ -65,8 +72,12 @@ const bundles = [
 ]
 
 export default {
+  components: {
+    SignIn,
+  },
   data() {
     return {
+      signInDialog: false,
       mdiAlphaCCircle,
       mdiUnfoldMoreVertical,
       bundles,
@@ -77,10 +88,37 @@ export default {
       error: null,
     }
   },
+  computed: {
+    ...mapState({
+      isSignedIn: ({ user }) => user.isSignedIn,
+    }),
+  },
+  watch: {
+    isSignedIn() {
+      if (this.isSignedIn && this.signInDialog) {
+        this.signInDialog = false
+
+        if (this.submitting) {
+          this.submit()
+        }
+      }
+    },
+    signInDialog() {
+      if (!this.isSignedIn && !this.signInDialog) {
+        this.submitting = false
+      }
+    },
+  },
   methods: {
     async submit() {
       this.error = ''
       this.submitting = true
+
+      if (!this.isSignedIn) {
+        this.signInDialog = true
+
+        return
+      }
 
       try {
         const order = (
