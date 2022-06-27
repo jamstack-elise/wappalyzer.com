@@ -134,7 +134,7 @@
               </tr>
             </tbody>
           </v-simple-table>
-          <template v-if="['languages'].includes(attributeKey)">
+          <template v-else-if="['languages'].includes(attributeKey)">
             {{ attribute.values.map(({ text }) => text).join(', ') }}
           </template>
           <template v-else>
