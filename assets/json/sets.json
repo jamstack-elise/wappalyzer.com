@@ -107,9 +107,11 @@
     "key": "locale",
     "name": "Locale",
     "attributes": [
-      { "name": "IP country", "key": "ipCountry", "description": "The website's country (best guess), derived from business locations, phone numbers, top-level domain and IP address." },
-      { "name": "IP region", "key": "ipRegion", "description": "The website's region (e.g. state, best guess)." },
-      { "key": "language", "description": "The website's language, determined by interpreting content on the website. Indicative only." }
+      { "name": "Country", "key": "ipCountry", "description": "The website's canonical country (best guess), derived from business locations, phone numbers, top-level domain and IP address." },
+      { "name": "Region", "key": "ipRegion", "description": "The website's region (e.g. state, best guess)." },
+      { "name": "Countries", "key": "ipCountries", "description": "All countries the website was found to serve content from." },
+      { "key": "language", "description": "The website's canonical language, determined by interpreting content on the website. Indicative only." },
+      { "key": "languages", "description": "All languages detected on the website." }
     ]
   },
   {

@@ -134,6 +134,9 @@
               </tr>
             </tbody>
           </v-simple-table>
+          <template v-if="['languages'].includes(attributeKey)">
+            {{ attribute.values.map(({ text }) => text).join(', ') }}
+          </template>
           <template v-else>
             <div v-for="(value, index) in attribute.values" :key="index">
               <v-icon v-if="value.text === true" color="success">
@@ -181,7 +184,8 @@
               <span
                 v-else
                 :class="`${
-                  maskedSets.includes(setKey) && setKey === 'company'
+                  maskedSets.includes(setKey) &&
+                  ['company', 'signals'].includes(setKey)
                     ? 'blurred '
                     : ''
                 }`"

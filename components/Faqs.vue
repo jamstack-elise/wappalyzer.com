@@ -464,19 +464,14 @@
 
       <v-expansion-panel>
         <v-expansion-panel-header>
-          Where can I report a bug or request a new feature?
+          Where can I report a bug?
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
-          <p>
-            Please
-            <a
-              href="https://github.com/AliasIO/wappalyzer/issues/new/choose"
-              rel="noopener"
-              target="_blank"
-              >create an issue</a
-            >
-            on GitHub.
-          </p>
+          If you noticed something wrong or missing, please
+          <nuxt-link to="/technologies/report-an-issue/"
+            >report an issue</nuxt-link
+          >. If you have any comment or suggestions,
+          <nuxt-link to="/contact/">contact us</nuxt-link>!
         </v-expansion-panel-content>
       </v-expansion-panel>
 

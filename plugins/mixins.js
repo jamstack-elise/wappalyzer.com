@@ -323,9 +323,24 @@ Vue.mixin({
 
                   break
                 default:
-                  formatted[set.key].attributes[attribute.key].values.push({
-                    text: value,
-                  })
+                  switch (attribute.key) {
+                    case 'languages':
+                      formatted[set.key].attributes[attribute.key].values.push({
+                        text: this.formatLanguage(value),
+                      })
+
+                      break
+                    case 'ipCountries':
+                      formatted[set.key].attributes[attribute.key].values.push({
+                        text: this.formatCountry(value),
+                      })
+
+                      break
+                    default:
+                      formatted[set.key].attributes[attribute.key].values.push({
+                        text: value,
+                      })
+                  }
               }
             }
           } else {
