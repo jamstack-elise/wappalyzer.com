@@ -8,6 +8,38 @@
     </v-alert>
 
     <template v-if="plan">
+      <v-btn
+        v-if="isAdmin"
+        :href="`https://dashboard.stripe.com/subscriptions/${plan.subscriptionId}`"
+        color="success"
+        target="_blank"
+        class="mb-4"
+        outlined
+      >
+        Stripe subscription
+        <v-icon right>
+          {{ mdiOpenInNew }}
+        </v-icon>
+      </v-btn>
+
+      <v-alert
+        v-if="
+          plan.pausedUntil && (!plan.cancelAt || plan.status === 'Cancelled')
+        "
+        type="info"
+        prominent
+        text
+      >
+        <p>
+          Your plan is paused until
+          {{ formatDate(new Date(plan.pausedUntil * 1000), 'full') }}.
+        </p>
+
+        <v-btn color="accent" depressed @click="resumeDialog = true"
+          >Resume now</v-btn
+        >
+      </v-alert>
+
       <v-alert v-if="plan.status === 'Pending'" type="warning" prominent text>
         Your plan is awaiting payment and is not currently active.
       </v-alert>
@@ -25,20 +57,6 @@
         plan.
       </v-alert>
 
-      <v-btn
-        v-if="isAdmin"
-        :href="`https://dashboard.stripe.com/subscriptions/${plan.subscriptionId}`"
-        color="success"
-        target="_blank"
-        class="mb-4"
-        outlined
-      >
-        Stripe subscription
-        <v-icon right>
-          {{ mdiOpenInNew }}
-        </v-icon>
-      </v-btn>
-
       <v-alert v-if="!plan.status" color="accent" text>
         <p>You're currently on the free plan.</p>
 
@@ -52,7 +70,7 @@
       </v-alert>
 
       <template v-else>
-        <v-card class="my-4" :disabled="plan.status === 'Pending'">
+        <v-card class="mb-4" :disabled="plan.status === 'Pending'">
           <v-card-text class="px-0 pb-0">
             <v-simple-table>
               <tbody>
@@ -165,16 +183,15 @@
                   </tr>
                   <tr v-else>
                     <th>Renews after</th>
-                    <td>
-                      {{ formatDate(new Date(plan.currentPeriodEnd * 1000)) }}
+                    <td
+                      v-if="plan.pausedUntil"
+                      colspan="2"
+                      class="text--disabled"
+                    >
+                      Paused
                     </td>
-                    <td class="text-right">
-                      <v-btn text @click="cancelDialog = true">
-                        Cancel plan
-                        <v-icon right>
-                          {{ mdiTagRemoveOutline }}
-                        </v-icon>
-                      </v-btn>
+                    <td v-else>
+                      {{ formatDate(new Date(plan.currentPeriodEnd * 1000)) }}
                     </td>
                   </tr>
                 </template>
@@ -190,76 +207,169 @@
         <small class="text--disabled"
           >Prices are in United States dollars.</small
         >
+
+        <div v-if="plan.status !== 'Cancelled' && !plan.cancelAt" class="mt-4">
+          <v-btn
+            v-if="!plan.pausedUntil && plan.interval === 'month'"
+            color="accent"
+            class="mr-4"
+            outlined
+            @click="pauseDialog = true"
+          >
+            <v-icon left>
+              {{ mdiPause }}
+            </v-icon>
+            Pause plan </v-btn
+          ><v-btn color="error" outlined @click="cancelDialog = true">
+            <v-icon left>
+              {{ mdiClose }}
+            </v-icon>
+            Cancel plan
+          </v-btn>
+        </div>
       </template>
 
-      <v-dialog
-        v-if="!confirmCancelDialog"
-        v-model="cancelDialog"
-        max-width="500px"
-        eager
-      >
+      <v-dialog v-model="resumeDialog" max-width="500px" eager>
         <v-card>
-          <v-card-title>Cancel plan</v-card-title>
+          <v-card-title>Resume plan</v-card-title>
 
           <v-card-text class="pb-0">
-            <v-alert v-if="cancelError" type="error" text>
-              {{ cancelError }}
+            <v-alert v-if="resumeError" type="error" text>
+              {{ resumeError }}
             </v-alert>
 
-            Please take a moment to tell us why you're cancelling your plan. We
-            read every comment.
-
-            <v-form>
-              <v-radio-group v-model="cancelReason">
-                <v-radio
-                  label="I only wanted to subscribe for one month"
-                  value="I only wanted to subscribe for one month"
-                />
-                <v-radio
-                  label="I no longer need this product"
-                  value="I no longer need this product"
-                />
-                <v-radio
-                  label="I'm switching to another plan"
-                  value="I'm switching to another plan"
-                />
-                <v-radio
-                  label="The product is too expensive"
-                  value="The product is too expensive"
-                  hint="foo"
-                />
-                <v-radio
-                  label="It doesn't work as expected (please explain)"
-                  value="It doesn't work as expected"
-                />
-                <v-radio label="Different reason" value="Different reason" />
-              </v-radio-group>
-
-              <v-textarea
-                v-model="cancelComment"
-                label="What can we do better?"
-                class="mb-4"
-                rows="3"
-                hide-details
-                outlined
-              />
-            </v-form>
-
-            <p>Your plan will be cancelled at the end of the billing period.</p>
+            <p>Are you sure you want to resume your plan?</p>
           </v-card-text>
 
           <v-card-actions>
             <v-spacer />
-            <v-btn color="accent" text @click="cancelDialog = false">
+            <v-btn color="accent" text @click="resumeDialog = false">
               Cancel
             </v-btn>
-            <v-btn :loading="cancelling" color="error" text @click="cancel()">
-              Ok
+            <v-btn :loading="resuming" color="accent" text @click="resume()">
+              Resume plan
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-dialog v-model="pauseDialog" max-width="500px" eager>
+        <v-card>
+          <v-card-title>Pause plan</v-card-title>
+
+          <v-card-text class="pb-0">
+            <v-alert v-if="pauseError" type="error" text>
+              {{ pauseError }}
+            </v-alert>
+
+            <p>
+              You can pause your plan for up to three months. We won't bill you
+              during this time and credits included in your plan won't expire.
+              You can resume your plan at any time.
+            </p>
+
+            <p>
+              Payments will resume automatically after the selected duration.
+            </p>
+
+            <v-form>
+              <v-select
+                v-model="pauseDuration"
+                :items="pauseDurations"
+                dense
+                outlined
+              />
+            </v-form>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="accent" text @click="pauseDialog = false">
+              Cancel
+            </v-btn>
+            <v-btn :loading="pausing" color="accent" text @click="pause()">
+              Pause plan
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </template>
+
+    <v-dialog v-model="confirmCancelDialog" max-width="400px">
+      <SignIn
+        mode-confirm
+        @confirm="cancel(true)"
+        @close="confirmCancelDialog = false"
+      />
+    </v-dialog>
+
+    <v-dialog
+      v-if="!confirmCancelDialog"
+      v-model="cancelDialog"
+      max-width="500px"
+      eager
+    >
+      <v-card>
+        <v-card-title>Cancel plan</v-card-title>
+
+        <v-card-text class="pb-0">
+          <v-alert v-if="cancelError" type="error" text>
+            {{ cancelError }}
+          </v-alert>
+
+          Please take a moment to tell us why you're cancelling your plan. We
+          read every comment.
+
+          <v-form>
+            <v-radio-group v-model="cancelReason">
+              <v-radio
+                label="I only wanted to subscribe for one month"
+                value="I only wanted to subscribe for one month"
+              />
+              <v-radio
+                label="I no longer need this product"
+                value="I no longer need this product"
+              />
+              <v-radio
+                label="I'm switching to another plan"
+                value="I'm switching to another plan"
+              />
+              <v-radio
+                label="The product is too expensive"
+                value="The product is too expensive"
+                hint="foo"
+              />
+              <v-radio
+                label="It doesn't work as expected (please explain)"
+                value="It doesn't work as expected"
+              />
+              <v-radio label="Different reason" value="Different reason" />
+            </v-radio-group>
+
+            <v-textarea
+              v-model="cancelComment"
+              label="What can we do better?"
+              class="mb-4"
+              rows="3"
+              hide-details
+              outlined
+            />
+          </v-form>
+
+          <p>Your plan will be cancelled at the end of the billing period.</p>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="accent" text @click="cancelDialog = false">
+            Cancel
+          </v-btn>
+          <v-btn :loading="cancelling" color="error" text @click="cancel()">
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
     <v-dialog v-model="confirmCancelDialog" max-width="400px">
       <SignIn
@@ -336,10 +446,11 @@ import {
   mdiKeyVariant,
   mdiCreditCardOutline,
   mdiTagOutline,
-  mdiTagRemoveOutline,
+  mdiClose,
   mdiDomain,
   mdiAlphaCCircle,
   mdiArrowRight,
+  mdiPause,
 } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
@@ -363,12 +474,24 @@ export default {
       cancelling: false,
       cancelReason: '',
       cancelComment: '',
+      pauseDialog: false,
+      pauseError: false,
+      pausing: false,
+      pauseDurations: [
+        { text: 'Pause for 1 month', value: 1 },
+        { text: 'Pause for 2 months', value: 2 },
+        { text: 'Pause for 3 months', value: 3 },
+      ],
+      pauseDuration: 1,
+      resumeDialog: false,
+      resumeError: false,
+      resuming: false,
       error: false,
       mdiOpenInNew,
       mdiKeyVariant,
       mdiCreditCardOutline,
       mdiTagOutline,
-      mdiTagRemoveOutline,
+      mdiClose,
       mdiDomain,
       mdiAlphaCCircle,
       mdiArrowRight,
@@ -377,6 +500,7 @@ export default {
       paymentMethodSaving: false,
       paymentMethods: false,
       paymentMethodsLoading: false,
+      mdiPause,
       plan: null,
       success: false,
     }
@@ -455,13 +579,53 @@ export default {
         this.plan = (await this.$axios.get('plan')).data
 
         this.cancelDialog = false
-
-        // this.success = 'Your plan will be cancelled at the end of the billing period.'
       } catch (error) {
         this.cancelError = this.getErrorMessage(error)
       }
 
       this.cancelling = false
+    },
+    async pause() {
+      this.success = false
+      this.pauseError = false
+
+      this.pausing = true
+
+      try {
+        await this.$axios.patch('plan', {
+          pauseDuration: this.pauseDuration,
+        })
+
+        this.plan = (await this.$axios.get('plan')).data
+
+        this.pauseDialog = false
+      } catch (error) {
+        this.pauseError = this.getErrorMessage(error)
+      }
+
+      this.pausing = false
+    },
+    async resume() {
+      this.success = false
+      this.resumeError = false
+
+      this.resuming = true
+
+      try {
+        await this.$axios.patch('plan', {
+          pauseDuration: 0,
+        })
+
+        this.plan = (await this.$axios.get('plan')).data
+
+        this.success = 'Your plan has been reactivated.'
+
+        this.resumeDialog = false
+      } catch (error) {
+        this.resumeError = this.getErrorMessage(error)
+      }
+
+      this.resuming = false
     },
     async savePaymentMethod(id) {
       this.paymentMethodError = false

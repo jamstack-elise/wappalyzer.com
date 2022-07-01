@@ -43,6 +43,12 @@ Vue.mixin({
             month: 'long',
             year: 'numeric',
           })
+        case 'full':
+          return date.toLocaleString(undefined, {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })
         default:
           return date.toLocaleString(undefined, {
             day: 'numeric',

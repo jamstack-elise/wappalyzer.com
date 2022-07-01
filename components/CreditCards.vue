@@ -77,7 +77,7 @@
       <v-dialog v-model="removeDialog" max-width="400px" eager>
         <v-card>
           <v-card-title> Remove card </v-card-title>
-          <v-card-text class="pb-0">
+          <v-card-text>
             <v-alert v-if="removeError" type="error">
               {{ removeError }}
             </v-alert>

@@ -141,12 +141,14 @@
                 <td
                   v-if="item.subscriptionId && item.subscriptionId !== 'free'"
                 >
-                  <nuxt-link to="/plan/">
-                    {{ item.description }}
-                  </nuxt-link>
+                  <nuxt-link to="/plan/">{{ item.description }}</nuxt-link>
 
                   <v-chip
-                    v-if="item.credits >= 5000 && item.creditsRemaining"
+                    v-if="
+                      item.credits >= 5000 &&
+                      item.creditsRemaining &&
+                      !item.pausedAt
+                    "
                     to="/pro/"
                     color="primary"
                     class="ml-1"
@@ -161,7 +163,11 @@
                   }}</nuxt-link>
 
                   <v-chip
-                    v-if="item.credits >= 5000 && item.creditsRemaining"
+                    v-if="
+                      item.credits >= 5000 &&
+                      item.creditsRemaining &&
+                      !item.pausedAt
+                    "
                     to="/pro/"
                     color="primary"
                     class="ml-1"
@@ -176,7 +182,8 @@
                 <td>
                   {{ formatDate(new Date(item.createdAt * 1000)) }}
                 </td>
-                <td>
+                <td v-if="item.pausedAt" class="text--disabled">Paused</td>
+                <td v-else>
                   {{ formatDate(new Date(item.expiresAt * 1000)) }}
                 </td>
                 <td>

@@ -453,7 +453,7 @@
       >
         <v-btn color="error" outlined @click="cancelDialog = true">
           <v-icon left>
-            {{ mdiCartRemove }}
+            {{ mdiClose }}
           </v-icon>
           Cancel order
         </v-btn>
@@ -552,7 +552,7 @@ import {
   mdiPencil,
   mdiFileDocumentOutline,
   mdiTagOutline,
-  mdiCartRemove,
+  mdiClose,
   mdiCreditCard,
   mdiEmail,
   mdiCheckboxMarked,
@@ -595,7 +595,7 @@ export default {
       mdiPencil,
       mdiFileDocumentOutline,
       mdiTagOutline,
-      mdiCartRemove,
+      mdiClose,
       mdiCreditCard,
       mdiEmail,
       mdiCheckboxMarked,
