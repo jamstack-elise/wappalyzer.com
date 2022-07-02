@@ -359,14 +359,23 @@
 
       <v-expansion-panel>
         <v-expansion-panel-header>
-          Can I cancel my plan any time?
+          Can I pause or cancel my plan?
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            Yes, you can cancel your plan any time without losing access to your
-            credits or past purchases. Your plan will remain active for the
-            remainder of the billing period and you'll be able to use your
-            credits until they expire.
+            Yes, you can pause or cancel your plan at any time without losing
+            access to your credits or past purchases.
+          </p>
+
+          <p>
+            You may pause your plan for up to three months. During this time you
+            won't be billed and credits included in your plan will not expire.
+          </p>
+
+          <p>
+            When you cancel, your plan remains active for the remainder of the
+            billing period and you can continue using your credits until they
+            expire.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>

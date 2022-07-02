@@ -419,7 +419,7 @@
               <v-icon left size="20">
                 {{ mdiAlphaCCircle }}
               </v-icon>
-              Spend {{ totalCredits }} credit{{
+              Spend {{ formatNumber(totalCredits) }} credit{{
                 totalCredits === 1 ? '' : 's'
               }} </v-btn
             ><v-btn

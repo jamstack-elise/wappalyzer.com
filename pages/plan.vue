@@ -264,8 +264,8 @@
 
             <p>
               You can pause your plan for up to three months. We won't bill you
-              during this time and credits included in your plan won't expire.
-              You can resume your plan at any time.
+              during this time and credits included in your plan will not
+              expire. You can resume your plan at any time.
             </p>
 
             <p>
