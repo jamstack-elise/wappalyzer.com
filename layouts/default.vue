@@ -187,22 +187,36 @@ export default {
       }
 
       if (
+        this.$route.path === '/' ||
         [
+          '/account/',
+          '/alerts/',
+          '/api/',
+          '/apikey',
+          '/contact/',
+          '/credits/',
+          '/docs/',
+          '/faq/',
+          '/integrations',
           '/lists/',
           '/lookup/#bulk',
-          '/api/',
-          '/contact/',
-          '/faq/',
-          '/pricing/',
+          '/lookup/lists',
+          '/organisation/',
           '/orders/',
+          '/paymentmethods/',
+          '/plan/',
+          '/pricing/',
           '/verify/#bulk',
+          '/verify/lists',
         ].some((path) =>
-          `${this.$route.path}${this.$route.hash}`.startsWith(path)
+          `${this.$route.path}${this.$route.path.endsWith('/') ? '' : '/'}${
+            this.$route.hash
+          }`.startsWith(path)
         )
       ) {
-        if ($crisp.is('chat:hidden')) {
-          $crisp.push(['do', 'chat:show'])
-        }
+        //if ($crisp.is('chat:hidden')) {
+        $crisp.push(['do', 'chat:show'])
+        //}
       } else if ($crisp.is('chat:visible') && !$crisp.is('chat:opened')) {
         $crisp.do('chat:hide')
       }

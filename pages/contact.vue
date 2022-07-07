@@ -75,24 +75,11 @@
       <v-col cols="6">
         <h3 class="mb-2">Chat with us</h3>
 
-        <p class="body-2">
-          We're located in Melbourne, Australia and generally available between
-          8am-8pm AEST.
-        </p>
+        <p class="body-2">Questions? Talk to a human.</p>
 
-        <p class="body-2">
-          Right now it's
-          {{
-            new Date().toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-              timeZone: 'Australia/Melbourne',
-            })
-          }}
-          AEST.
-        </p>
-
-        <p class="body-2"><a @click.prevent="chat">Start a chat</a>.</p>
+        <v-btn color="primary" depressed @click.prevent="chat"
+          >Start a chat</v-btn
+        >
       </v-col>
     </v-row>
   </Page>
