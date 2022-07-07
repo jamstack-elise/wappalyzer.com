@@ -192,11 +192,29 @@
               </td>
             </tr>
             <tr>
+              <td><code>min_age</code></td>
+              <td class="pt-4">
+                <p>
+                  Return results that have been verified at least once before
+                  <code>min_age</code> months ago. Defaults to
+                  <code>0</code> for most recent results.
+                </p>
+
+                <p>
+                  Use a higher value in combination with
+                  <code>squash=false</code> and <code>max_age</code> for
+                  historic results grouped by month (up to 12 months per
+                  request).
+                </p>
+              </td>
+            </tr>
+            <tr>
               <td><code>max_age</code></td>
               <td class="pt-4">
                 <p>
                   Return results that have been verified at least once in the
-                  last 1-12 months. Defaults to <code>2</code> for best results.
+                  last <code>max_age</code> months. Defaults to
+                  <code>2</code> for best results.
                 </p>
 
                 <p>
@@ -213,8 +231,9 @@
 
                 <p>
                   Use a higher value in combination with
-                  <code>squash=false</code> for historic results grouped by
-                  month.
+                  <code>squash=false</code> and optionally
+                  <code>min_age</code> for historic results grouped by month (up
+                  to 12 months per request).
                 </p>
               </td>
             </tr>
