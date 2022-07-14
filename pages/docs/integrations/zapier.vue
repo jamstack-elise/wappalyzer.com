@@ -6,7 +6,7 @@
       <p>
         Connect Wappalyzer to the apps and services you use with
         <a
-          href="https://zapier.com/developer/public-invite/9758/f2e8bd2517895d4ffb869e3281e2050f/"
+          href="https://zapier.com/developer/public-invite/165049/8405be42e78368ac20c18eaf611a45fb/"
           rel="noopener"
           target="_blank"
           >Zapier</a
@@ -21,7 +21,7 @@
       <p>
         To get started, head over to
         <a
-          href="https://zapier.com/developer/public-invite/9758/f2e8bd2517895d4ffb869e3281e2050f/"
+          href="https://zapier.com/developer/public-invite/165049/8405be42e78368ac20c18eaf611a45fb/"
           rel="noopener"
           target="_blank"
           >Zapier</a
