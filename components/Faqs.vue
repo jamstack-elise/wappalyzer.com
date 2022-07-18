@@ -155,13 +155,14 @@
 
       <v-expansion-panel>
         <v-expansion-panel-header>
-          Can I resell the data?
+          Can I resell the data or embed it in my customer-facing product?
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            No, not without explicit permission in writing. Please refer to the
-            <nuxt-link to="/terms/">terms of use</nuxt-link> and
-            <nuxt-link to="/contact/">contact us</nuxt-link> to discuss options.
+            Reselling or sharing our data is prohibited by our
+            <nuxt-link to="/terms/">terms of use</nuxt-link>. If you're an
+            Enterprise customer and would like to apply for an exception, please
+            <nuxt-link to="/contact/">contact us</nuxt-link>.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -264,13 +265,14 @@
 
       <v-expansion-panel>
         <v-expansion-panel-header>
-          Can I resell the data?
+          Can I resell the data or embed it in my customer-facing product?
         </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
-            No, not without explicit permission in writing. Please refer to the
-            <nuxt-link to="/terms/">terms of use</nuxt-link> and
-            <nuxt-link to="/contact/">contact us</nuxt-link> to discuss options.
+            Reselling or sharing our data is prohibited by our
+            <nuxt-link to="/terms/">terms of use</nuxt-link>. If you're an
+            Enterprise customer and would like to apply for an exception, please
+            <nuxt-link to="/contact/">contact us</nuxt-link>.
           </p>
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -358,9 +360,9 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header>
-          Can I pause or cancel my plan?
-        </v-expansion-panel-header>
+        <v-expansion-panel-header
+          >Can I pause or cancel my plan?</v-expansion-panel-header
+        >
         <v-expansion-panel-content eager>
           <p>
             Yes, you can pause or cancel your plan at any time without losing
@@ -381,7 +383,7 @@
       </v-expansion-panel>
 
       <v-expansion-panel>
-        <v-expansion-panel-header> What are credits? </v-expansion-panel-header>
+        <v-expansion-panel-header>What are credits?</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <p>
             Credits can be spent on a range of products, including lead lists,

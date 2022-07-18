@@ -136,7 +136,7 @@
             <v-divider />
             <v-responsive height="60">
               <v-card-text
-                class="py-0 d-flex justify-center align-center"
+                class="py-2 d-flex justify-center align-center"
                 style="height: 100%"
               >
                 <template v-if="attr.type === 'currency'">

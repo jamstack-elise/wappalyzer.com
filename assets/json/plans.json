@@ -65,7 +65,7 @@
       "attrs": {
         "credits": 500000,
         "users": 50,
-        "support": ["Dedicated account manager"],
+        "support": ["Dedicated account manager", "Custom contracts"],
         "lookups": true,
         "lists": ["Use included credits", "+ 3 Free lists / mo"],
         "apis": true,
