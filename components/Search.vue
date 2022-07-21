@@ -257,6 +257,15 @@ export default {
         )
       }
 
+      this.results.sort((a, b) => {
+        console.log(a.text, b.text)
+        return query.toLowerCase().trim() === a.text.toLowerCase().trim()
+          ? -1
+          : a.text > b.text
+          ? 1
+          : -1
+      })
+
       if (query.toLowerCase().match(/^[a-z0-9]{3,}$/)) {
         this.results.push({
           type: 'keyword',
