@@ -61,6 +61,10 @@
             no-categories
             no-loading
           />
+
+          <v-alert v-if="technologyError" color="warning" class="mb-0" text>
+            {{ technologyError }}
+          </v-alert>
         </v-card-text>
 
         <v-divider />
@@ -140,7 +144,9 @@
       class="mt-4 mb-4"
       large
       :loading="submitting"
-      :disabled="!form.type || !form.description || !valid"
+      :disabled="
+        !form.type || !form.description || !valid || form.technologyError
+      "
       @click="submit"
       depressed
     >
@@ -165,6 +171,7 @@ export default {
       title: 'Report an issue',
       success: '',
       error: '',
+      technologyError: '',
       submitting: false,
       formInit: {
         type: '',
@@ -222,6 +229,15 @@ export default {
     user() {
       this.form.name = this.user.name
       this.form.email = this.user.email
+    },
+    'form.technology'() {
+      if (
+        this.form.type ===
+          'A technology is not being identified when it should' &&
+        ['React', 'Angular', 'Laravel', 'Django'].includes(this.form.technology)
+      ) {
+        this.technologyError = `${this.form.technology} is a technology that we can't always reliably detect. There's no need to report this issue, we're aware of it and will continue to find ways to improve. Thank you!`
+      }
     },
   },
   mounted() {
