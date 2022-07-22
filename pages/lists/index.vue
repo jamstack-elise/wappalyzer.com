@@ -633,6 +633,7 @@
                       label="Select a language country"
                       hide-details
                       outlined
+                      required
                       dense
                       eager
                     >
@@ -2265,7 +2266,7 @@ export default {
 
       this.excludeNoTraffic = notraffic === 'exclude'
 
-      this.multilingual = multilingual === 'exclude'
+      this.excludeMultilingual = multilingual === 'exclude'
 
       this.matchAny = filters === 'or'
 
