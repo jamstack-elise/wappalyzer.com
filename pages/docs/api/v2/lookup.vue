@@ -320,6 +320,7 @@
       {
         "slug": "craft-cms",
         "name": "Craft CMS",
+        "cpe": "cpe:2.3:a:craftcms:craft_cms:*:*:*:*:*:*:*:*",
         "categories": [
           {
             "id": 1,
@@ -368,6 +369,7 @@
     {
       "slug": "craft-cms",
       "name": "Craft CMS",
+      "cpe": "cpe:2.3:a:craftcms:craft_cms:*:*:*:*:*:*:*:*",
       "versions": [
         "3.0.0"
       ],
@@ -427,6 +429,7 @@
       {
         "slug": "craft-cms",
         "name": "Craft CMS",
+        "cpe": "cpe:2.3:a:craftcms:craft_cms:*:*:*:*:*:*:*:*",
         "categories": [
           {
             "id": 1,
@@ -529,6 +532,7 @@
       {
         "slug": "craft-cms",
         "name": "Craft CMS",
+        "cpe": "cpe:2.3:a:craftcms:craft_cms:*:*:*:*:*:*:*:*",
         "versions": [
           "3.0.0"
         ],
@@ -654,6 +658,7 @@
           {
             "slug": "craft-cms",
             "name": "Craft CMS",
+            "cpe": "cpe:2.3:a:craftcms:craft_cms:*:*:*:*:*:*:*:*",
             "categories": [
               {
                 "id": 1,

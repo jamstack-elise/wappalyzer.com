@@ -12,8 +12,10 @@
     "key": "base-lookup",
     "name": "Base fields (technology lookup)",
     "attributes": [
-      { "key": "technologies", "description": "Technology name, e.g. 'Shopify'." },
-      { "key": "categories", "description": "Category name, e.g. 'Ecommerce'." },
+      { "key": "slug", "description": "Technology name in machine-readable format, e.g. 'shopify'." },
+      { "key": "name", "description": "Technology name, e.g. 'Shopify'." },
+      { "key": "cpe", "description": "CPE name to uniquely identify the technology. Can be used to find CVEs (Common Vulnerabilities and Exposures)." },
+      { "key": "categories", "description": "Category ID, slug and name, e.g. '2', 'ecommerce' and 'Ecommerce' respectively." },
       { "key": "versions", "description": "Technology version number, e.g. '1.0.0'." },
       { "name": "traffic rank", "key": "trafficRank", "description": "Relative indicator of website traffic. Higher means more traffic." },
       { "name": "confirmed at", "key": "confirmedAt", "description": "Timestamp of the last recorded time the technology was identified on the website." }
