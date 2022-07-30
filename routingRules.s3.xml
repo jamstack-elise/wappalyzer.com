@@ -94,7 +94,7 @@
 		</Condition>
 		<Redirect>
 			<HostName>www.calendly.com</HostName>
-      <ReplaceKeyPrefixWith>wappalyzer/45min</ReplaceKeyPrefixWith>
+      <ReplaceKeyPrefixWith>wappalyzer</ReplaceKeyPrefixWith>
 		</Redirect>
 	</RoutingRule>
 </RoutingRules>

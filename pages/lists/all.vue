@@ -55,7 +55,10 @@
                           }}</nuxt-link>
 
                           <v-tooltip
-                            v-if="list.paymentMethod === 'free'"
+                            v-if="
+                              list.status === 'Complete' &&
+                              list.paymentMethod === 'free'
+                            "
                             max-width="250"
                             top
                           >

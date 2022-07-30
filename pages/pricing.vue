@@ -120,8 +120,14 @@
       </v-card>
 
       <div class="mt-8 pa-8 text-center">
-        <v-btn to="/contact/" color="primary" depressed x-large>
-          Contact us to book a demo
+        <v-btn
+          to="https://calendly.com/wappalyzer/demo"
+          target="_blank"
+          color="primary"
+          depressed
+          x-large
+        >
+          Book a free demo
         </v-btn>
       </div>
 
