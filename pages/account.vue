@@ -24,6 +24,20 @@
       </v-btn>
 
       <v-btn
+        v-if="user.email_verified === 'false'"
+        :loading="confirming"
+        color="success"
+        class="mr-2 mb-4"
+        outlined
+        @click="confirm"
+      >
+        <v-icon left>
+          {{ mdiAccountCheck }}
+        </v-icon>
+        Confirm user
+      </v-btn>
+
+      <v-btn
         v-if="!user.disabled"
         :loading="disabling"
         color="error"
@@ -264,6 +278,7 @@ export default {
       mdiEyeOff,
       newPassword: '',
       oldPassword: '',
+      confirming: false,
       disabling: false,
       enabling: false,
       removing: false,
@@ -304,6 +319,7 @@ export default {
       saveUser: 'user/save',
       deleteUser: 'user/delete',
       enableUser: 'user/enable',
+      confirmUser: 'user/confirm',
       disableUser: 'user/disable',
       changePassword: 'user/changePassword',
     }),
@@ -381,6 +397,20 @@ export default {
       }
 
       this.disabling = false
+
+      this.scrollToTop()
+    },
+    async confirm() {
+      this.confirming = true
+      this.error = false
+
+      try {
+        await this.confirmUser()
+      } catch (error) {
+        this.error = this.getErrorMessage(error)
+      }
+
+      this.confirming = false
 
       this.scrollToTop()
     },
