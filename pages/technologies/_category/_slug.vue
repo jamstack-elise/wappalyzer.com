@@ -235,6 +235,7 @@
               <v-simple-table>
                 <tbody>
                   <tr>
+                    <th>#</th>
                     <th>Website</th>
                     <th>Traffic</th>
                   </tr>
@@ -242,6 +243,12 @@
                     v-for="(attributes, hostname) in technology.topHostnames"
                     :key="hostname"
                   >
+                    <td width="1">
+                      {{
+                        Object.keys(technology.topHostnames).indexOf(hostname) +
+                        1
+                      }}
+                    </td>
                     <td width="50%">
                       <nuxt-link :to="`/lookup/${hostname}`">{{
                         hostname
@@ -548,52 +555,7 @@ export default {
       creatingList: false,
       createListError: false,
       createListDialog: false,
-      lineChartOptions: {
-        backgroundColor: 'transparent',
-        chartArea: {
-          height: '100%',
-          width: '100%',
-        },
-        series: {
-          1: {
-            lineDashStyle: [2, 2],
-            lineWidth: 2,
-          },
-        },
-        lineWidth: 3,
-        colors: ['#4608ad', '#a182d5'],
-        curveType: 'function',
-        enableInteractivity: false,
-        hAxis: {
-          baselineColor: 'none',
-        },
-        vAxis: {
-          baselineColor: 'none',
-          gridlines: { count: 0 },
-        },
-        legend: {
-          textStyle: { color: this.$vuetify.theme.dark ? '#FFF' : 'inherit' },
-          position: 'in',
-        },
-      },
-      pieChartOptions: {
-        backgroundColor: 'transparent',
-        chartArea: {
-          height: '100%',
-          width: '100%',
-        },
-        pieHole: 0.7,
-        height: 150,
-        sliceVisibilityThreshold: 0.01,
-        enableInteractivity: false,
-        pieSliceText: 'none',
-        legend: {
-          textStyle: {
-            color: this.$vuetify.theme.dark ? '#FFF' : 'inherit',
-            fontSize: 13,
-          },
-        },
-      },
+
       mdiFilterVariant,
       mdiOpenInNew,
       mdiMagnify,
@@ -616,6 +578,56 @@ export default {
     ...mapState({
       user: ({ user }) => user.attrs,
       isSignedIn: ({ user }) => user.isSignedIn,
+      lineChartOptions() {
+        return {
+          backgroundColor: 'transparent',
+          chartArea: {
+            height: '100%',
+            width: '100%',
+          },
+          series: {
+            1: {
+              lineDashStyle: [2, 2],
+              lineWidth: 2,
+            },
+          },
+          lineWidth: 3,
+          colors: ['#4608ad', '#a182d5'],
+          curveType: 'function',
+          enableInteractivity: false,
+          hAxis: {
+            baselineColor: 'none',
+          },
+          vAxis: {
+            baselineColor: 'none',
+            gridlines: { count: 0 },
+          },
+          legend: {
+            textStyle: { color: this.$vuetify.theme.dark ? '#FFF' : 'inherit' },
+            position: 'in',
+          },
+        }
+      },
+      pieChartOptions() {
+        return {
+          backgroundColor: 'transparent',
+          chartArea: {
+            height: '100%',
+            width: '100%',
+          },
+          pieHole: 0.7,
+          height: 150,
+          sliceVisibilityThreshold: 0.01,
+          enableInteractivity: false,
+          pieSliceText: 'none',
+          legend: {
+            textStyle: {
+              color: this.$vuetify.theme.dark ? '#FFF' : 'inherit',
+              fontSize: 13,
+            },
+          },
+        }
+      },
     }),
     jsonld() {
       return {

@@ -99,6 +99,7 @@
           <v-simple-table>
             <thead>
               <tr>
+                <th width="1">#</th>
                 <th width="35%">
                   Technology
                   <v-btn
@@ -131,6 +132,9 @@
                 v-for="{ name, slug, icon, hostnames } in technologies"
                 :key="slug"
               >
+                <td>
+                  {{ Object.keys(technologies).indexOf(slug) + 1 }}
+                </td>
                 <td>
                   <nuxt-link
                     :to="`/technologies/${categorySlug}/${slug}/`"
@@ -310,7 +314,18 @@ export default {
       mdiFileTableOutline,
       mdiMinus,
       mdiPlus,
-      pieChartOptions: {
+      showAll: false,
+      signInDialog: false,
+      sort: 'hostnames',
+    }
+  },
+  computed: {
+    ...mapState({
+      user: ({ user }) => user.attrs,
+      isSignedIn: ({ user }) => user.isSignedIn,
+    }),
+    pieChartOptions() {
+      return {
         backgroundColor: 'transparent',
         chartArea: {
           height: '100%',
@@ -328,17 +343,8 @@ export default {
           },
           position: 'labeled',
         },
-      },
-      showAll: false,
-      signInDialog: false,
-      sort: 'hostnames',
-    }
-  },
-  computed: {
-    ...mapState({
-      user: ({ user }) => user.attrs,
-      isSignedIn: ({ user }) => user.isSignedIn,
-    }),
+      }
+    },
     categorySlug() {
       return this.$route.params.category
     },
