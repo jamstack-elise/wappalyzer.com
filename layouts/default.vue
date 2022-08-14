@@ -105,7 +105,7 @@ export default {
     $route() {
       this.checkChat()
 
-      this.checkSurvey()
+      // this.checkSurvey()
     },
   },
   mounted() {
@@ -121,7 +121,7 @@ export default {
 
     this.initChat()
 
-    this.initSurvey()
+    // this.initSurvey()
 
     if (this.isSignedIn) {
       this.$gtm.push({ event: 'signIn', userId: this.member.sub })
