@@ -24,8 +24,8 @@
             text
             prominent
           >
-            Your list is being created. This may take a few minutes, we'll send
-            you an email when it's ready.
+            Your list is being created. You can wait here or close this page,
+            we'll send you an email when it's ready.
           </v-alert>
 
           <v-alert
@@ -119,10 +119,42 @@
             <template v-else>
               <v-progress-circular
                 color="accent"
-                size="100"
+                size="150"
                 width="5"
-                indeterminate
-              />
+                :value="list.calculatingProgress % 100"
+                :indeterminate="
+                  !(list.calculatingProgress % 100) ||
+                  list.calculatingProgress === 200
+                "
+              >
+                <small>
+                  <span class="text--disabled">
+                    Step {{ Math.ceil(list.calculatingProgress / 100) + 1 }} of
+                    3
+                  </span>
+                  <br />
+                  <span class="font-weight-bold">
+                    {{
+                      list.calculatingProgress === 200
+                        ? 'Finalising...'
+                        : list.calculatingProgress
+                        ? Math.ceil(list.calculatingProgress / 100) === 1
+                          ? 'Filtering data'
+                          : 'Enriching data'
+                        : 'Extracting data'
+                    }}
+                  </span>
+                  <template
+                    v-if="
+                      list.calculatingProgress % 100 &&
+                      list.calculatingProgress < 200
+                    "
+                  >
+                    <br />
+                    {{ list.calculatingProgress % 100 }}%
+                  </template>
+                </small>
+              </v-progress-circular>
 
               <div class="mt-6">
                 <small
@@ -554,10 +586,9 @@
                         list.query.technologies.length > 20 ||
                         list.query.matchAllTechnologies === 'not'
                       "
-                      color="accent"
                       class="mt-2 mr-3"
-                      text
                       small
+                      depressed
                       @click="technologiesViewAll = !technologiesViewAll"
                     >
                       <v-icon small left text>
@@ -573,7 +604,7 @@
 
                   <v-card-text
                     v-if="list.query.technologies.length >= 2"
-                    class="px-6 pb-0"
+                    class="px-6"
                   >
                     <small>
                       <template
@@ -953,10 +984,51 @@
                         <code class="small">{{ list.createdAt }}</code>
                       </td>
                     </tr>
-                    <tr>
-                      <th class="px-6">Filename</th>
-                      <td class="px-6">
+                    <tr v-if="list.filename">
+                      <th class="px-6">File</th>
+                      <td v-if="list.filename.endsWith('.zip')" class="px-6">
+                        <v-btn
+                          :href="`https://lists.wappalyzer.com/${list.filename}`"
+                          small
+                          depressed
+                        >
+                          <v-icon left small>
+                            {{ mdiDownload }}
+                          </v-icon>
+                          Download
+                        </v-btn>
+                      </td>
+                      <td v-else class="px-6">
                         <code class="small">{{ list.filename }}</code>
+                      </td>
+                    </tr>
+                    <tr v-if="list.calculatingDuration">
+                      <th class="px-6">Duration</th>
+                      <td
+                        v-if="list.calculatingDuration / 3600 >= 2"
+                        class="px-6"
+                      >
+                        {{
+                          formatNumber(
+                            Math.round(list.calculatingDuration / 3600)
+                          )
+                        }}
+                        hours
+                      </td>
+                      <td
+                        v-if="list.calculatingDuration / 60 >= 1"
+                        class="px-6"
+                      >
+                        {{
+                          formatNumber(
+                            Math.round(list.calculatingDuration / 60)
+                          )
+                        }}
+                        minutes
+                      </td>
+                      <td v-else class="px-6">
+                        {{ formatNumber(Math.round(list.calculatingDuration)) }}
+                        seconds
                       </td>
                     </tr>
                   </tbody>
@@ -1314,7 +1386,7 @@ export default {
           this.checks += 1
 
           this.list = (await this.$axios.get(`lists-site/${id}`)).data
-        }, Math.min(10000, 2000 + 100 * this.checks * this.checks))
+        }, Math.min(5000, 2000 + 100 * this.checks * this.checks))
       }
 
       if (this.repeat !== repeat) {
