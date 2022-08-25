@@ -46,8 +46,8 @@
         >
           <small v-if="query && !loading">
             Can't find what you're looking for?
-            <nuxt-link to="/technologies/suggest"
-              >Suggest a new technology</nuxt-link
+            <a href="/technologies/suggest" target="_blank"
+              >Suggest a new technology</a
             >.
           </small>
           <small v-else>Type something...</small>

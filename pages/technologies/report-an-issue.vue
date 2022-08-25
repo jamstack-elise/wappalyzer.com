@@ -38,6 +38,21 @@
             />
             <v-radio label="Something else" value="Something else" />
           </v-radio-group>
+
+          <v-alert
+            v-if="form.type === 'A technology is incorrectly identified'"
+            color="warning"
+            class="mt-4 mb-0"
+            text
+          >
+            <p class="subtitle-2">Try this first</p>
+
+            Open the extension settings (<v-icon color="warning" small>{{
+              mdiCog
+            }}</v-icon
+            >) and click the 'clear detections cache' button. This may fix the
+            issue you're reporting.
+          </v-alert>
         </v-card-text>
       </v-form>
 
@@ -157,6 +172,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { mdiCog } from '@mdi/js'
 
 import Page from '~/components/Page.vue'
 import Technologies from '~/components/Technologies.vue'
@@ -184,6 +200,7 @@ export default {
         email: '',
       },
       form: {},
+      mdiCog,
       websiteRules: [
         (v) => {
           console.log({ v })
