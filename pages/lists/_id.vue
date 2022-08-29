@@ -1016,7 +1016,7 @@
                         hours
                       </td>
                       <td
-                        v-if="list.calculatingDuration / 60 >= 1"
+                        v-else-if="list.calculatingDuration / 60 >= 1"
                         class="px-6"
                       >
                         {{

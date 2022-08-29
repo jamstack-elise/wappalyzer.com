@@ -2088,11 +2088,9 @@ export default {
 
       this.file = [...new Set(lines)]
         .map((line, i) => {
-          line = line.replace(/^"([^"]+)".+$/, '$1')
+          line = line.trim().replace(/^"([^"]+)".*$/, '$1')
 
-          const url = !/^https?:\/\//.test(line.trim())
-            ? `https://${line.trim()}`
-            : line.trim()
+          const url = !/^https?:\/\//.test(line) ? `https://${line}` : line
 
           try {
             new URL(url) // eslint-disable-line no-new
@@ -2110,9 +2108,11 @@ export default {
 
       this.fileErrors = this.fileErrors.slice(0, 10)
 
-      if (this.file.length > 100000) {
-        this.fileErrors.push('Limit of 100,000 URLs exceeded')
+      if (this.file.length > 250000) {
+        this.fileErrors.push('Limit of 250,000 URLs exceeded')
       }
+
+      console.log(this.file.slice(0, 10))
 
       this.file = this.file.join('\n')
     },
