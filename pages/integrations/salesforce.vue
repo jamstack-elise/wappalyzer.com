@@ -153,10 +153,10 @@
 
       <v-card-text style="max-width: 600px">
         <p class="mb-0">
-          Manage account properties in
-          <a href="#" target="_blank" rel="noopener">Salesforce settings</a>.
-          Refer to the
-          <a target="_blank" rel="noopener" href="">documentation</a>.
+          Manage custom fields in Salesforce settings. Refer to the
+          <nuxt-link to="/docs/integrations/salesforce/">
+            documentation</nuxt-link
+          >.
         </p>
       </v-card-text>
 
@@ -263,18 +263,12 @@
       <v-card-title>Synchronise</v-card-title>
 
       <v-card-text style="max-width: 600px">
-        <p>TODO</p>
-
-        <p class="mb-0">Each successully updated record cost 1 credit.</p>
-      </v-card-text>
-      <v-divider />
-
-      <v-card-title class="subtitle-2">Existing accounts</v-card-title>
-      <v-card-text style="max-width: 600px">
         <p>
           Append technology information to all existing account records using
           the above field mappings.
         </p>
+
+        <p>Each successully updated record cost 1 credit.</p>
 
         <v-row>
           <v-col>
@@ -384,9 +378,9 @@ export default {
       form: {
         orgDomainName: 'wappalyzer2-dev-ed.my.salesforce.com',
         clientId:
-          '3MVG9wt4IL4O5wvICuSDBaB.CEIdTL0mfyPkthWv.u.uSB4bVq5SLaQn5StjPgPKN4A_LFVSElFIyPjpK0aFU',
+          '3MVG9wt4IL4O5wvICuSDBaB.CEGqP5k.gcI2t5i63lXSnRbCD.yM7n.za0IrIvdypuZ7IDoI8JdYVp2FQhreG',
         clientSecret:
-          'BC68DC406AA992C7ED8B236D5669803827A8BB1523A4F39D5DE3D66701E57950',
+          'FCEB3D97354CEF6022FD3B982622C1A1E2CC8588E80297BB7E9C58C48877C0FF',
       },
       showClientSecret: false,
       websiteUrl: this.$config.WEBSITE_URL,

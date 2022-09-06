@@ -104,6 +104,7 @@ import ImageAndroid from '~/assets/images/apps/android.svg?data'
 import ImageMake from '~/assets/images/apps/make.svg?data'
 import ImagePabbly from '~/assets/images/apps/pabbly.svg?data'
 import ImageSemrush from '~/assets/images/apps/semrush.svg?data'
+import ImageSalesforce from '~/assets/images/apps/salesforce.svg?data'
 
 import apps from '~/assets/json/apps.json'
 
@@ -141,6 +142,7 @@ export default {
         'make.svg': ImageMake,
         'pabbly.svg': ImagePabbly,
         'semrush.svg': ImageSemrush,
+        'salesforce.svg': ImageSalesforce,
       },
     }
   },

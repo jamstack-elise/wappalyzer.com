@@ -269,7 +269,7 @@
               <v-icon left size="20">
                 {{ mdiAlphaCCircle }}
               </v-icon>
-              Spend {{ totalCredits }} credit{{
+              Spend {{ totalCredits.toLocaleString() }} credit{{
                 totalCredits === 1 ? '' : 's'
               }} </v-btn
             ><v-btn

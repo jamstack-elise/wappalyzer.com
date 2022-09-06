@@ -8,7 +8,7 @@
 
     <template v-if="paymentMethods">
       <v-card-text v-if="!paymentMethods.length" class="pa-0">
-        <v-alert color="info" class="my-0 mx-4" text>
+        <v-alert color="info" class="mt-0 mx-4" text>
           You don't have any cards.
         </v-alert>
       </v-card-text>
@@ -257,7 +257,7 @@ export default {
 
           this.stripeCard.on('change', (event) => {
             if (event.error) {
-              this.stripeError = this.getErrorMessag(event.error)
+              this.stripeError = this.getErrorMessage(event.error)
             } else {
               this.stripeError = false
             }
@@ -298,6 +298,15 @@ export default {
               payment_method: {
                 card: this.stripeCard,
                 billing_details: {
+                  address: {
+                    city: this.user.billingCity,
+                    country: this.user.billingCountry,
+                    line1: this.user.billingAddress1,
+                    line2: this.user.billingAddress2,
+                    postal_code: this.user.billingPostcode,
+                    state: this.user.billingState,
+                  },
+                  email: this.user.billingEmail,
                   name: this.billingName,
                 },
               },
