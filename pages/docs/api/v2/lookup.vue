@@ -185,7 +185,7 @@
               <td><code>denoise</code></td>
               <td class="pt-4">
                 <p>
-                  Exclude low confidence results. Default to <code>true</code>.
+                  Exclude low confidence results. Defaults to <code>true</code>.
                   Setting this to <code>false</code> yields more results but is
                   more likely to include false positives.
                 </p>
