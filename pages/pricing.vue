@@ -121,7 +121,7 @@
 
       <div class="mt-8 pa-8 text-center">
         <v-btn
-          to="https://calendly.com/wappalyzer/demo"
+          href="https://calendly.com/wappalyzer/demo"
           target="_blank"
           color="primary"
           depressed
