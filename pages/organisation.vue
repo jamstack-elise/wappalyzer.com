@@ -58,6 +58,25 @@
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td width="1">
+                  <v-switch
+                    :disabled="true"
+                    class="ma-0 pa-0 mx-auto"
+                    hide-details
+                    inset
+                  />
+                </td>
+                <td width="1">Owner</td>
+                <td>
+                  <template v-if="user.name">
+                    {{ user.name }}
+                  </template>
+                  <span v-else class="text--disabled">Not provided</span>
+                </td>
+                <td>{{ user.email }}</td>
+                <td class="text-right">&nbsp;</td>
+              </tr>
               <tr v-for="member in organisation.members" :key="member.user.sub">
                 <td width="1">
                   <v-switch
@@ -207,7 +226,7 @@
 
     <v-dialog v-model="createDialog" max-width="400px" eager>
       <v-card>
-        <v-card-title> Add member </v-card-title>
+        <v-card-title>Add member</v-card-title>
         <v-card-text class="pb-0">
           <p>
             The member will receive an email asking them to join the
@@ -484,6 +503,17 @@ export default {
       this.creating = true
 
       if (this.$refs.form.validate()) {
+        if (
+          this.email.toLowerCase().trim() ===
+          this.user.email.toLowerCase().trim()
+        ) {
+          this.createError = "You're already a member of this organisation."
+
+          this.creating = false
+
+          return
+        }
+
         try {
           await this.$axios.put(
             `organisation/${this.email.toLowerCase().trim()}`,
