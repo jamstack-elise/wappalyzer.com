@@ -203,8 +203,6 @@ export default {
       mdiCog,
       websiteRules: [
         (v) => {
-          console.log({ v })
-
           if (!v) {
             return true
           }

@@ -62,11 +62,6 @@ export default {
     },
   },
   mounted() {
-    console.log(
-      `${this.$route.path}${this.$route.path.endsWith('/') ? '' : '/'}${
-        this.$route.hash
-      }`
-    )
     if (
       [
         '/alerts/',

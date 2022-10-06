@@ -84,47 +84,16 @@
         </v-simple-table>
       </v-card-text>
 
-      <v-card-text v-if="!orgDomainName && !connecting">
-        <v-text-field
-          v-model="form.orgDomainName"
-          label="Salesforce org domain name"
-          required
-          required
-          dense
-          outlined
-        />
-
-        <v-text-field
-          v-model="form.clientId"
-          label="Consumer key"
-          required
-          dense
-          outlined
-        />
-
-        <v-text-field
-          v-model="form.clientSecret"
-          label="Consumer secret"
-          hide-details="auto"
-          :type="showClientSecret ? 'text' : 'password'"
-          :append-icon="showClientSecret ? mdiEyeOff : mdiEye"
-          required
-          dense
-          outlined
-          @click:append="() => (showClientSecret = !showClientSecret)"
-        />
-      </v-card-text>
-
       <v-card-actions>
         <v-spacer />
         <v-btn
           v-if="!orgDomainName"
-          :href="`https://${form.orgDomainName}/services/oauth2/authorize?client_id=${form.clientId}&redirect_uri=${websiteUrl}/integrations/salesforce/&response_type=code`"
           color="accent"
           _target="blank"
           :loading="connecting"
           :disabled="!eligible"
           text
+          @click="connectDialog = true"
         >
           <v-icon left>
             {{ mdiPowerPlug }}
@@ -320,6 +289,63 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="connectDialog" max-width="400px">
+      <v-card>
+        <v-card-title>Authenticate</v-card-title>
+        <v-card-text>
+          <p>
+            You need to create a Connected App on Salesforce to authenticate.
+            Refer to the
+            <nuxt-link to="/docs/integrations/salesforce/"
+              >documentation</nuxt-link
+            >.
+          </p>
+
+          <v-text-field
+            v-model="form.orgDomainName"
+            label="Salesforce org domain name"
+            required
+            required
+            dense
+            outlined
+          />
+
+          <v-text-field
+            v-model="form.clientId"
+            label="Consumer key"
+            required
+            dense
+            outlined
+          />
+
+          <v-text-field
+            v-model="form.clientSecret"
+            label="Consumer secret"
+            hide-details="auto"
+            :type="showClientSecret ? 'text' : 'password'"
+            :append-icon="showClientSecret ? mdiEyeOff : mdiEye"
+            required
+            dense
+            outlined
+            @click:append="() => (showClientSecret = !showClientSecret)"
+          />
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="accent" text @click="connectDialog = false"
+            >Cancel</v-btn
+          >
+          <v-btn
+            color="accent"
+            text
+            :href="`https://${form.orgDomainName}/services/oauth2/authorize?client_id=${form.clientId}&redirect_uri=${websiteUrl}/integrations/salesforce/&response_type=code`"
+          >
+            Continue
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </Page>
 </template>
 
@@ -359,6 +385,7 @@ export default {
       selectedField: null,
       selectedCategory: null,
       saving: false,
+      connectDialog: false,
       syncDialog: false,
       syncError: false,
       syncing: false,
@@ -376,11 +403,9 @@ export default {
       mdiCloseCircle,
       orgDomainName: '',
       form: {
-        orgDomainName: 'wappalyzer2-dev-ed.my.salesforce.com',
-        clientId:
-          '3MVG9wt4IL4O5wvICuSDBaB.CEGqP5k.gcI2t5i63lXSnRbCD.yM7n.za0IrIvdypuZ7IDoI8JdYVp2FQhreG',
-        clientSecret:
-          'FCEB3D97354CEF6022FD3B982622C1A1E2CC8588E80297BB7E9C58C48877C0FF',
+        orgDomainName: '',
+        clientId: '',
+        clientSecret: '',
       },
       showClientSecret: false,
       websiteUrl: this.$config.WEBSITE_URL,

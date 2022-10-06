@@ -2112,8 +2112,6 @@ export default {
         this.fileErrors.push('Limit of 250,000 URLs exceeded')
       }
 
-      console.log(this.file.slice(0, 10))
-
       this.file = this.file.join('\n')
     },
     updateQuery() {
