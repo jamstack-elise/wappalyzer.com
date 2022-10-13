@@ -199,27 +199,26 @@ export default {
 
         this.loading = false
 
-        this.categories = this.technologies.reduce(
-          (_categories, { categories }) => {
-            categories.forEach((category) => {
-              const _category = _categories.find(
-                ({ slug }) => slug === category.slug
-              )
+        this.categories = this.noCategories
+          ? []
+          : this.technologies.reduce((_categories, { categories }) => {
+              categories.forEach((category) => {
+                const _category = _categories.find(
+                  ({ slug }) => slug === category.slug
+                )
 
-              if (!_category) {
-                _categories.push({
-                  ...category,
-                  technologiesCount: 1,
-                })
-              } else {
-                _category.technologiesCount++
-              }
-            })
+                if (!_category) {
+                  _categories.push({
+                    ...category,
+                    technologiesCount: 1,
+                  })
+                } else {
+                  _category.technologiesCount++
+                }
+              })
 
-            return _categories
-          },
-          []
-        )
+              return _categories
+            }, [])
 
         this.search()
       }

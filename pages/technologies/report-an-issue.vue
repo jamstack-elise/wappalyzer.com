@@ -40,7 +40,10 @@
           </v-radio-group>
 
           <v-alert
-            v-if="form.type === 'A technology is incorrectly identified'"
+            v-if="
+              form.type === 'A technology is incorrectly identified' ||
+              form.type === 'Something else'
+            "
             color="warning"
             class="mt-4 mb-0"
             text
@@ -77,8 +80,23 @@
             no-loading
           />
 
-          <v-alert v-if="technologyError" color="warning" class="mb-0" text>
+          <v-alert v-if="technologyError" color="warning" text>
             {{ technologyError }}
+          </v-alert>
+
+          <v-alert
+            v-if="
+              this.form.type ===
+              'A technology is not being identified when it should'
+            "
+            color="info"
+            class="mb-0"
+            text
+          >
+            If you're not sure which technology should be identified then
+            there's no need to report it. If the extension doesn't show a
+            website's CMS, programming language or other technology, it often
+            means it's not possible to detect.
           </v-alert>
         </v-card-text>
 
@@ -244,6 +262,18 @@ export default {
     user() {
       this.form.name = this.user.name
       this.form.email = this.user.email
+    },
+    'form.type'() {
+      if (
+        this.form.type ===
+          'A technology is not being identified when it should' &&
+        !this.form.technology
+      ) {
+        this.technologyError =
+          "Select the technology that the website is using but not shown in the extension. If this issue is not about a specific technology, please select 'Something else' as the issue type."
+      } else {
+        this.technologyError = ''
+      }
     },
     'form.technology'() {
       if (
