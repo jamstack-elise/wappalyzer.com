@@ -86,8 +86,9 @@
 
           <v-alert
             v-if="
-              this.form.type ===
-              'A technology is not being identified when it should'
+              form.type ===
+                'A technology is not being identified when it should' &&
+              !form.technology
             "
             color="info"
             class="mb-0"
@@ -177,9 +178,7 @@
       class="mt-4 mb-4"
       large
       :loading="submitting"
-      :disabled="
-        !form.type || !form.description || !valid || form.technologyError
-      "
+      :disabled="!form.type || !form.description || !valid || !!technologyError"
       @click="submit"
       depressed
     >
@@ -282,6 +281,8 @@ export default {
         ['React', 'Angular', 'Laravel', 'Django'].includes(this.form.technology)
       ) {
         this.technologyError = `${this.form.technology} is a technology that we can't always reliably detect. There's no need to report this issue, we're aware of it and will continue to find ways to improve. Thank you!`
+      } else {
+        this.technologyError = ''
       }
     },
   },
