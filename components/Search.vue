@@ -258,11 +258,27 @@ export default {
       }
 
       this.results.sort((a, b) => {
-        return query.toLowerCase().trim() === a.text.toLowerCase().trim()
-          ? -1
-          : a.text > b.text
-          ? 1
-          : -1
+        if (query.toLowerCase().trim() === a.text.toLowerCase().trim()) {
+          return -1
+        }
+
+        if (query.toLowerCase().trim() === b.text.toLowerCase().trim()) {
+          return 1
+        }
+
+        if (
+          a.text.toLowerCase().trim().startsWith(query.toLowerCase().trim())
+        ) {
+          return -1
+        }
+
+        if (
+          b.text.toLowerCase().trim().startsWith(query.toLowerCase().trim())
+        ) {
+          return 1
+        }
+
+        return a.text > b.text ? 1 : -1
       })
 
       if (query.toLowerCase().match(/^[a-z0-9]{3,}$/)) {

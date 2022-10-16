@@ -151,6 +151,11 @@ export default {
           .includes(match)
       )
 
+      console.log(
+        this.query.toLowerCase().trim(),
+        technologies.map((a) => a.name.toLowerCase().trim())
+      )
+
       if (technologies.length <= 50) {
         this.results.push(
           ...technologies.map((technology) => ({
@@ -159,6 +164,36 @@ export default {
           }))
         )
       }
+
+      this.results.sort((a, b) => {
+        if (this.query.toLowerCase().trim() === a.name.toLowerCase().trim()) {
+          return -1
+        }
+
+        if (this.query.toLowerCase().trim() === b.name.toLowerCase().trim()) {
+          return 1
+        }
+
+        if (
+          a.name
+            .toLowerCase()
+            .trim()
+            .startsWith(this.query.toLowerCase().trim())
+        ) {
+          return -1
+        }
+
+        if (
+          b.name
+            .toLowerCase()
+            .trim()
+            .startsWith(this.query.toLowerCase().trim())
+        ) {
+          return 1
+        }
+
+        return a.name > b.name ? 1 : -1
+      })
     },
     clear() {
       this.$nextTick(() => {

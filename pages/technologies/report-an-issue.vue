@@ -278,7 +278,9 @@ export default {
       if (
         this.form.type ===
           'A technology is not being identified when it should' &&
-        ['React', 'Angular', 'Laravel', 'Django'].includes(this.form.technology)
+        ['React', 'Angular', 'Laravel', 'Django', 'Python'].includes(
+          this.form.technology
+        )
       ) {
         this.technologyError = `${this.form.technology} is a technology that we can't always reliably detect. There's no need to report this issue, we're aware of it and will continue to find ways to improve. Thank you!`
       } else {
