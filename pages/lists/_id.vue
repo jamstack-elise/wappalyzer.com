@@ -584,7 +584,8 @@
                     <v-btn
                       v-if="
                         list.query.technologies.length > 20 ||
-                        list.query.matchAllTechnologies === 'not'
+                        (list.query.technologies.length > 1 &&
+                          list.query.matchAllTechnologies === 'not')
                       "
                       class="mt-2 mr-3"
                       small

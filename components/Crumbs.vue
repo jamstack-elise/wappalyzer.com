@@ -78,7 +78,6 @@ export default {
       )
     ) {
       this.showDemoLink = true
-      console.log(this.showDemoLink)
     }
   },
 }

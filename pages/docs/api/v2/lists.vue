@@ -1075,7 +1075,7 @@
 
       <h4 class="mb-2">Request</h4>
 
-      <pre><Code wrap>curl -X POST -H "Content-Type: application/json" -H "x-api-key: &lt;your api key&gt;" "https://api.wappalyzer.com/v2/lists/lst_abcdef" -d '{ "technologies": [ { "slug": "shopify" } ] }'</Code></pre>
+      <pre><Code wrap>curl -X POST -H "Content-Type: application/json" -H "x-api-key: &lt;your api key&gt;" "https://api.wappalyzer.com/v2/lists/" -d '{ "technologies": [ { "slug": "shopify" } ] }'</Code></pre>
 
       <h4 class="mt-8 mb-2">Response</h4>
 
