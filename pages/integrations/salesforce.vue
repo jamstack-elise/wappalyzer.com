@@ -294,6 +294,10 @@
       <v-card>
         <v-card-title>Authenticate</v-card-title>
         <v-card-text>
+          <v-alert v-if="connectError" type="error" class="mb-4" text>
+            {{ connectError }}
+          </v-alert>
+
           <p>
             You need to create a Connected App on Salesforce to authenticate.
             Refer to the
@@ -336,13 +340,9 @@
           <v-btn color="accent" text @click="connectDialog = false"
             >Cancel</v-btn
           >
-          <v-btn
-            color="accent"
-            text
-            :href="`https://${form.orgDomainName}/services/oauth2/authorize?client_id=${form.clientId}&redirect_uri=${websiteUrl}/integrations/salesforce/&response_type=code`"
+          <v-btn :loading="savingUser" color="accent" text @click="connect"
+            >Continue</v-btn
           >
-            Continue
-          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -362,7 +362,7 @@ import {
   mdiContentSave,
   mdiCloseCircle,
 } from '@mdi/js'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 import Page from '~/components/Page.vue'
 import Spinner from '~/components/Spinner.vue'
@@ -379,13 +379,15 @@ export default {
     return {
       title: 'Salesforce',
       connecting: false,
+      connectDialog: false,
+      connectError: null,
       disconnecting: false,
       eligible: false,
       fields: [],
       selectedField: null,
       selectedCategory: null,
       saving: false,
-      connectDialog: false,
+      savingUser: false,
       syncDialog: false,
       syncError: false,
       syncing: false,
@@ -496,11 +498,7 @@ export default {
       this.connecting = true
 
       try {
-        await this.$axios.post(`salesforce/auth/${this.code}`, {
-          orgDomainName: this.form.orgDomainName,
-          clientId: this.form.clientId,
-          clientSecret: this.form.clientSecret,
-        })
+        await this.$axios.post(`salesforce/auth/${this.code}`)
 
         //
         ;({
@@ -564,6 +562,24 @@ export default {
       }
 
       this.savingAutoSync = false
+    },
+    async connect() {
+      this.savingUser = true
+      this.connectError = null
+
+      try {
+        await this.$axios.patch('salesforce', {
+          clientId: this.form.clientId,
+          clientSecret: this.form.clientSecret,
+          orgDomainName: this.form.orgDomainName,
+        })
+
+        window.location = `https://${this.form.orgDomainName}/services/oauth2/authorize?client_id=${this.form.clientId}&redirect_uri=${this.websiteUrl}/integrations/salesforce/&response_type=code`
+      } catch (error) {
+        this.connectError = error.message || error.toString()
+      }
+
+      this.savingUser = false
     },
     async disconnect() {
       this.success = null
