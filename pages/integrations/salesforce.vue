@@ -310,7 +310,6 @@
             v-model="form.orgDomainName"
             label="Salesforce org domain name"
             required
-            required
             dense
             outlined
           />
